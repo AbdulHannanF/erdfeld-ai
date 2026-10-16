@@ -55,7 +55,7 @@ function SettingsSection({
     <div className="space-y-3">
       <div className="flex items-center gap-2">
         <Icon className="h-4 w-4 text-brand-text" />
-        <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+        <h3 className="text-title text-foreground">{title}</h3>
       </div>
       <div className="space-y-4 pl-6">
         {children}
@@ -84,10 +84,10 @@ function SettingToggle({
   return (
     <div className="flex items-start justify-between gap-4">
       <div className="flex-1 min-w-0">
-        <Label htmlFor={id} className="text-sm text-muted-foreground cursor-pointer">
+        <Label htmlFor={id} className="text-body text-muted-foreground cursor-pointer">
           {label}
         </Label>
-        <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{description}</p>
+        <p className="text-caption text-muted-foreground mt-0.5 leading-snug">{description}</p>
       </div>
       <Switch
         id={id}
@@ -121,10 +121,10 @@ function SettingSelect({
   return (
     <div className="flex items-start justify-between gap-4">
       <div className="flex-1 min-w-0">
-        <Label htmlFor={id} className="text-sm text-muted-foreground cursor-pointer">
+        <Label htmlFor={id} className="text-body text-muted-foreground cursor-pointer">
           {label}
         </Label>
-        <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{description}</p>
+        <p className="text-caption text-muted-foreground mt-0.5 leading-snug">{description}</p>
       </div>
       <Select value={value} onValueChange={onValueChange}>
         <SelectTrigger id={id} size="sm" className="w-[8.125rem] bg-muted/60 border-border text-muted-foreground">
@@ -191,12 +191,12 @@ function AIProviderSection() {
     <div className="space-y-3">
       <div className="flex items-center gap-2">
         <Bot className="h-4 w-4 text-brand-text" />
-        <h3 className="text-sm font-semibold text-foreground">AI Model</h3>
+        <h3 className="text-title text-foreground">AI Model</h3>
       </div>
       <div className="space-y-4 pl-6">
         {/* Provider select */}
         <div className="space-y-1.5">
-          <Label className="text-sm text-muted-foreground">Provider</Label>
+          <Label className="text-body text-muted-foreground">Provider</Label>
           <Select
             value={provider}
             onValueChange={(v) => updateSettings({ aiProvider: v as AppSettings['aiProvider'] })}
@@ -213,7 +213,7 @@ function AIProviderSection() {
             </SelectContent>
           </Select>
           {selectedInfo && (
-            <p className="text-xs text-muted-foreground">
+            <p className="text-caption text-muted-foreground">
               {provider === 'default' && server?.default_provider
                 ? `Server default: ${server.default_provider}`
                 : selectedInfo.hint}
@@ -224,7 +224,7 @@ function AIProviderSection() {
         {/* Base URL (Ollama, custom, Claude override) */}
         {needsBaseUrl && (
           <div className="space-y-1.5">
-            <Label className="text-sm text-muted-foreground">
+            <Label className="text-body text-muted-foreground">
               {provider === 'ollama' ? 'Ollama URL' : 'Base URL'}
             </Label>
             <Input
@@ -237,7 +237,7 @@ function AIProviderSection() {
                   ? 'https://api.anthropic.com'
                   : 'https://your-api.example.com/v1'
               }
-              className="h-9 bg-muted/60 border-border text-foreground placeholder:text-muted-foreground text-sm focus-visible:ring-brand-500/50 focus-visible:border-brand-500/50"
+              className="h-9 bg-muted/60 border-border text-foreground placeholder:text-muted-foreground text-body focus-visible:ring-brand-500/50 focus-visible:border-brand-500/50"
             />
           </div>
         )}
@@ -245,11 +245,11 @@ function AIProviderSection() {
         {/* API Key */}
         {needsKey && (
           <div className="space-y-1.5">
-            <Label className="text-sm text-muted-foreground">
+            <Label className="text-body text-muted-foreground">
               API Key{serverKey && <span className="ml-1 text-muted-foreground">(optional)</span>}
             </Label>
             {serverKey && (
-              <p className="text-xs font-medium text-success">
+              <p className="text-caption-strong text-success">
                 Server key configured — leave this empty to use it, or enter your own.
               </p>
             )}
@@ -259,22 +259,22 @@ function AIProviderSection() {
                 value={settings.aiApiKey}
                 onChange={(e) => updateSettings({ aiApiKey: e.target.value })}
                 placeholder="sk-..."
-                className="h-9 pr-9 bg-muted/60 border-border text-foreground placeholder:text-muted-foreground text-sm font-mono focus-visible:ring-brand-500/50 focus-visible:border-brand-500/50"
+                className="pr-10 font-mono"
               />
               <button
                 type="button"
                 onClick={() => setShowKey(!showKey)}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                className="btn btn-ghost btn-icon-sm absolute right-0.5 top-1/2 -translate-y-1/2"
               >
                 {showKey ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
               </button>
             </div>
-            <p className="text-xs text-muted-foreground">Stored locally in your browser only</p>
+            <p className="text-caption text-muted-foreground">Stored locally in your browser only</p>
           </div>
         )}
 
         {provider !== 'default' && provider !== 'ollama' && serverKey && !clientKeysAllowed && (
-          <p className="text-xs font-medium text-success">
+          <p className="text-caption-strong text-success">
             Server key configured. This deployment does not accept keys from the browser.
           </p>
         )}
@@ -282,7 +282,7 @@ function AIProviderSection() {
         {/* Model name */}
         {needsModel && (
           <div className="space-y-1.5">
-            <Label className="text-sm text-muted-foreground">Model</Label>
+            <Label className="text-body text-muted-foreground">Model</Label>
             <Input
               value={settings.aiModel}
               onChange={(e) => updateSettings({ aiModel: e.target.value })}
@@ -291,17 +291,17 @@ function AIProviderSection() {
                   ? serverInfo?.default_model ?? DEFAULT_MODELS[provider]
                   : 'model-name'
               }
-              className="h-9 bg-muted/60 border-border text-foreground placeholder:text-muted-foreground text-sm font-mono focus-visible:ring-brand-500/50 focus-visible:border-brand-500/50"
+              className="h-9 bg-muted/60 border-border text-foreground placeholder:text-muted-foreground text-body font-mono focus-visible:ring-brand-500/50 focus-visible:border-brand-500/50"
             />
-            <p className="text-xs text-muted-foreground">Leave blank to use the provider default</p>
+            <p className="text-caption text-muted-foreground">Leave blank to use the provider default</p>
           </div>
         )}
 
         {/* Ollama quickstart hint */}
         {provider === 'ollama' && (
           <div className="rounded-lg bg-brand-500/5 border border-brand-500/15 p-3 space-y-1">
-            <p className="text-xs font-medium text-brand-text">Ollama quickstart</p>
-            <p className="text-xs text-muted-foreground font-mono leading-relaxed">
+            <p className="text-caption-strong text-brand-text">Ollama quickstart</p>
+            <p className="text-data text-muted-foreground leading-relaxed">
               ollama pull llama3.2<br />
               ollama serve
             </p>
@@ -358,24 +358,24 @@ function PerceptionModelsSection() {
   return (
     <SettingsSection title="Perception Models" icon={Boxes}>
       <div className="space-y-1.5">
-        <Label className="text-sm text-muted-foreground">Custom models (JSON)</Label>
+        <Label className="text-body text-muted-foreground">Custom models (JSON)</Label>
         <textarea
           value={value}
           onChange={(e) => updateSettings({ customModels: e.target.value })}
           placeholder={MODEL_PLACEHOLDER}
           spellCheck={false}
           rows={10}
-          className="w-full rounded-md bg-muted/60 border border-border text-foreground placeholder:text-muted-foreground text-xs font-mono leading-relaxed p-2.5 resize-y focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-500/50 focus-visible:border-brand-500/50"
+          className="field font-mono"
         />
         {parseError ? (
-          <p className="text-xs text-danger">{parseError}</p>
+          <p className="text-caption text-danger">{parseError}</p>
         ) : (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-caption text-muted-foreground">
             providers: <span className="font-mono">local-onnx</span> (weights URL or local path — no key, no rate limit),{' '}
             <span className="font-mono">roboflow</span>, <span className="font-mono">custom-http</span> (your own endpoint).
           </p>
         )}
-        <p className="text-xs text-muted-foreground">
+        <p className="text-caption text-muted-foreground">
           Models declaring a <span className="font-mono">profile</span> heavier than this machine are skipped, and the
           agent says so rather than failing quietly.
         </p>
@@ -420,10 +420,10 @@ export default function SettingsSheet() {
                 <Settings className="h-4 w-4 text-brand-text" />
               </div>
               <div>
-                <SheetTitle className="text-sm font-semibold text-foreground">
+                <SheetTitle>
                   Settings
                 </SheetTitle>
-                <SheetDescription className="text-xs text-muted-foreground mt-0.5">
+                <SheetDescription className="text-caption text-muted-foreground mt-0.5">
                   Appearance, map readouts and the AI provider
                 </SheetDescription>
               </div>
@@ -437,24 +437,19 @@ export default function SettingsSheet() {
                 {/* Theme toggle */}
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
-                    <Label className="text-sm text-muted-foreground">Theme</Label>
-                    <p className="text-xs text-muted-foreground mt-0.5 leading-snug">
+                    <Label className="text-body text-muted-foreground">Theme</Label>
+                    <p className="text-caption text-muted-foreground mt-0.5 leading-snug">
                       Follows your system unless you choose one
                     </p>
                   </div>
-                  <div className="flex items-center gap-1 bg-muted/60 rounded-lg p-0.5 border border-border" role="group" aria-label="Theme">
+                  <div className="segmented" role="group" aria-label="Theme">
                     {THEME_OPTIONS.map(({ value, label, icon: Icon }) => (
                       <button
                         key={value}
                         onClick={() => handleThemeChange(value)}
                         aria-pressed={theme === value}
-                        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                          theme === value
-                            ? 'bg-brand-500/20 text-brand-text shadow-sm'
-                            : 'text-muted-foreground hover:text-foreground'
-                        }`}
                       >
-                        <Icon className="h-3 w-3" />
+                        <Icon aria-hidden />
                         {label}
                       </button>
                     ))}
@@ -524,7 +519,7 @@ export default function SettingsSheet() {
               {/* Footer with version info */}
               <div className="pt-2 pb-4">
                 <Separator className="bg-foreground/[0.06] mb-4" />
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <div className="flex items-center justify-between text-caption text-muted-foreground">
                   <span>Erdfeld AI v1.0.0</span>
                   <span>Settings saved automatically</span>
                 </div>

@@ -114,12 +114,12 @@ export default function CatalogDialog() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="soil moisture, 30 m DEM, SAR backscatter, population…"
-            className={cn(FIELD, 'h-9 pl-8')}
+            className={cn(FIELD, 'pl-8')}
             data-testid="catalog-search"
           />
         </label>
         <label className="sr-only" htmlFor="catalog-theme">Theme</label>
-        <select id="catalog-theme" value={theme} onChange={(e) => setTheme(e.target.value)} className={cn(FIELD, 'h-9 w-44 max-sm:w-full')}>
+        <select id="catalog-theme" value={theme} onChange={(e) => setTheme(e.target.value)} className={cn(FIELD, 'w-44 max-sm:w-full')}>
           <option value="">All themes</option>
           {THEMES.map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
@@ -154,12 +154,12 @@ export default function CatalogDialog() {
             <li key={r.id} className="grid gap-1.5 rounded-md border border-border bg-sunk p-2.5" data-testid="catalog-row">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="text-[0.875rem] font-medium leading-snug text-foreground">{r.title}</p>
-                  <p className="truncate font-mono text-xs text-muted-foreground" title={r.id}>{r.id}</p>
+                  <p className="text-body-strong leading-snug text-foreground">{r.title}</p>
+                  <p className="truncate text-data text-muted-foreground" title={r.id}>{r.id}</p>
                 </div>
-                <span className={cn('shrink-0 text-xs font-medium', cov.cls)}>{cov.label}</span>
+                <span className={cn('shrink-0 text-caption-strong', cov.cls)}>{cov.label}</span>
               </div>
-              <p className="line-clamp-2 text-[0.8125rem] leading-snug text-muted-foreground">{r.description}</p>
+              <p className="line-clamp-2 text-body leading-snug text-muted-foreground">{r.description}</p>
               <div className="flex flex-wrap items-center gap-1">
                 {r.themes.slice(0, 4).map((t) => <span key={t} className={PILL}>{t}</span>)}
                 <span className={PILL}>{r.resolutionM != null ? `${r.resolutionM} m` : 'resolution not stated'}</span>
@@ -170,10 +170,10 @@ export default function CatalogDialog() {
               </div>
               <div className="mt-0.5 flex flex-wrap justify-end gap-1.5">
                 <button type="button" className={BTN} onClick={() => ask(r)} disabled={!aoi} title={aoi ? undefined : 'Draw an area first'}>
-                  <Sparkles className="size-3.5" aria-hidden />Ask Erdfeld
+                  <Sparkles aria-hidden />Ask Erdfeld
                 </button>
                 <button type="button" className={BTN_PRIMARY} onClick={() => read(r)} disabled={!aoi || submitting} title={aoi ? 'Read this dataset over the drawn area' : 'Draw an area first'}>
-                  <Play className="size-3.5" aria-hidden />Read over area
+                  <Play aria-hidden />Read over area
                 </button>
               </div>
             </li>
@@ -181,7 +181,7 @@ export default function CatalogDialog() {
         })}
       </ul>
       {answerShown && answerShown.rows.length > 0 && answerShown.matched > answerShown.rows.length && (
-        <p className="text-xs text-muted-foreground">Showing the best {answerShown.rows.length} of {answerShown.afterFilters.toLocaleString('en-US')}. Narrow the search or pick a theme to see others.</p>
+        <p className="text-caption text-muted-foreground">Showing the best {answerShown.rows.length} of {answerShown.afterFilters.toLocaleString('en-US')}. Narrow the search or pick a theme to see others.</p>
       )}
     </WbDialog>
   )

@@ -38,7 +38,7 @@ const MapPanel = dynamic(() => import('@/components/map/MapPanel'), {
     <div className="flex h-full w-full items-center justify-center bg-card">
       <div className="flex flex-col items-center gap-3">
         <div className="size-8 animate-spin rounded-full border-2 border-teal border-t-transparent" />
-        <span className="text-sm text-muted-foreground">Loading map...</span>
+        <span className="text-body text-muted-foreground">Loading map...</span>
       </div>
     </div>
   ),
@@ -187,7 +187,7 @@ export default function AppShell() {
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') focusComposer(e)
         }}
-        className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-body-strong focus:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
       >
         Skip to question box
       </a>
@@ -208,16 +208,16 @@ export default function AppShell() {
               : 'grid-cols-[minmax(0,1fr)_22.5rem] grid-rows-[minmax(0,1fr)_var(--dock-h)] max-[1250px]:grid-cols-[minmax(0,1fr)_20.625rem]',
           )}
         >
-          <main aria-label="Map" className="relative min-h-0 min-w-0 overflow-hidden bg-[#151b1d] [grid-column:1] [grid-row:1]">
+          <main aria-label="Map" className="relative min-h-0 min-w-0 overflow-hidden bg-sunk [grid-column:1] [grid-row:1]">
             <MapPanel />
             <PreviewBanner />
             {focus && (
               <button
                 type="button"
                 onClick={() => setFocus(false)}
-                className="absolute left-3 top-16 z-20 inline-flex h-8 items-center gap-1.5 rounded-lg border border-border bg-card px-3 text-sm font-medium text-foreground shadow-float hover:bg-hover"
+                className="btn btn-secondary btn-md absolute left-3 top-16 z-20 shadow-float"
               >
-                <Maximize2 className="size-3.5" aria-hidden />Show the panels
+                <Maximize2 aria-hidden />Show the panels
               </button>
             )}
           </main>

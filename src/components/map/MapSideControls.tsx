@@ -9,8 +9,7 @@ import { useStore } from '@/store/useStore'
 import { requestMapAction } from '@/lib/ui-events'
 import { cn } from '@/lib/utils'
 
-const ctl =
-  'grid size-9 place-items-center bg-transparent text-muted-foreground transition-colors hover:bg-hover hover:text-foreground aria-pressed:bg-[#49b58220] aria-pressed:text-[#a2dbb8] [&_svg]:size-4'
+const ctl = 'btn btn-ghost btn-icon-md rounded-none'
 
 /** The map's own bearing, kept in step with the camera. */
 export function useBearing(map: maplibregl.Map | null): number {

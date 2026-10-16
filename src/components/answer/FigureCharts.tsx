@@ -42,7 +42,7 @@ const asNum = (v: unknown): number | null => (typeof v === 'number' && Number.is
 
 function Facts({ items }: { items: Array<[string, string | null]> }) {
   return (
-    <dl className="mt-1 flex flex-wrap gap-x-5 gap-y-0.5 px-1 text-xs text-muted-foreground">
+    <dl className="mt-1 flex flex-wrap gap-x-5 gap-y-0.5 px-1 text-caption text-muted-foreground">
       {items.filter(([, v]) => v != null).map(([k, v]) => (
         <div key={k} className="flex gap-1"><dt>{k}</dt><dd className="tabular-nums text-foreground">{v}</dd></div>
       ))}
@@ -54,8 +54,8 @@ function Figure({ title, note, children }: { title: string; note?: string; child
   return (
     <figure className="rounded-lg border border-border bg-muted/40 p-2.5">
       <figcaption className="mb-1 flex items-baseline justify-between gap-2 px-1">
-        <span className="text-[0.8125rem] font-medium text-foreground">{title}</span>
-        {note && <span className="text-xs text-muted-foreground">{note}</span>}
+        <span className="text-body-strong text-foreground">{title}</span>
+        {note && <span className="text-caption text-muted-foreground">{note}</span>}
       </figcaption>
       {children}
     </figure>
@@ -131,7 +131,7 @@ export default function FigureCharts() {
   return (
     <section aria-label="Charts of the figures" className="space-y-2">
       <div className="flex items-center justify-between gap-2">
-        <h3 className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">Charts</h3>
+        <h3 className="text-muted-foreground text-label">Charts</h3>
         {tabs.length > 1 && <Segmented size="sm" label="Chart" value={current} onChange={setActive} options={tabs.map((t) => ({ value: t.id, label: t.label }))} className="max-w-full flex-wrap" />}
       </div>
 

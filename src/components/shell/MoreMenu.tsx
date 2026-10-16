@@ -9,7 +9,7 @@ import { useStore } from '@/store/useStore'
 import { useUi } from '@/store/useUi'
 import { requestMapAction } from '@/lib/ui-events'
 
-const item = 'flex w-full items-center gap-2.5 rounded-md px-2 py-2 text-left text-[0.8125rem] text-foreground transition-colors hover:bg-hover [&_svg]:size-4 [&_svg]:text-muted-foreground'
+const item = 'menu-item'
 
 /** The map and data tools that have no permanent place in the layout: the map-centre details, the
  *  coordinate jump, the drawing panel, the shortcut reference and the command palette. On a phone

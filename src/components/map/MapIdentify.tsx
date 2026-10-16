@@ -59,22 +59,22 @@ export default function MapIdentify({ map, className }: { map: maplibregl.Map | 
 
   if (!active || !hit) return null
   return (
-    <div className={cn('w-[min(15.625rem,calc(100%-1rem))] rounded-[0.4375rem] p-2.5', GLASS, className)} role="dialog" aria-label="Map location" data-testid="identify-card">
-      <div className="flex items-center justify-between text-[0.8125rem] font-semibold text-foreground">
+    <div className={cn('w-[min(15.625rem,calc(100%-1rem))] rounded-md p-2.5', GLASS, className)} role="dialog" aria-label="Map location" data-testid="identify-card">
+      <div className="flex items-center justify-between text-body-strong text-foreground">
         Map location
-        <button type="button" onClick={() => setHit(null)} className="grid size-6 place-items-center rounded text-muted-foreground hover:bg-hover hover:text-foreground" aria-label="Close map information"><X className="size-3.5" aria-hidden /></button>
+        <button type="button" onClick={() => setHit(null)} className="btn btn-ghost btn-icon-sm" aria-label="Close map information"><X aria-hidden /></button>
       </div>
-      <p className="mt-1.5 whitespace-pre-line font-mono text-xs leading-relaxed text-secondary-foreground">
+      <p className="mt-1.5 whitespace-pre-line text-data leading-relaxed text-secondary-foreground">
         {fmt(hit.lat, 'N', 'S')}{'\n'}{fmt(hit.lng, 'E', 'W')}{'\n'}Zoom {hit.zoom.toFixed(1)}
       </p>
       {hit.features.length === 0 ? (
-        <p className="mt-2 text-xs text-muted-foreground">No data-layer feature here. Basemap features are not queried.</p>
+        <p className="mt-2 text-caption text-muted-foreground">No data-layer feature here. Basemap features are not queried.</p>
       ) : (
         <div className="mt-2 grid max-h-40 gap-2 overflow-y-auto">
           {hit.features.map((f, i) => (
             <div key={i} className="border-t border-border pt-1.5">
               <p className={OVERLINE}>{f.layer}</p>
-              <dl className="mt-0.5 grid grid-cols-[auto_1fr] gap-x-2 text-xs">
+              <dl className="mt-0.5 grid grid-cols-[auto_1fr] gap-x-2 text-caption">
                 {f.props.map(([k, v]) => (
                   <div key={k} className="contents"><dt className="text-muted-foreground">{k}</dt><dd className="truncate text-foreground" title={v}>{v}</dd></div>
                 ))}
@@ -85,13 +85,13 @@ export default function MapIdentify({ map, className }: { map: maplibregl.Map | 
       )}
       <button
         type="button"
-        className="mt-2 inline-flex h-7 w-full items-center justify-center gap-1.5 rounded border border-input bg-secondary text-xs hover:bg-hover"
+        className="btn btn-secondary btn-sm mt-2 w-full"
         onClick={() => {
           setPointFocus({ lat: hit.lat, lng: hit.lng })
           showInspector('assistant')
         }}
       >
-        <Crosshair className="size-3.5" aria-hidden />Ask about this point
+        <Crosshair aria-hidden />Ask about this point
       </button>
     </div>
   )

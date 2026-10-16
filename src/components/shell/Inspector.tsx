@@ -127,7 +127,7 @@ export default function Inspector({ sheet = false }: { sheet?: boolean }) {
         >
           <span className="h-1 w-9 rounded-full bg-input" aria-hidden />
           {peek && (
-            <span className="flex w-full items-center justify-between gap-3 text-[0.875rem] text-foreground">
+            <span className="flex w-full items-center justify-between gap-3 text-body text-foreground">
               <span className="min-w-0 truncate">{isLoading ? 'Working on it' : lastQuery || 'Ask Erdfeld about this area'}</span>
               <ChevronUp className="size-4 shrink-0 text-muted-foreground" aria-hidden />
             </span>
@@ -161,24 +161,21 @@ export default function Inspector({ sheet = false }: { sheet?: boolean }) {
                       document.getElementById(`inspector-tab-${next.id}`)?.focus()
                     }
                   }}
-                  className={cn(
-                    'relative flex items-center gap-[0.3125rem] whitespace-nowrap px-2 text-[0.8125rem] transition-colors max-[380px]:px-1.5',
-                    selected ? 'text-foreground after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:bg-teal' : 'text-muted-foreground hover:text-foreground',
-                  )}
+                  className="tab"
                 >
                   <Icon className="size-3.5 max-[380px]:hidden" aria-hidden />
                   {t.label}
-                  {t.id === 'layers' && layerCount > 0 && <span className="rounded bg-hover px-1 font-mono text-xs text-muted-foreground">{layerCount}</span>}
+                  {t.id === 'layers' && layerCount > 0 && <span className="badge">{layerCount}</span>}
                 </button>
               )
             })}
           </div>
           <div className="flex shrink-0 gap-0.5">
             <button type="button" className={ICON_BTN} onClick={() => openDialog('activity')} aria-label="Activity history" title="Activity history">
-              <History className="size-3.5" aria-hidden />
+              <History aria-hidden />
             </button>
             <button type="button" className={ICON_BTN} onClick={() => setSettingsPanelOpen(true)} aria-label="Settings and AI provider" title="Settings and AI provider">
-              <Settings className="size-3.5" aria-hidden />
+              <Settings aria-hidden />
             </button>
           </div>
         </header>
@@ -203,10 +200,10 @@ export default function Inspector({ sheet = false }: { sheet?: boolean }) {
             <div className="grid content-start gap-4">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="grid size-7 place-items-center rounded-md border border-[#3b4940] bg-accent text-accent-foreground"><Sparkles className="size-3.5" aria-hidden /></span>
+                  <span className="grid size-7 place-items-center rounded-md border border-border bg-accent text-accent-foreground"><Sparkles className="size-3.5" aria-hidden /></span>
                   <div>
-                    <h2 className="font-heading text-[0.875rem] font-semibold leading-none text-foreground">Erdfeld</h2>
-                    <p className="mt-1 font-mono text-xs tracking-[0.04em] text-muted-foreground" aria-live="polite">{isLoading ? 'WORKING' : 'READY'}</p>
+                    <h2 className="font-heading text-body-strong leading-none text-foreground">Erdfeld</h2>
+                    <p className="mt-1 text-label text-muted-foreground" aria-live="polite">{isLoading ? 'Working' : 'Ready'}</p>
                   </div>
                 </div>
                 <Segmented<PanelMode>

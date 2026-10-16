@@ -28,7 +28,7 @@ export default function ConsoleTab() {
             type="button"
             aria-pressed={mode === m}
             onClick={() => setMode(m)}
-            className={cn('rounded border px-2 py-1 font-mono text-xs', mode === m ? 'border-[#477156] bg-accent text-accent-foreground' : 'border-border bg-secondary text-muted-foreground hover:text-foreground')}
+            className="chip"
           >
             {m === 'filter' ? 'Attribute filter' : 'Band math'}
           </button>
@@ -55,7 +55,7 @@ function FilterConsole() {
 
   if (!source) {
     return (
-      <p className="text-[0.8125rem] text-muted-foreground" data-testid="console-empty">
+      <p className="text-body text-muted-foreground" data-testid="console-empty">
         <strong className="text-foreground">erdfeld ›</strong> Draw an area or run an analysis that returns vector features, then filter them here with an expression.
       </p>
     )
@@ -85,15 +85,15 @@ function FilterConsole() {
 
   return (
     <div className="grid gap-2">
-      <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-muted-foreground">
+      <div className="flex flex-wrap items-center gap-2 text-data text-muted-foreground">
         <span>Layer</span>
         <label htmlFor="console-layer" className="sr-only">Layer</label>
-        <select id="console-layer" value={source.id} onChange={(e) => { setPick(e.target.value); setResult(null); setError(null) }} className={cn(FIELD, 'h-7 w-auto max-w-[15rem] font-sans text-xs')}>
+        <select id="console-layer" value={source.id} onChange={(e) => { setPick(e.target.value); setResult(null); setError(null) }} className={cn(FIELD, 'field-sm w-auto max-w-[15rem]')}>
           {sources.map((s) => <option key={s.id} value={s.id}>{s.name} ({s.features.length})</option>)}
         </select>
       </div>
       <div className="flex items-start gap-2">
-        <span className="mt-1.5 whitespace-nowrap font-mono text-xs font-medium text-foreground" aria-hidden>erdfeld ›</span>
+        <span className="mt-1.5 whitespace-nowrap font-mono text-caption-strong text-foreground" aria-hidden>erdfeld ›</span>
         <label htmlFor="console-expr" className="sr-only">Expression</label>
         <textarea
           id="console-expr"
@@ -108,40 +108,40 @@ function FilterConsole() {
             }
           }}
           placeholder="confidence > 0.8 AND class = 'crop'"
-          className={cn(FIELD, 'h-auto min-h-[3.25rem] resize-y py-1.5 font-mono text-xs')}
+          className={cn(FIELD, 'font-mono')}
           aria-describedby="console-help"
           data-testid="console-expr"
         />
         <button type="button" className={BTN_PRIMARY} onClick={run} data-testid="console-run" title="Run (Ctrl+Enter)">
-          <Play className="size-3.5" aria-hidden />Select
+          <Play aria-hidden />Select
         </button>
       </div>
-      <p id="console-help" className="text-xs text-muted-foreground">
+      <p id="console-help" className="text-caption text-muted-foreground">
         Fields: {fields.length ? fields.map((f) => (
-          <button key={f} type="button" className="mr-1 rounded border border-border px-1 font-mono hover:bg-hover hover:text-foreground" onClick={() => setText((t) => `${t}${t && !/\s$/.test(t) ? ' ' : ''}${/[^A-Za-z0-9_]/.test(f) ? `"${f}"` : f}`)}>{f}</button>
+          <button key={f} type="button" className="chip mr-1 font-mono" onClick={() => setText((t) => `${t}${t && !/\s$/.test(t) ? ' ' : ''}${/[^A-Za-z0-9_]/.test(f) ? `"${f}"` : f}`)}>{f}</button>
         )) : 'none'}. Operators = != &lt; &gt; AND OR NOT LIKE IN BETWEEN IS NULL; $area, $length, $x, $y; abs, round, lower, upper, length, coalesce. Ctrl+Enter runs it.
       </p>
-      {text === '' && <p className="text-xs text-muted-foreground">Try: {EXAMPLES.map((e) => <button key={e} type="button" className="mr-1.5 font-mono text-xs underline-offset-2 hover:text-foreground hover:underline" onClick={() => setText(e)}>{e}</button>)}</p>}
+      {text === '' && <p className="text-caption text-muted-foreground">Try: {EXAMPLES.map((e) => <button key={e} type="button" className="chip mr-1.5 font-mono" onClick={() => setText(e)}>{e}</button>)}</p>}
 
       {error && (
-        <p className="rounded border border-danger/40 bg-danger/10 px-2 py-1.5 text-[0.8125rem] text-foreground" role="alert" data-testid="console-error">
+        <p className="rounded-sm border border-danger/40 bg-danger/10 px-2 py-1.5 text-body text-foreground" role="alert" data-testid="console-error">
           {error.message}
-          {error instanceof ExpressionError && <span className="ml-1 font-mono text-xs text-muted-foreground">at character {error.position + 1}</span>}
+          {error instanceof ExpressionError && <span className="ml-1 text-data text-muted-foreground">at character {error.position + 1}</span>}
         </p>
       )}
       {fresh && result && (
         <div className="grid gap-1.5" role="status" data-testid="console-result">
-          <p className="text-[0.8125rem] text-foreground">
+          <p className="text-body text-foreground">
             <strong>{result.res.matches.length}</strong> of {source.features.length} features selected
             {result.res.unknown > 0 && <span className="text-muted-foreground"> · {result.res.unknown} could not be evaluated (a field is missing on them), so they are not selected</span>}
           </p>
           {result.res.missingFields.length > 0 && (
-            <p className="rounded border border-warning/40 bg-warning/10 px-2 py-1 text-xs text-foreground">No feature has the field {result.res.missingFields.map((f) => `"${f}"`).join(', ')}. Check the spelling against the field list.</p>
+            <p className="rounded-sm border border-warning/40 bg-warning/10 px-2 py-1 text-caption text-foreground">No feature has the field {result.res.missingFields.map((f) => `"${f}"`).join(', ')}. Check the spelling against the field list.</p>
           )}
           <div className="flex flex-wrap gap-1.5">
-            <button type="button" className={BTN} onClick={show} disabled={result.res.matches.length === 0}><Table2 className="size-3.5" aria-hidden />Show in table</button>
-            <button type="button" className={BTN} onClick={zoom} disabled={result.res.matches.length === 0 || source.kind === 'aoi'}><ZoomIn className="size-3.5" aria-hidden />Zoom to selection</button>
-            <button type="button" className={BTN} onClick={() => { setResult(null); setSelection(null) }}><X className="size-3.5" aria-hidden />Clear</button>
+            <button type="button" className={BTN} onClick={show} disabled={result.res.matches.length === 0}><Table2 aria-hidden />Show in table</button>
+            <button type="button" className={BTN} onClick={zoom} disabled={result.res.matches.length === 0 || source.kind === 'aoi'}><ZoomIn aria-hidden />Zoom to selection</button>
+            <button type="button" className={BTN} onClick={() => { setResult(null); setSelection(null) }}><X aria-hidden />Clear</button>
           </div>
         </div>
       )}
@@ -172,29 +172,29 @@ function BandConsole() {
 
   return (
     <div className="grid gap-2">
-      <div className="grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-1.5 text-xs text-muted-foreground max-sm:grid-cols-1">
+      <div className="grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-1.5 text-caption text-muted-foreground max-sm:grid-cols-1">
         <label htmlFor="band-sensor" className={OVERLINE}>Sensor</label>
-        <select id="band-sensor" value={sensor} onChange={(e) => setSensor(e.target.value as Sensor)} className={cn(FIELD, 'h-7 text-xs')}>
+        <select id="band-sensor" value={sensor} onChange={(e) => setSensor(e.target.value as Sensor)} className={cn(FIELD, 'field-sm')}>
           <option value="sentinel-2-l2a">Sentinel-2 L2A · 10 m</option>
           <option value="landsat-c2-l2">Landsat Collection 2 · 30 m</option>
         </select>
         <label htmlFor="band-expr" className={OVERLINE}>Expression</label>
-        <input id="band-expr" value={expr} onChange={(e) => setExpr(e.target.value)} spellCheck={false} placeholder={sensor === 'sentinel-2-l2a' ? '(B08-B04)/(B08+B04)' : '(nir08-red)/(nir08+red)'} className={cn(FIELD, 'h-7 font-mono text-xs')} aria-invalid={touched && !check.ok} data-testid="band-expr" />
+        <input id="band-expr" value={expr} onChange={(e) => setExpr(e.target.value)} spellCheck={false} placeholder={sensor === 'sentinel-2-l2a' ? '(B08-B04)/(B08+B04)' : '(nir08-red)/(nir08+red)'} className={cn(FIELD, 'h-7 text-data')} aria-invalid={touched && !check.ok} data-testid="band-expr" />
         <label htmlFor="band-date" className={OVERLINE}>Date</label>
-        <input id="band-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} className={cn(FIELD, 'h-7 text-xs')} />
+        <input id="band-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} className={cn(FIELD, 'field-sm')} />
         <label htmlFor="band-cmap" className={OVERLINE}>Colormap</label>
-        <select id="band-cmap" value={cmap} onChange={(e) => setCmap(e.target.value)} className={cn(FIELD, 'h-7 text-xs')}>
+        <select id="band-cmap" value={cmap} onChange={(e) => setCmap(e.target.value)} className={cn(FIELD, 'field-sm')}>
           <option value="">viridis (default)</option>
           {COLORMAPS.filter((c) => c !== 'viridis').map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
       </div>
-      <p className="text-xs text-muted-foreground">Bands: {SENSOR_BANDS[sensor].join(', ')}. Evaluated on surface reflectance for the clearest scene within three days of the date (or the last 90 days), masked to your area.</p>
-      {touched && !check.ok && <p className="rounded border border-danger/40 bg-danger/10 px-2 py-1.5 text-[0.8125rem] text-foreground" role="alert">{check.error}</p>}
+      <p className="text-caption text-muted-foreground">Bands: {SENSOR_BANDS[sensor].join(', ')}. Evaluated on surface reflectance for the clearest scene within three days of the date (or the last 90 days), masked to your area.</p>
+      {touched && !check.ok && <p className="rounded-sm border border-danger/40 bg-danger/10 px-2 py-1.5 text-body text-foreground" role="alert">{check.error}</p>}
       <div className="flex items-center gap-2">
         <button type="button" className={BTN_PRIMARY} onClick={submit} disabled={submitting || !aoi} title={aoi ? undefined : 'Draw an area first'} data-testid="band-run">
           {submitting ? <Loader2 className="size-3.5 animate-spin" aria-hidden /> : <Play className="size-3.5" aria-hidden />}Render on the map
         </button>
-        {!aoi && <span className="text-xs text-warning">Draw an area first.</span>}
+        {!aoi && <span className="text-caption text-warning">Draw an area first.</span>}
       </div>
     </div>
   )

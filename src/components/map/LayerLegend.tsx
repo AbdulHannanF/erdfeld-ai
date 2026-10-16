@@ -73,10 +73,10 @@ function RasterLegend({ layer, raster, caption, flush }: { layer: MapLayer; rast
   return (
     <div className={inset(flush)}>
       <div className="flex items-baseline justify-between mb-1">
-        <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+        <span className="text-muted-foreground text-label">
           {raster.units ?? layer.name}
         </span>
-        {caption && <span className="text-xs text-muted-foreground font-mono">{caption}</span>}
+        {caption && <span className="text-data text-muted-foreground">{caption}</span>}
       </div>
 
       {raster.kind === 'continuous' && range && (
@@ -84,7 +84,7 @@ function RasterLegend({ layer, raster, caption, flush }: { layer: MapLayer; rast
           {gradient && (
             <div className="h-1.5 w-full rounded-sm border border-border" style={{ background: gradient }} aria-hidden />
           )}
-          <div className="mt-0.5 flex justify-between text-xs text-muted-foreground font-mono tabular-nums">
+          <div className="mt-0.5 flex justify-between text-data text-muted-foreground tabular-nums">
             <span>{formatStretchValue(range[0])}</span>
             <span className="text-muted-foreground">{formatStretchValue((range[0] + range[1]) / 2)}</span>
             <span>{formatStretchValue(range[1])}</span>
@@ -95,7 +95,7 @@ function RasterLegend({ layer, raster, caption, flush }: { layer: MapLayer; rast
       {raster.kind === 'rgb' && (
         <div className="flex flex-col gap-0.5">
           {(raster.bands ?? []).map((b, i) => (
-            <div key={`${b}-${i}`} className="flex items-center gap-1 text-xs text-muted-foreground">
+            <div key={`${b}-${i}`} className="flex items-center gap-1 text-caption text-muted-foreground">
               <span className="h-2 w-2 rounded-sm border border-border" style={{ background: RGB_SWATCH[i] }} aria-hidden />
               <span className="font-mono">{b}</span>
               {raster.rescale?.[i] && (
@@ -113,13 +113,13 @@ function RasterLegend({ layer, raster, caption, flush }: { layer: MapLayer; rast
           {raster.classes.map((c) => (
             <div key={c.value} className="inline-flex items-center gap-1">
               <span className="h-2 w-2 rounded-sm border border-border" style={{ background: c.color }} aria-hidden />
-              <span className="text-xs text-muted-foreground">{c.label}</span>
+              <span className="text-caption text-muted-foreground">{c.label}</span>
             </div>
           ))}
         </div>
       )}
 
-      <div className="mt-1 flex flex-col gap-0.5 text-xs text-muted-foreground">
+      <div className="mt-1 flex flex-col gap-0.5 text-caption text-muted-foreground">
         {acquired && <span>{acquired}</span>}
         {raster.sceneId && <span className="font-mono truncate" title={raster.sceneId}>{raster.sceneId}</span>}
         {what && <span className="font-mono break-all">{what}</span>}
@@ -147,18 +147,18 @@ function VectorLegend({ layer, caption, flush }: { layer: MapLayer; caption?: st
   return (
     <div className={inset(flush)} data-testid="vector-legend">
       <div className="flex items-baseline justify-between mb-1">
-        <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">{style.property}</span>
-        {caption && <span className="text-xs text-muted-foreground font-mono">{caption}</span>}
+        <span className="text-muted-foreground text-label">{style.property}</span>
+        {caption && <span className="text-data text-muted-foreground">{caption}</span>}
       </div>
       <div className="flex flex-wrap gap-x-2 gap-y-1">
         {items.map((c, i) => (
           <div key={`${c.label}-${i}`} className={`inline-flex items-center gap-1 ${hidden(i) ? "opacity-40" : ""}`}>
             <span className="h-2 w-2 rounded-sm border border-border" style={{ background: c.color }} aria-hidden />
-            <span className="text-xs text-muted-foreground tabular-nums">{c.label}</span>
+            <span className="text-caption text-muted-foreground tabular-nums">{c.label}</span>
           </div>
         ))}
       </div>
-      <div className="mt-1 text-xs text-muted-foreground">
+      <div className="mt-1 text-caption text-muted-foreground">
         {style.kind === 'graduated' ? `${style.method === 'equal' ? 'equal-interval' : 'quantile'} classes` : 'by value'}
       </div>
     </div>
@@ -178,11 +178,11 @@ function LegendBody({ layer, caption, flush }: LayerLegendProps) {
     return (
       <div className={inset(flush)}>
         <div className="flex items-baseline justify-between mb-1">
-          <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+          <span className="text-muted-foreground text-label">
             {heading}
           </span>
           {caption && (
-            <span className="text-xs text-muted-foreground font-mono">{caption}</span>
+            <span className="text-data text-muted-foreground">{caption}</span>
           )}
         </div>
         <div
@@ -190,7 +190,7 @@ function LegendBody({ layer, caption, flush }: LayerLegendProps) {
           style={{ background: gradient }}
           aria-hidden
         />
-        <div className="mt-0.5 flex justify-between text-xs text-muted-foreground font-mono tabular-nums">
+        <div className="mt-0.5 flex justify-between text-data text-muted-foreground tabular-nums">
           <span>{formatValue(palette.min, palette.unit)}</span>
           {palette.stops.length > 2 && (
             <span className="text-muted-foreground">
@@ -207,11 +207,11 @@ function LegendBody({ layer, caption, flush }: LayerLegendProps) {
   return (
     <div className={inset(flush)}>
       <div className="flex items-baseline justify-between mb-1">
-        <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+        <span className="text-muted-foreground text-label">
           {heading}
         </span>
         {caption && (
-          <span className="text-xs text-muted-foreground font-mono">{caption}</span>
+          <span className="text-data text-muted-foreground">{caption}</span>
         )}
       </div>
       <div className="flex flex-wrap gap-x-2 gap-y-1">
@@ -222,7 +222,7 @@ function LegendBody({ layer, caption, flush }: LayerLegendProps) {
               style={{ background: c.color }}
               aria-hidden
             />
-            <span className="text-xs text-muted-foreground">{c.label}</span>
+            <span className="text-caption text-muted-foreground">{c.label}</span>
           </div>
         ))}
       </div>

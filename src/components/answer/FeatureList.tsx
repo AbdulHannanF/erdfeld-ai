@@ -9,8 +9,7 @@ import { cn } from '@/lib/utils'
 
 const SHOWN = 100
 
-const select =
-  'h-7 min-w-0 flex-1 rounded-md border border-border bg-background px-2 text-xs text-foreground focus-visible:border-ring'
+const select = 'field field-sm min-w-0 flex-1'
 
 /** The features on the map as a list. It is the keyboard (and screen reader) route to a feature:
  *  every row is a button that selects the feature, outlines it on the map and moves the map to it. */
@@ -37,16 +36,16 @@ export default function FeatureList() {
 
   return (
     <section aria-label="Features on the map">
-      <h3 className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+      <h3 className="text-muted-foreground text-label">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          className="flex w-full items-center gap-1.5 rounded py-0.5 text-left uppercase tracking-[0.08em]"
+          className="flex w-full items-center gap-1.5 rounded-sm py-0.5 text-left text-label"
         >
           <ChevronRight className={cn('size-3.5 transition-transform', open && 'rotate-90')} aria-hidden />
           Features on the map
-          <span className="font-medium normal-case tracking-normal tabular-nums">{all.length.toLocaleString('en-US')}</span>
+          <span className="font-semibold normal-case tracking-normal tabular-nums">{all.length.toLocaleString('en-US')}</span>
         </button>
       </h3>
       {open && (
@@ -70,9 +69,9 @@ export default function FeatureList() {
                 exportCSV(rows)
                 toast.success(`Exported ${rows.length} features as CSV`)
               }}
-              className="ml-auto inline-flex h-7 shrink-0 items-center gap-1 rounded-md border border-border px-2 text-xs text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="btn btn-secondary btn-sm ml-auto"
             >
-              <Download className="size-3" aria-hidden />CSV
+              <Download aria-hidden />CSV
             </button>
           </div>
           <ul className="max-h-64 divide-y divide-border overflow-y-auto rounded-lg border border-border">
@@ -84,17 +83,17 @@ export default function FeatureList() {
                     type="button"
                     onClick={() => select_(f)}
                     aria-pressed={selected}
-                    className={cn('grid w-full grid-cols-[1fr_auto] items-baseline gap-x-3 px-2.5 py-1.5 text-left text-[0.8125rem] transition-colors hover:bg-muted', selected && 'bg-accent')}
+                    className={cn('menu-item', selected && 'bg-accent')}
                   >
-                    <span className="min-w-0 truncate text-foreground">{f.name}<span className="ml-2 text-xs text-muted-foreground">{f.type}</span></span>
-                    <span className="text-xs tabular-nums text-muted-foreground">{f.confidence != null ? `${Math.round(f.confidence * 100)}%` : ''}</span>
+                    <span className="min-w-0 truncate text-foreground">{f.name}<span className="ml-2 text-caption text-muted-foreground">{f.type}</span></span>
+                    <span className="text-caption tabular-nums text-muted-foreground">{f.confidence != null ? `${Math.round(f.confidence * 100)}%` : ''}</span>
                   </button>
                 </li>
               )
             })}
           </ul>
           {rows.length > SHOWN && (
-            <p className="text-xs text-muted-foreground">Showing the first {SHOWN} of {rows.length.toLocaleString('en-US')}. Filter to narrow the list, or export all as CSV.</p>
+            <p className="text-caption text-muted-foreground">Showing the first {SHOWN} of {rows.length.toLocaleString('en-US')}. Filter to narrow the list, or export all as CSV.</p>
           )}
         </div>
       )}

@@ -38,11 +38,11 @@ export function TopBar() {
   const title = previewName ?? projectName ?? (aoi ? `${aoi.type} area${km2 != null ? ` · ${formatAreaKm2(km2)}` : ''}` : 'Untitled project')
   // The chip only says what is true: a snapshot someone shared, a saved project, or work not yet saved.
   const chip = previewMode
-    ? { text: 'SHARED SNAPSHOT', cls: 'border-[#a7824c45] bg-[#c6a16d12] text-warning' }
+    ? { text: 'Shared snapshot', cls: 'badge-warning' }
     : projectId
-      ? { text: 'SAVED', cls: 'border-[#3d8d6755] bg-[#3d8d6712] text-[var(--success)]' }
+      ? { text: 'Saved', cls: 'badge-success' }
       : hasContent
-        ? { text: 'UNSAVED', cls: 'border-border bg-secondary text-muted-foreground' }
+        ? { text: 'Unsaved', cls: '' }
         : null
 
   const label = 'max-[1000px]:sr-only max-md:sr-only'
@@ -51,42 +51,42 @@ export function TopBar() {
     <header className="flex h-[3.375rem] items-center justify-between gap-3 bg-card px-[1.0625rem] max-md:h-12 max-md:gap-1.5 max-md:px-2">
       <div className="flex min-w-0 items-center gap-2 max-md:gap-1">
         <button type="button" onClick={() => setDrawerOpen(true)} className={cn(ICON_BTN, 'md:hidden')} aria-label="Open the navigation" data-testid="open-drawer">
-          <Menu className="size-[1.125rem]" aria-hidden />
+          <Menu aria-hidden />
         </button>
         <a href="/" className="rounded-sm md:hidden" aria-label="Erdfeld AI home"><BrandMark variant="mark" height={26} /></a>
-        <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-[0.5625rem] font-mono text-xs tracking-[0.06em] text-muted-foreground">
-          <span className="max-md:hidden">WORKSPACE</span>
-          <b aria-hidden className="font-normal text-[#48534e] max-md:hidden">/</b>
-          <strong className="min-w-0 truncate font-sans text-[0.875rem] font-medium tracking-normal text-foreground max-md:max-w-[34vw]" data-testid="breadcrumb-where" title={title}>{title}</strong>
-          {chip && <i className={cn('shrink-0 rounded border px-[0.375rem] py-[0.1875rem] text-xs not-italic tracking-[0.04em]', chip.cls)} data-testid="project-chip">{chip.text}</i>}
+        <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-label text-muted-foreground">
+          <span className="max-md:hidden">Workspace</span>
+          <b aria-hidden className="font-normal max-md:hidden">/</b>
+          <strong className="min-w-0 truncate font-sans text-body-strong normal-case tracking-normal text-foreground max-md:max-w-[34vw]" data-testid="breadcrumb-where" title={title}>{title}</strong>
+          {chip && <i className={cn('badge not-italic', chip.cls)} data-testid="project-chip">{chip.text}</i>}
         </nav>
       </div>
 
       <div className="flex shrink-0 items-center gap-1.5 max-md:gap-0.5">
         <HealthDot variant="pill" className="mr-1.5 max-[1100px]:hidden" />
         <button type="button" onClick={() => setCommandPaletteOpen(true)} className={cn(BTN, 'max-md:hidden max-[1250px]:px-2')} aria-label="Search and commands" aria-keyshortcuts="Control+K Meta+K" data-testid="open-palette" title="Command palette">
-          <Search className="size-3.5" aria-hidden />
-          <kbd className="font-mono text-xs text-muted-foreground max-[1250px]:hidden">{isMac ? '⌘K' : 'Ctrl K'}</kbd>
+          <Search aria-hidden />
+          <kbd className="text-data text-muted-foreground max-[1250px]:hidden">{isMac ? '⌘K' : 'Ctrl K'}</kbd>
         </button>
         <button type="button" onClick={() => openDialog('activity')} className={cn(BTN, 'px-2 max-md:hidden')} aria-label="Activity history" title="Activity history">
-          <History className="size-3.5" aria-hidden />
+          <History aria-hidden />
         </button>
         <button type="button" onClick={() => openDialog('add-data')} className={cn(BTN, 'max-md:size-9 max-md:border-transparent max-md:bg-transparent max-md:px-0')} data-testid="add-data" title="Add data">
-          <Paperclip className="size-3.5" aria-hidden /><span className={label}>Add data</span>
+          <Paperclip aria-hidden /><span className={label}>Add data</span>
         </button>
         <ProjectsPanel>
           <button type="button" className={cn(BTN, 'max-md:hidden')} data-testid="save-project" title="Save the project">
-            <Check className="size-3.5" aria-hidden /><span className={label}>Save</span>
+            <Check aria-hidden /><span className={label}>Save</span>
           </button>
         </ProjectsPanel>
         <ShareMenu>
           <button type="button" className={cn(BTN, 'max-md:hidden')} data-testid="share" title="Share">
-            <Share2 className="size-3.5" aria-hidden /><span className={label}>Share</span>
+            <Share2 aria-hidden /><span className={label}>Share</span>
           </button>
         </ShareMenu>
         <ExportMenu>
           <button type="button" className={cn(BTN_PRIMARY, 'max-md:size-9 max-md:px-0')} data-testid="export" title="Export">
-            <Download className="size-3.5" aria-hidden /><span className={label}>Export</span>
+            <Download aria-hidden /><span className={label}>Export</span>
           </button>
         </ExportMenu>
         <span className="mx-0.5 h-5 w-px bg-border max-md:hidden" aria-hidden />

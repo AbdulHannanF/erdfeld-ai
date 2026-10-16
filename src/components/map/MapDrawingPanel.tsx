@@ -587,33 +587,33 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
           <div className="flex items-center gap-2">
             <PenTool className="h-5 w-5 text-brand-text" />
-            <SheetTitle className="text-base font-semibold text-foreground/90">Drawing Panel</SheetTitle>
+            <SheetTitle>Drawing Panel</SheetTitle>
           </div>
           <button
             onClick={handleClose}
-            className="p-1.5 rounded-md hover:bg-foreground/10 text-muted-foreground hover:text-foreground transition-colors"
+            className="btn btn-ghost btn-icon-sm"
             title="Close"
           >
-            <X className="h-4 w-4" />
+            <X />
           </button>
         </div>
 
         {/* Add-as selector */}
         <div className="px-4 pt-3 pb-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-muted-foreground">Add shapes as:</span>
+            <span className="text-caption text-muted-foreground">Add shapes as:</span>
             <Select value={addAs} onValueChange={(v) => setAddAs(v as 'aoi' | 'layer')}>
-              <SelectTrigger className="w-[8.75rem] h-7 text-xs bg-muted/80 border-border text-foreground">
+              <SelectTrigger className="w-[8.75rem] h-7 text-caption bg-muted/80 border-border text-foreground">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-muted border-border">
-                <SelectItem value="layer" className="text-foreground text-xs focus:bg-brand-500/20 focus:text-brand-text">
+                <SelectItem value="layer" className="text-foreground text-caption focus:bg-brand-500/20 focus:text-brand-text">
                   <div className="flex items-center gap-1.5">
                     <Layers className="h-3 w-3" />
                     Map Layer
                   </div>
                 </SelectItem>
-                <SelectItem value="aoi" className="text-foreground text-xs focus:bg-brand-500/20 focus:text-brand-text">
+                <SelectItem value="aoi" className="text-foreground text-caption focus:bg-brand-500/20 focus:text-brand-text">
                   <div className="flex items-center gap-1.5">
                     <MapPin className="h-3 w-3" />
                     AOI (Area of Interest)
@@ -628,19 +628,19 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
           <div className="px-4">
             <TabsList className="w-full bg-muted/80 border border-border">
-              <TabsTrigger value="import" className="flex-1 text-xs data-[state=active]:bg-primary/20 data-[state=active]:text-brand-text">
+              <TabsTrigger value="import" className="flex-1 text-caption data-[state=active]:bg-primary/20 data-[state=active]:text-brand-text">
                 <FileUp className="h-3 w-3 mr-1" />
                 Import
               </TabsTrigger>
-              <TabsTrigger value="circle" className="flex-1 text-xs data-[state=active]:bg-primary/20 data-[state=active]:text-brand-text">
+              <TabsTrigger value="circle" className="flex-1 text-caption data-[state=active]:bg-primary/20 data-[state=active]:text-brand-text">
                 <Circle className="h-3 w-3 mr-1" />
                 Circle
               </TabsTrigger>
-              <TabsTrigger value="rectangle" className="flex-1 text-xs data-[state=active]:bg-primary/20 data-[state=active]:text-brand-text">
+              <TabsTrigger value="rectangle" className="flex-1 text-caption data-[state=active]:bg-primary/20 data-[state=active]:text-brand-text">
                 <Square className="h-3 w-3 mr-1" />
                 Rect
               </TabsTrigger>
-              <TabsTrigger value="line" className="flex-1 text-xs data-[state=active]:bg-primary/20 data-[state=active]:text-brand-text">
+              <TabsTrigger value="line" className="flex-1 text-caption data-[state=active]:bg-primary/20 data-[state=active]:text-brand-text">
                 <Route className="h-3 w-3 mr-1" />
                 Line
               </TabsTrigger>
@@ -653,26 +653,18 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
               {/* Import type toggle */}
               <div className="flex gap-2">
                 <Button
-                  variant={importType === 'coordinates' ? 'default' : 'outline'}
+                  variant={importType === 'coordinates' ? 'primary' : 'secondary'}
                   size="sm"
                   onClick={() => setImportType('coordinates')}
-                  className={`flex-1 text-xs ${
-                    importType === 'coordinates'
-                      ? 'bg-primary/20 text-brand-text border-primary/30 hover:bg-primary/30'
-                      : 'bg-transparent border-border text-muted-foreground hover:text-foreground hover:border-border'
-                  }`}
+                  className="flex-1"
                 >
                   Coordinates
                 </Button>
                 <Button
-                  variant={importType === 'geojson' ? 'default' : 'outline'}
+                  variant={importType === 'geojson' ? 'primary' : 'secondary'}
                   size="sm"
                   onClick={() => setImportType('geojson')}
-                  className={`flex-1 text-xs ${
-                    importType === 'geojson'
-                      ? 'bg-primary/20 text-brand-text border-primary/30 hover:bg-primary/30'
-                      : 'bg-transparent border-border text-muted-foreground hover:text-foreground hover:border-border'
-                  }`}
+                  className="flex-1"
                 >
                   GeoJSON
                 </Button>
@@ -680,7 +672,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
 
               {/* Text input */}
               <div className="space-y-2">
-                <Label className="text-xs font-medium text-muted-foreground">
+                <Label className="text-caption-strong text-muted-foreground">
                   {importType === 'coordinates'
                     ? 'Paste coordinates (lat, lng per line)'
                     : 'Paste GeoJSON'}
@@ -693,7 +685,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
                       ? '48.8566, 2.3522\n51.5074, -0.1278\n40.7128, -74.0060'
                       : '{"type":"FeatureCollection","features":[...]}'
                   }
-                  className="bg-muted/80 border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary/40 focus-visible:border-primary/40 min-h-[10rem] font-mono text-xs"
+                  className="bg-muted/80 border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary/40 focus-visible:border-primary/40 min-h-[10rem] text-data"
                 />
               </div>
 
@@ -701,7 +693,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
               <Button
                 onClick={handleImport}
                 disabled={!importText.trim()}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full"
               >
                 <FileUp className="h-4 w-4 mr-2" />
                 Import & Draw
@@ -709,16 +701,16 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
 
               {/* Help text */}
               <div className="rounded-lg bg-foreground/[0.03] border border-border p-3 space-y-1.5">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Supported Formats</p>
+                <p className="text-muted-foreground text-label">Supported Formats</p>
                 {importType === 'coordinates' ? (
-                  <ul className="text-xs text-muted-foreground space-y-1">
+                  <ul className="text-caption text-muted-foreground space-y-1">
                     <li>&#8226; One &quot;lat, lng&quot; pair per line</li>
                     <li>&#8226; Multiple pairs create a line/polyline</li>
                     <li>&#8226; JSON: [[lng, lat], [lng, lat]]</li>
                     <li>&#8226; Single point creates a marker</li>
                   </ul>
                 ) : (
-                  <ul className="text-xs text-muted-foreground space-y-1">
+                  <ul className="text-caption text-muted-foreground space-y-1">
                     <li>&#8226; FeatureCollection</li>
                     <li>&#8226; Single Feature</li>
                     <li>&#8226; Raw Geometry object</li>
@@ -734,7 +726,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
               {/* Center coordinates */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-muted-foreground">Latitude</Label>
+                  <Label className="text-caption-strong text-muted-foreground">Latitude</Label>
                   <Input
                     type="number"
                     step="any"
@@ -747,7 +739,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-muted-foreground">Longitude</Label>
+                  <Label className="text-caption-strong text-muted-foreground">Longitude</Label>
                   <Input
                     type="number"
                     step="any"
@@ -763,7 +755,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
 
               {/* Radius */}
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-muted-foreground">Radius (kilometers)</Label>
+                <Label className="text-caption-strong text-muted-foreground">Radius (kilometers)</Label>
                 <Input
                   type="number"
                   step="any"
@@ -779,7 +771,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
               <Button
                 onClick={handleDrawCircle}
                 disabled={!circleLat || !circleLng || !circleRadius}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full"
               >
                 <Circle className="h-4 w-4 mr-2" />
                 Draw Circle
@@ -787,7 +779,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
 
               {/* Presets */}
               <div className="rounded-lg bg-foreground/[0.03] border border-border p-3 space-y-2">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Quick Presets</p>
+                <p className="text-muted-foreground text-label">Quick Presets</p>
                 <div className="grid grid-cols-2 gap-2">
                   {[
                     { name: 'Paris', lat: '48.8566', lng: '2.3522', r: '5' },
@@ -802,7 +794,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
                         setCircleLng(preset.lng)
                         setCircleRadius(preset.r)
                       }}
-                      className="px-2.5 py-1.5 rounded-md bg-foreground/[0.04] border border-border text-xs text-muted-foreground hover:text-brand-text hover:border-primary/30 hover:bg-primary/10 transition-colors"
+                      className="chip"
                     >
                       {preset.name} ({preset.r}km)
                     </button>
@@ -818,7 +810,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
               {/* Bounds inputs */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-muted-foreground">North (max lat)</Label>
+                  <Label className="text-caption-strong text-muted-foreground">North (max lat)</Label>
                   <Input
                     type="number"
                     step="any"
@@ -831,7 +823,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-muted-foreground">South (min lat)</Label>
+                  <Label className="text-caption-strong text-muted-foreground">South (min lat)</Label>
                   <Input
                     type="number"
                     step="any"
@@ -844,7 +836,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-muted-foreground">East (max lng)</Label>
+                  <Label className="text-caption-strong text-muted-foreground">East (max lng)</Label>
                   <Input
                     type="number"
                     step="any"
@@ -857,7 +849,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-muted-foreground">West (min lng)</Label>
+                  <Label className="text-caption-strong text-muted-foreground">West (min lng)</Label>
                   <Input
                     type="number"
                     step="any"
@@ -875,7 +867,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
               <Button
                 onClick={handleDrawRectangle}
                 disabled={!rectNorth || !rectSouth || !rectEast || !rectWest}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full"
               >
                 <Square className="h-4 w-4 mr-2" />
                 Draw Rectangle
@@ -883,7 +875,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
 
               {/* Presets */}
               <div className="rounded-lg bg-foreground/[0.03] border border-border p-3 space-y-2">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Quick Presets</p>
+                <p className="text-muted-foreground text-label">Quick Presets</p>
                 <div className="grid grid-cols-2 gap-2">
                   {[
                     { name: 'Paris', n: '48.95', s: '48.75', e: '2.45', w: '2.15' },
@@ -899,7 +891,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
                         setRectEast(preset.e)
                         setRectWest(preset.w)
                       }}
-                      className="px-2.5 py-1.5 rounded-md bg-foreground/[0.04] border border-border text-xs text-muted-foreground hover:text-brand-text hover:border-primary/30 hover:bg-primary/10 transition-colors"
+                      className="chip"
                     >
                       {preset.name}
                     </button>
@@ -914,14 +906,14 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
             <div className="space-y-4">
               {/* Points input */}
               <div className="space-y-2">
-                <Label className="text-xs font-medium text-muted-foreground">
+                <Label className="text-caption-strong text-muted-foreground">
                   Coordinate pairs (lat, lng per line)
                 </Label>
                 <Textarea
                   value={linePoints}
                   onChange={(e) => setLinePoints(e.target.value)}
                   placeholder={'48.8566, 2.3522\n48.8648, 2.3514\n48.8721, 2.3497'}
-                  className="bg-muted/80 border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary/40 focus-visible:border-primary/40 min-h-[8.75rem] font-mono text-xs"
+                  className="bg-muted/80 border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary/40 focus-visible:border-primary/40 min-h-[8.75rem] text-data"
                 />
               </div>
 
@@ -929,13 +921,10 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setLineClose(!lineClose)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md border text-xs transition-colors ${
-                    lineClose
-                      ? 'bg-primary/20 border-primary/30 text-brand-text'
-                      : 'bg-transparent border-border text-muted-foreground hover:text-foreground hover:border-border'
-                  }`}
+                  aria-pressed={lineClose}
+                  className="chip"
                 >
-                  <Square className="h-3 w-3" />
+                  <Square aria-hidden />
                   Close as polygon
                 </button>
               </div>
@@ -944,7 +933,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
               <Button
                 onClick={handleDrawLine}
                 disabled={!linePoints.trim()}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full"
               >
                 <Route className="h-4 w-4 mr-2" />
                 {lineClose ? 'Draw Polygon' : 'Draw Line'}
@@ -952,7 +941,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
 
               {/* Presets */}
               <div className="rounded-lg bg-foreground/[0.03] border border-border p-3 space-y-2">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Quick Presets</p>
+                <p className="text-muted-foreground text-label">Quick Presets</p>
                 <div className="grid grid-cols-1 gap-2">
                   {[
                     {
@@ -967,7 +956,7 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
                     <button
                       key={preset.name}
                       onClick={() => setLinePoints(preset.points)}
-                      className="px-2.5 py-1.5 rounded-md bg-foreground/[0.04] border border-border text-xs text-muted-foreground hover:text-brand-text hover:border-primary/30 hover:bg-primary/10 transition-colors text-left"
+                      className="chip"
                     >
                       {preset.name}
                     </button>
@@ -982,14 +971,14 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
         {drawnShapes.length > 0 && (
           <div className="border-t border-border px-4 py-3">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-muted-foreground">
+              <span className="text-caption-strong text-muted-foreground">
                 Drawn Shapes ({drawnShapes.length})
               </span>
               <button
                 onClick={clearAllShapes}
-                className="flex items-center gap-1 text-xs text-muted-foreground hover:text-danger transition-colors"
+                className="btn btn-ghost btn-sm"
               >
-                <Trash2 className="h-3 w-3" />
+                <Trash2 />
                 Clear All
               </button>
             </div>
@@ -1004,23 +993,23 @@ export default function MapDrawingPanel({ map, drawingPanelRef }: MapDrawingPane
                     {shape.type === 'rectangle' && <Square className="h-3 w-3 text-brand-text" />}
                     {shape.type === 'line' && <Route className="h-3 w-3 text-brand-text" />}
                     {shape.type === 'import' && <FileUp className="h-3 w-3 text-brand-text" />}
-                    <span className="text-xs text-muted-foreground truncate max-w-[12.5rem]">{shape.name}</span>
+                    <span className="text-caption text-muted-foreground truncate max-w-[12.5rem]">{shape.name}</span>
                     {shape.addedAsAoi && (
-                      <Badge variant="outline" className="text-xs px-1 border-brand-500/30 text-brand-text bg-brand-500/10">
+                      <Badge variant="accent">
                         AOI
                       </Badge>
                     )}
                     {shape.addedAsLayer && (
-                      <Badge variant="outline" className="text-xs px-1 border-primary/30 text-brand-text bg-primary/10">
+                      <Badge variant="info">
                         Layer
                       </Badge>
                     )}
                   </div>
                   <button
                     onClick={() => removeShape(shape.id)}
-                    className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-danger/10 text-muted-foreground hover:text-danger transition-all"
+                    className="btn btn-ghost btn-icon-sm opacity-0 group-hover:opacity-100"
                   >
-                    <X className="h-3 w-3" />
+                    <X />
                   </button>
                 </div>
               ))}

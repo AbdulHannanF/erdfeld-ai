@@ -36,7 +36,7 @@ export default function DistributionBar() {
   return (
     <div className="grid gap-2" data-testid="distribution">
       <div
-        className="dist-in flex h-2.5 gap-px overflow-hidden rounded-[0.1875rem] bg-border"
+        className="dist-in flex h-2.5 gap-px overflow-hidden rounded-sm bg-border"
         role="img"
         aria-label={`${layer.name} by ${layer.vectorStyle?.property}: ${sorted.map((r) => `${r.label} ${Math.round((weight(r) / total) * 100)}%`).join(', ')}`}
       >
@@ -44,7 +44,7 @@ export default function DistributionBar() {
           <i key={String(r.value)} className="block h-full" style={{ width: `${(weight(r) / total) * 100}%`, background: r.color }} />
         ))}
       </div>
-      <dl className="grid grid-cols-[1fr_auto_auto] gap-x-3 gap-y-1 text-xs">
+      <dl className="grid grid-cols-[1fr_auto_auto] gap-x-3 gap-y-1 text-caption">
         {sorted.slice(0, SHOWN).map((r) => {
           const on = !current || current.map(String).includes(String(r.value))
           return (
@@ -53,10 +53,10 @@ export default function DistributionBar() {
               type="button"
               aria-pressed={on}
               onClick={() => setClassFilter(layer.id, toggleClass(current, r.value, all))}
-              className={cn('col-span-3 grid grid-cols-subgrid items-center rounded-sm text-left transition-opacity hover:bg-muted', !on && 'opacity-45')}
+              className={cn('col-span-3 grid grid-cols-subgrid items-center rounded-md text-left transition-opacity hover:bg-hover', !on && 'opacity-45')}
             >
-              <dt className="flex items-center gap-1.5 text-foreground/80">
-                <i className="size-2 rounded-[0.125rem]" style={{ background: r.color }} aria-hidden />
+              <dt className="flex items-center gap-1.5 text-foreground">
+                <i className="size-2 rounded-sm" style={{ background: r.color }} aria-hidden />
                 {r.label}
               </dt>
               <dd className="text-right text-muted-foreground">{r.count.toLocaleString('en-US')} {r.count === 1 ? 'feature' : 'features'}</dd>
@@ -65,7 +65,7 @@ export default function DistributionBar() {
           )
         })}
       </dl>
-      {sorted.length > SHOWN && <p className="text-xs text-muted-foreground">and {sorted.length - SHOWN} more in the sidebar</p>}
+      {sorted.length > SHOWN && <p className="text-caption text-muted-foreground">and {sorted.length - SHOWN} more in the sidebar</p>}
     </div>
   )
 }

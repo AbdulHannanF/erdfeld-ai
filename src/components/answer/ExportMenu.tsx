@@ -164,32 +164,31 @@ export function ExportList() {
 
   const latestRun = ledgerRunIds[ledgerRunIds.length - 1]
 
-  const item =
-    'flex w-full items-start gap-2.5 rounded-md px-2.5 py-2 text-left transition-colors hover:bg-muted'
+  const item = 'menu-item items-start'
 
   return (
     <>
     {!hasContent ? (
-      <p className="px-2.5 py-2 text-xs leading-relaxed text-muted-foreground">
+      <p className="px-2.5 py-2 text-caption leading-relaxed text-muted-foreground">
         Nothing to export yet. Ask a question about the area first.
       </p>
     ) : (
       <div className="flex flex-col gap-0.5">
-        <span className="px-2.5 pb-1 pt-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Export</span>
+        <span className="px-2.5 pb-1 pt-1.5 text-muted-foreground text-label">Export</span>
         {latestRun && (
           <>
             <button type="button" onClick={() => void downloadBundle(latestRun)} className={item}>
               <ShieldCheck className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
               <span>
-                <span className="block text-[0.8125rem] font-medium text-foreground">Signed evidence bundle</span>
-                <span className="block text-xs text-muted-foreground">Ed25519-signed ledger of the latest run</span>
+                <span className="block text-body-strong text-foreground">Signed evidence bundle</span>
+                <span className="block text-caption text-muted-foreground">Ed25519-signed ledger of the latest run</span>
               </span>
             </button>
             <button type="button" onClick={() => void openSummary(latestRun)} className={item}>
               <FileCheck2 className="mt-0.5 size-4 shrink-0 text-brand-text" aria-hidden />
               <span>
-                <span className="block text-[0.8125rem] font-medium text-foreground">One-page PDF summary</span>
-                <span className="block text-xs text-muted-foreground">Restates the signed bundle</span>
+                <span className="block text-body-strong text-foreground">One-page PDF summary</span>
+                <span className="block text-caption text-muted-foreground">Restates the signed bundle</span>
               </span>
             </button>
           </>
@@ -197,26 +196,26 @@ export function ExportList() {
         <button type="button" onClick={handleExportReproducible} className={item}>
           <FileCheck2 className="mt-0.5 size-4 shrink-0 text-brand-text" aria-hidden />
           <span>
-            <span className="block text-[0.8125rem] font-medium text-foreground">Reproducible JSON</span>
-            <span className="block text-xs text-muted-foreground">Cited figures and provenance, re-runnable</span>
+            <span className="block text-body-strong text-foreground">Reproducible JSON</span>
+            <span className="block text-caption text-muted-foreground">Cited figures and provenance, re-runnable</span>
           </span>
         </button>
         <button type="button" onClick={handleExportMarkdown} className={item}>
           <FileText className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
           <span>
-            <span className="block text-[0.8125rem] font-medium text-foreground">Markdown report</span>
-            <span className="block text-xs text-muted-foreground">The conversation and the layers</span>
+            <span className="block text-body-strong text-foreground">Markdown report</span>
+            <span className="block text-caption text-muted-foreground">The conversation and the layers</span>
           </span>
         </button>
         <button type="button" onClick={handleExportJSON} className={item}>
           <FileJson className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
           <span>
-            <span className="block text-[0.8125rem] font-medium text-foreground">JSON data</span>
-            <span className="block text-xs text-muted-foreground">Structured, for other tools</span>
+            <span className="block text-body-strong text-foreground">JSON data</span>
+            <span className="block text-caption text-muted-foreground">Structured, for other tools</span>
           </span>
         </button>
         {!latestRun && (
-          <p className="px-2.5 pb-1.5 pt-1 text-xs leading-relaxed text-muted-foreground">
+          <p className="px-2.5 pb-1.5 pt-1 text-caption leading-relaxed text-muted-foreground">
             The signed bundle appears once a question has run and its ledger is saved.
           </p>
         )}

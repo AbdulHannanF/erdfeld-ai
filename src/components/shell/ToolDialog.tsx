@@ -137,7 +137,7 @@ export default function ToolDialog() {
         <>
           <button type="button" className={BTN} onClick={closeDialog}>Cancel</button>
           <button type="button" className={BTN} onClick={ask} disabled={!op || !aoi} title={aoi ? 'Have Erdfeld run it and explain the result' : 'Draw an area first'}>
-            <Sparkles className="size-3.5" aria-hidden />Ask Erdfeld to run it
+            <Sparkles aria-hidden />Ask Erdfeld to run it
           </button>
           <button type="button" className={BTN_PRIMARY} onClick={submit} disabled={!op || !aoi || submitting || tooBig || tooSmall || noInput} data-testid="tool-run">
             {submitting ? <Loader2 className="size-3.5 animate-spin" aria-hidden /> : <Play className="size-3.5" aria-hidden />}Run on area
@@ -146,14 +146,14 @@ export default function ToolDialog() {
       }
     >
       {loadError && <Callout tone="bad" icon={<TriangleAlert />}>The operation registry could not be read: {loadError}</Callout>}
-      {!op && !loadError && <p className="text-[0.8125rem] text-muted-foreground" role="status">Reading the operation registry…</p>}
+      {!op && !loadError && <p className="text-body text-muted-foreground" role="status">Reading the operation registry…</p>}
       {op && (
         <>
-          <p className="text-[0.8125rem] leading-relaxed text-muted-foreground">{op.description}</p>
+          <p className="text-body leading-relaxed text-muted-foreground">{op.description}</p>
 
           <div className="grid gap-1.5">
             <span className={OVERLINE}>Input</span>
-            <div className="rounded-[0.3125rem] border border-input bg-secondary px-2 py-1.5 text-[0.8125rem] text-foreground" data-testid="tool-input">
+            <div className="rounded-md border border-input bg-secondary px-2 py-1.5 text-body text-foreground" data-testid="tool-input">
               {aoi ? `Drawn area · ${aoi.type}${km2 != null ? ` · ${formatAreaKm2(km2)}` : ''}` : 'No area drawn'}
               {op.sensors.length > 0 && <span className="text-muted-foreground"> · reads {op.sensors.join(', ')}</span>}
             </div>
@@ -208,9 +208,9 @@ export default function ToolDialog() {
                           onChange={(e) => setDraft({ ...draft, [name]: e.target.value })}
                         />
                       )}
-                      {p.description && <span className="text-xs leading-snug text-muted-foreground">{p.description}</span>}
+                      {p.description && <span className="text-caption leading-snug text-muted-foreground">{p.description}</span>}
                       {picker && chosen && op.name === 'make_chart' && (
-                        <span className="break-all font-mono text-xs leading-snug text-muted-foreground" data-testid="tool-data-names">Data names for the spec: {chartDataNames(chosen).join(', ')}</span>
+                        <span className="break-all text-data leading-snug text-muted-foreground" data-testid="tool-data-names">Data names for the spec: {chartDataNames(chosen).join(', ')}</span>
                       )}
                     </div>
                   </div>

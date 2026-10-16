@@ -68,9 +68,9 @@ export default function AttributesTab() {
 
   if (!source) {
     return (
-      <div className="grid min-h-[4.75rem] place-items-center text-center text-[0.8125rem] text-muted-foreground" data-testid="attributes-empty">
+      <div className="grid min-h-[4.75rem] place-items-center text-center text-body text-muted-foreground" data-testid="attributes-empty">
         <div>
-          <strong className="mb-1 block text-[0.875rem] font-medium text-foreground">Nothing to tabulate yet</strong>
+          <strong className="mb-1 block text-body-strong text-foreground">Nothing to tabulate yet</strong>
           Draw an area, or run an analysis that returns vector features, and its attributes appear here.
         </div>
       </div>
@@ -85,8 +85,8 @@ export default function AttributesTab() {
     setSelectedFeatureIndex(i)
   }
   const th = (col: string) => (
-    <th key={col} scope="col" className="h-7 whitespace-nowrap border-b border-input px-2 text-left font-mono text-xs font-normal text-muted-foreground" aria-sort={sort?.col === col ? (sort.dir === 1 ? 'ascending' : 'descending') : 'none'}>
-      <button type="button" className="inline-flex items-center gap-1 hover:text-foreground" onClick={() => setSort(sort?.col === col ? (sort.dir === 1 ? { col, dir: -1 } : null) : { col, dir: 1 })}>
+    <th key={col} scope="col" className="h-7 whitespace-nowrap border-b border-input px-2 text-left text-data font-normal text-muted-foreground" aria-sort={sort?.col === col ? (sort.dir === 1 ? 'ascending' : 'descending') : 'none'}>
+      <button type="button" className="btn btn-ghost btn-sm" onClick={() => setSort(sort?.col === col ? (sort.dir === 1 ? { col, dir: -1 } : null) : { col, dir: 1 })}>
         {col}
         {sort?.col === col && (sort.dir === 1 ? <ArrowUp className="size-3" aria-hidden /> : <ArrowDown className="size-3" aria-hidden />)}
       </button>
@@ -95,17 +95,17 @@ export default function AttributesTab() {
 
   return (
     <div data-testid="attribute-table">
-      <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1.5 font-mono text-xs text-muted-foreground">
+      <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-data text-muted-foreground">
         <span>Layer</span>
         {sources.length > 1 ? (
           <>
             <label htmlFor="attr-layer" className="sr-only">Layer</label>
-            <select id="attr-layer" value={source.id} onChange={(e) => setPick(e.target.value)} className={cn(FIELD, 'h-7 w-auto max-w-[13.75rem] font-sans text-xs')}>
+            <select id="attr-layer" value={source.id} onChange={(e) => setPick(e.target.value)} className={cn(FIELD, 'field-sm w-auto max-w-[13.75rem]')}>
               {sources.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
           </>
         ) : (
-          <strong className="font-medium text-foreground">{source.name}</strong>
+          <strong className="font-semibold text-foreground">{source.name}</strong>
         )}
         <span>·</span>
         <span>{source.features.length} {source.features.length === 1 ? 'feature' : 'features'}</span>
@@ -114,7 +114,7 @@ export default function AttributesTab() {
           {source.kind === 'layer' && (
             <button
               type="button"
-              className="inline-flex h-7 items-center gap-1 rounded border border-input bg-secondary px-2 font-sans text-xs text-secondary-foreground hover:bg-hover"
+              className="btn btn-secondary btn-sm"
               onClick={() => {
                 const blob = new Blob([csvOf(columns, rows)], { type: 'text/csv' })
                 const a = document.createElement('a')
@@ -125,19 +125,19 @@ export default function AttributesTab() {
                 toast.success(`Exported ${rows.length} rows as CSV`)
               }}
             >
-              <Download className="size-3" aria-hidden />CSV
+              <Download aria-hidden />CSV
             </button>
           )}
           <label htmlFor="attr-filter" className="sr-only">Filter attributes</label>
-          <input id="attr-filter" type="search" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter attributes…" className={cn(FIELD, 'h-7 w-40 font-sans text-xs')} data-testid="attr-filter" />
+          <input id="attr-filter" type="search" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter attributes…" className={cn(FIELD, 'field-sm w-40')} data-testid="attr-filter" />
         </span>
       </div>
 
       {selectionHere && (
-        <div className="mb-1.5 flex flex-wrap items-center gap-2 rounded border border-border bg-accent px-2 py-1 text-xs text-accent-foreground" role="status">
+        <div className="mb-1.5 flex flex-wrap items-center gap-2 rounded-sm border border-border bg-accent px-2 py-1 text-caption text-accent-foreground" role="status">
           <span className="min-w-0 truncate">Selected by <code className="font-mono">{selectionHere.expression}</code> · {selectionHere.indices.length} of {source.features.length}</span>
           <label className="inline-flex items-center gap-1"><input type="checkbox" checked={onlySelected} onChange={(e) => setOnlySelected(e.target.checked)} />Only these</label>
-          <button type="button" className="ml-auto inline-flex items-center gap-1 hover:underline" onClick={() => setSelection(null)}><X className="size-3" aria-hidden />Clear</button>
+          <button type="button" className="link-btn ml-auto" onClick={() => setSelection(null)}><X aria-hidden />Clear</button>
         </div>
       )}
 
@@ -147,7 +147,7 @@ export default function AttributesTab() {
             <tr>
               {th('fid')}
               {columns.filter((c) => c !== 'fid').map(th)}
-              <th scope="col" className="h-7 border-b border-input px-2 text-left font-mono text-xs font-normal text-muted-foreground">geometry</th>
+              <th scope="col" className="h-7 border-b border-input px-2 text-left text-data font-normal text-muted-foreground">geometry</th>
             </tr>
           </thead>
           <tbody>
@@ -160,11 +160,11 @@ export default function AttributesTab() {
                   className={cn('border-b border-border hover:bg-hover', source.kind === 'layer' && 'cursor-pointer')}
                   data-testid="attribute-row"
                 >
-                  <td className="h-7 px-2 font-mono text-[0.8125rem] text-foreground">{String(p.fid ?? (source.id === AOI_SOURCE_ID ? 'AOI-001' : i + 1))}</td>
+                  <td className="h-7 px-2 font-mono text-body text-foreground">{String(p.fid ?? (source.id === AOI_SOURCE_ID ? 'AOI-001' : i + 1))}</td>
                   {columns.filter((c) => c !== 'fid').map((c) => (
-                    <td key={c} className="h-7 max-w-[17.5rem] truncate px-2 text-[0.8125rem] text-secondary-foreground" title={cellText(p[c])}>{cellText(p[c]) || <span className="text-muted-foreground">·</span>}</td>
+                    <td key={c} className="h-7 max-w-[17.5rem] truncate px-2 text-body text-secondary-foreground" title={cellText(p[c])}>{cellText(p[c]) || <span className="text-muted-foreground">·</span>}</td>
                   ))}
-                  <td className="h-7 px-2"><span className="rounded border border-border px-1.5 py-0.5 font-mono text-xs text-muted-foreground">{geometryLabel(f)}</span></td>
+                  <td className="h-7 px-2"><span className="badge">{geometryLabel(f)}</span></td>
                 </tr>
               )
             })}

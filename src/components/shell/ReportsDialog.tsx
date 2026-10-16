@@ -36,7 +36,7 @@ export default function ReportsDialog() {
       </div>
 
       <div className="grid gap-1.5">
-        <p className="font-mono text-xs uppercase tracking-[0.09em] text-muted-foreground">Claim reports</p>
+        <p className="text-muted-foreground text-label">Claim reports</p>
         {batches.length === 0 ? (
           <Callout icon={<ListChecks />}>
             A claim batch or a single claim check has its own report page, with the verdict, the timeline of results and a signed bundle. Start one with &ldquo;Verify a claim&rdquo; in the Tools panel.
@@ -45,7 +45,7 @@ export default function ReportsDialog() {
           <ul className="grid gap-1">
             {batches.map((b) => (
               <li key={b.id}>
-                <Link href={b.href ?? `/cases/batch/${b.id}`} className="flex items-center justify-between gap-2 rounded-md border border-border bg-sunk px-2.5 py-2 text-[0.8125rem] text-foreground hover:bg-hover">
+                <Link href={b.href ?? `/cases/batch/${b.id}`} className="flex items-center justify-between gap-2 rounded-md border border-border bg-sunk px-2.5 py-2 text-body text-foreground hover:bg-hover">
                   <span className="truncate">{b.label}</span>
                   <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
                 </Link>
@@ -54,7 +54,7 @@ export default function ReportsDialog() {
           </ul>
         )}
         <button type="button" className={BTN} onClick={() => { closeDialog(); openDialog('activity') }}>
-          <FileCheck2 className="size-3.5" aria-hidden />Open Activity history
+          <FileCheck2 aria-hidden />Open Activity history
         </button>
       </div>
 

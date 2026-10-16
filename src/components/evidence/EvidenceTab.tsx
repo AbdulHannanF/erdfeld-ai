@@ -44,32 +44,32 @@ const Row = memo(function Row({ row, focused, field, rerun }: { row: EvidenceRow
       className={cn('rounded-lg border bg-card p-3 outline-none transition-shadow', focused ? 'border-ring ring-2 ring-ring/40' : 'border-border')}
     >
       <div className="flex items-start gap-2.5">
-        <span className="mt-px inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold tabular-nums text-muted-foreground" aria-hidden>{row.n}</span>
+        <span className="mt-px inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-muted text-caption-strong tabular-nums text-muted-foreground" aria-hidden>{row.n}</span>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
-            <p className="min-w-0 break-words text-[0.8125rem] font-medium leading-snug text-foreground">
+            <p className="min-w-0 break-words text-body-strong leading-snug text-foreground">
               {row.op.replace(/_/g, ' ')}
               {row.version && <span className="font-normal text-muted-foreground">@{row.version}</span>}
             </p>
             <StatusBadge status={row.status} />
           </div>
-          <p className="mt-0.5 text-xs leading-snug text-muted-foreground">
+          <p className="mt-0.5 text-caption leading-snug text-muted-foreground">
             {row.sources.length > 0 ? row.sources.join(' · ') : 'Source not recorded'}
             {row.cached && ' · reused from cache'}
           </p>
         </div>
       </div>
 
-      {row.note && <p className="mt-2 rounded bg-warning/10 px-2 py-1.5 text-xs leading-snug text-foreground">{row.note}</p>}
+      {row.note && <p className="mt-2 rounded-sm bg-warning/10 px-2 py-1.5 text-caption leading-snug text-foreground">{row.note}</p>}
 
-      <dl className="mt-2.5 grid grid-cols-[4rem_1fr] gap-x-3 gap-y-1.5 text-xs">
+      <dl className="mt-2.5 grid grid-cols-[4rem_1fr] gap-x-3 gap-y-1.5 text-caption">
         {row.items.length > 0 && (
           <>
             <dt className="pt-0.5 text-muted-foreground">Scenes</dt>
             <dd className="min-w-0 space-y-0.5">
               {scenes.map((id) => <div key={id} className="truncate tabular-nums text-foreground" title={id}>{id}</div>)}
               {row.items.length > SCENES_SHOWN && (
-                <button type="button" onClick={() => setAllScenes((v) => !v)} className="text-brand-text underline-offset-2 hover:underline">
+                <button type="button" onClick={() => setAllScenes((v) => !v)} className="link-btn">
                   {allScenes ? 'Show fewer' : `Show all ${row.items.length}`}
                 </button>
               )}
@@ -110,7 +110,7 @@ const Row = memo(function Row({ row, focused, field, rerun }: { row: EvidenceRow
 
       {row.figures.length > 0 && (
         <div className="mt-2.5 border-t border-border pt-2">
-          <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={showFigures} className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+          <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={showFigures} className="link-btn">
             <ChevronRight className={cn('size-3.5 transition-transform', showFigures && 'rotate-90')} aria-hidden />
             Figures ({row.figures.length})
           </button>
@@ -164,8 +164,8 @@ export default function EvidenceTab() {
   if (rows.length === 0) {
     return (
       <div className="py-10 text-center" data-testid="evidence-empty">
-        <p className="font-heading text-[0.9375rem] font-medium text-foreground">{isLoading ? 'Collecting evidence' : 'No evidence yet'}</p>
-        <p className="mx-auto mt-1 max-w-[34ch] text-[0.8125rem] leading-relaxed text-muted-foreground">
+        <p className="font-heading text-title text-foreground">{isLoading ? 'Collecting evidence' : 'No evidence yet'}</p>
+        <p className="mx-auto mt-1 max-w-[34ch] text-body leading-relaxed text-muted-foreground">
           Every operation that runs is listed here with its source, scenes, dates, checks and result id.
         </p>
       </div>
@@ -175,8 +175,8 @@ export default function EvidenceTab() {
   return (
     <div className="grid gap-3" data-testid="evidence-tab">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-[0.8125rem] text-foreground">
-          <span className="font-medium tabular-nums">{rows.length}</span> {rows.length === 1 ? 'result' : 'results'}
+        <p className="text-body text-foreground">
+          <span className="font-semibold tabular-nums">{rows.length}</span> {rows.length === 1 ? 'result' : 'results'}
           <span className="text-muted-foreground">{ledger ? ' · from the evidence ledger' : ' · from this session, not yet in the ledger'}</span>
         </p>
         {ledgerRunIds.length > 1 && (
@@ -184,7 +184,7 @@ export default function EvidenceTab() {
             aria-label="Run"
             value={ledgerRunIds.indexOf(runId ?? '')}
             onChange={(e) => setRunIndex(Number(e.target.value))}
-            className="h-7 rounded-md border border-border bg-background px-2 text-xs text-foreground"
+            className="field field-sm w-auto"
           >
             {ledgerRunIds.map((id, i) => <option key={id} value={i}>Run {i + 1}{i === ledgerRunIds.length - 1 ? ' (latest)' : ''}</option>)}
           </select>
@@ -194,19 +194,19 @@ export default function EvidenceTab() {
       {runId ? (
         <div className="flex flex-wrap gap-2">
           <Button size="sm" onClick={() => void downloadBundle(runId)}><ShieldCheck aria-hidden />Signed bundle</Button>
-          <Button size="sm" variant="outline" onClick={() => void openSummary(runId)}><FileCheck2 aria-hidden />PDF summary</Button>
-          <Button size="sm" variant="outline" onClick={doRerun} disabled={rerunning}>
+          <Button size="sm" variant="secondary" onClick={() => void openSummary(runId)}><FileCheck2 aria-hidden />PDF summary</Button>
+          <Button size="sm" variant="secondary" onClick={doRerun} disabled={rerunning}>
             {rerunning ? <Loader2 className="animate-spin" aria-hidden /> : <RefreshCw aria-hidden />}Re-run
           </Button>
         </div>
       ) : (
-        <p className="text-xs leading-relaxed text-muted-foreground">The signed bundle, PDF summary and re-run appear once the run is saved to the ledger.</p>
+        <p className="text-caption leading-relaxed text-muted-foreground">The signed bundle, PDF summary and re-run appear once the run is saved to the ledger.</p>
       )}
 
-      {loadingLedger && <p className="inline-flex items-center gap-2 text-xs text-muted-foreground"><Loader2 className="size-3 animate-spin" aria-hidden />Reading the ledger</p>}
-      {ledgerError && <p className="text-xs text-warning" role="status">{ledgerError}</p>}
+      {loadingLedger && <p className="inline-flex items-center gap-2 text-caption text-muted-foreground"><Loader2 className="size-3 animate-spin" aria-hidden />Reading the ledger</p>}
+      {ledgerError && <p className="text-caption text-warning" role="status">{ledgerError}</p>}
       {report && report.runId === runId && (
-        <p className={cn('rounded-lg border px-3 py-2 text-xs leading-relaxed', report.error ? 'border-danger/30 bg-danger/10 text-foreground' : report.value?.reproduced ? 'border-success/30 bg-success/10 text-foreground' : 'border-warning/30 bg-warning/10 text-foreground')} role="status">
+        <p className={cn('rounded-lg border px-3 py-2 text-caption leading-relaxed', report.error ? 'border-danger/30 bg-danger/10 text-foreground' : report.value?.reproduced ? 'border-success/30 bg-success/10 text-foreground' : 'border-warning/30 bg-warning/10 text-foreground')} role="status">
           {report.error ?? (report.value?.reproduced ? 'Re-run reproduced every result with the same ids and figures.' : `Re-run: ${report.value?.nodes.filter((n) => n.outcome !== 'reproduced').length} of ${report.value?.nodes.length} results did not reproduce. The reason is on each row.`)}
         </p>
       )}

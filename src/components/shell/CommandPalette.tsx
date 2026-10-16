@@ -374,9 +374,9 @@ export default function CommandPalette() {
                 className="flex items-center gap-3 cursor-pointer rounded-lg px-3 py-2.5 transition-colors data-[selected=true]:bg-brand-500/15 data-[selected=true]:text-brand-text"
               >
                 <cmd.icon className="h-4 w-4 text-muted-foreground data-[selected=true]:text-brand-text shrink-0" />
-                <span className="flex-1 text-sm">{cmd.label}</span>
+                <span className="flex-1 text-body">{cmd.label}</span>
                 {cmd.shortcut && (
-                  <CommandShortcut className="text-xs text-muted-foreground font-mono">
+                  <CommandShortcut className="text-data text-muted-foreground">
                     {cmd.shortcut}
                   </CommandShortcut>
                 )}
@@ -396,9 +396,9 @@ export default function CommandPalette() {
                 className="flex items-center gap-3 cursor-pointer rounded-lg px-3 py-2.5 transition-colors data-[selected=true]:bg-brand-500/15 data-[selected=true]:text-brand-text"
               >
                 <cmd.icon className="h-4 w-4 text-muted-foreground shrink-0" />
-                <span className="flex-1 text-sm">{cmd.label}</span>
+                <span className="flex-1 text-body">{cmd.label}</span>
                 {cmd.shortcut && (
-                  <CommandShortcut className="text-xs text-muted-foreground font-mono">
+                  <CommandShortcut className="text-data text-muted-foreground">
                     {cmd.shortcut}
                   </CommandShortcut>
                 )}
@@ -410,15 +410,15 @@ export default function CommandPalette() {
 
       {/* Footer hint */}
       <div className="flex items-center justify-between px-4 py-2 border-t border-border">
-        <span className="text-xs text-muted-foreground">
-          <kbd className="px-1 py-0.5 rounded bg-foreground/5 border border-border text-xs font-mono mr-1">↑↓</kbd>
+        <span className="text-caption text-muted-foreground">
+          <kbd className="px-1 py-0.5 rounded-sm bg-foreground/5 border border-border text-data mr-1">↑↓</kbd>
           navigate
-          <kbd className="px-1 py-0.5 rounded bg-foreground/5 border border-border text-xs font-mono mx-1">↵</kbd>
+          <kbd className="px-1 py-0.5 rounded-sm bg-foreground/5 border border-border text-data mx-1">↵</kbd>
           select
-          <kbd className="px-1 py-0.5 rounded bg-foreground/5 border border-border text-xs font-mono mx-1">esc</kbd>
+          <kbd className="px-1 py-0.5 rounded-sm bg-foreground/5 border border-border text-data mx-1">esc</kbd>
           close
         </span>
-        <span className="text-xs text-muted-foreground">
+        <span className="text-caption text-muted-foreground">
           {commands.length} commands
         </span>
       </div>

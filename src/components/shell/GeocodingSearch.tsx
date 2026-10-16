@@ -156,42 +156,42 @@ export default function GeocodingSearch({ className }: { className?: string }) {
           aria-keyshortcuts="/"
           placeholder="Search a place or coordinates…"
           data-testid="place-search"
-          className="h-10 w-full rounded-lg border border-[color-mix(in_srgb,var(--foreground)_13%,transparent)] bg-[color-mix(in_srgb,var(--card)_92%,transparent)] pl-9 pr-16 text-[0.8125rem] text-foreground shadow-[0_0.5rem_1.75rem_#0003] backdrop-blur-[0.75rem] placeholder:text-muted-foreground transition-colors hover:border-[#68bac570] focus-visible:border-[#68bac570] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30"
+          className="field glass h-10 pl-9 pr-16"
         />
-        {!query && <kbd className="pointer-events-none absolute right-2.5 grid h-5 min-w-5 place-items-center rounded border border-input font-mono text-xs text-muted-foreground max-md:hidden" aria-hidden>/</kbd>}
+        {!query && <kbd className="pointer-events-none absolute right-2.5 grid h-5 min-w-5 place-items-center rounded-sm border border-input text-data text-muted-foreground max-md:hidden" aria-hidden>/</kbd>}
         {isLoading && <Loader2 className="absolute right-10 size-3.5 animate-spin text-muted-foreground" aria-hidden />}
         {!isLoading && query && (
           <button
             type="button"
             onClick={() => { setQuery(''); setResults([]); setIsOpen(false); setFailed(false); setCoordNote(null) }}
-            className="absolute right-2 inline-flex size-6 items-center justify-center rounded text-muted-foreground hover:text-foreground"
+            className="btn btn-ghost btn-icon-sm absolute right-2"
             aria-label="Clear search"
           >
-            <X className="size-3.5" aria-hidden />
+            <X aria-hidden />
           </button>
         )}
       </div>
 
       {isOpen && (
         <ul id={listId} className="absolute left-0 right-0 top-full z-50 mt-1.5 overflow-hidden rounded-lg border border-border bg-popover shadow-lg">
-          {coordNote && <li className="px-3 py-2.5 text-xs text-warning" role="status">{coordNote}</li>}
+          {coordNote && <li className="px-3 py-2.5 text-caption text-warning" role="status">{coordNote}</li>}
           {failed && (
-            <li className="px-3 py-2.5 text-xs text-warning">The place search could not be reached. Try again in a moment.</li>
+            <li className="px-3 py-2.5 text-caption text-warning">The place search could not be reached. Try again in a moment.</li>
           )}
           {!failed && !coordNote && results.length === 0 && (
-            <li className="px-3 py-2.5 text-xs text-muted-foreground">No place found for that search.</li>
+            <li className="px-3 py-2.5 text-caption text-muted-foreground">No place found for that search.</li>
           )}
           {results.map((result) => (
             <li key={result.place_id} className="border-b border-border last:border-b-0">
               <button
                 type="button"
                 onClick={() => selectResult(result)}
-                className="group flex w-full items-start gap-2.5 px-3 py-2 text-left transition-colors hover:bg-accent"
+                className="menu-item"
               >
                 <MapPin className="mt-0.5 size-3.5 shrink-0 text-muted-foreground group-hover:text-brand-text" aria-hidden />
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[0.8125rem] leading-tight text-foreground">{truncateName(result.display_name)}</span>
-                  <span className="mt-0.5 block text-xs capitalize text-muted-foreground">{result.type.replace(/_/g, ' ')}</span>
+                  <span className="block text-body leading-tight text-foreground">{truncateName(result.display_name)}</span>
+                  <span className="mt-0.5 block text-caption capitalize text-muted-foreground">{result.type.replace(/_/g, ' ')}</span>
                 </span>
               </button>
             </li>

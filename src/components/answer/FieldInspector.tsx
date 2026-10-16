@@ -103,7 +103,7 @@ const when = (s: string) => {
   return Number.isNaN(d.getTime()) ? s.trim() : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
 }
 
-const EYEBROW = 'text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground'
+const EYEBROW = 'text-muted-foreground text-label'
 
 /** The feature last clicked on the map: its class, area, peaks and confidence, and the series it
  *  carries drawn as a line. Everything shown is read from that feature's own properties; a
@@ -130,12 +130,12 @@ export default function FieldInspector() {
   const id = props.field_id ?? props.id
 
   return (
-    <section className="grid gap-3 rounded-[0.625rem] border border-border p-4" aria-label="Selected feature" data-testid="inspector">
+    <section className="grid gap-3 rounded-lg border border-border p-4" aria-label="Selected feature" data-testid="inspector">
       <header className="flex items-baseline justify-between">
         {picked ? (
           <>
-            <h4 className="flex items-center gap-2 font-heading text-sm font-semibold">
-              <i className="size-2.5 rounded-[0.125rem]" style={{ background: color }} aria-hidden />
+            <h4 className="flex items-center gap-2 font-heading text-body-strong">
+              <i className="size-2.5 rounded-sm" style={{ background: color }} aria-hidden />
               {title}
             </h4>
             {id != null && <span className={EYEBROW}>feature {String(id)}</span>}
@@ -148,20 +148,20 @@ export default function FieldInspector() {
         )}
       </header>
       {!picked ? (
-        <p className="text-sm text-muted-foreground">Select a feature on the map to see its details.</p>
+        <p className="text-body text-muted-foreground">Select a feature on the map to see its details.</p>
       ) : (
         <>
           {(area || peaks || conf) && (
-            <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted-foreground">
-              {area && <span>Area<b className="block text-sm font-medium text-foreground">{area}</b></span>}
-              {peaks && <span>Peaks<b className="block text-sm font-medium text-foreground">{peaks}</b></span>}
-              {conf && <span>Confidence<b className="block text-sm font-medium text-foreground">{conf}</b></span>}
+            <div className="flex flex-wrap gap-x-5 gap-y-1 text-caption text-muted-foreground">
+              {area && <span>Area<b className="block text-body-strong text-foreground">{area}</b></span>}
+              {peaks && <span>Peaks<b className="block text-body-strong text-foreground">{peaks}</b></span>}
+              {conf && <span>Confidence<b className="block text-body-strong text-foreground">{conf}</b></span>}
             </div>
           )}
           {series ? (
             <SeriesChart series={series} color={color} label={`${title}: value by date`} />
           ) : (
-            <p className="text-sm text-muted-foreground">This feature carries no time series.</p>
+            <p className="text-body text-muted-foreground">This feature carries no time series.</p>
           )}
         </>
       )}

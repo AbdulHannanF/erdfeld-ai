@@ -34,17 +34,17 @@ function RunRow({ run }: { run: { id: string; query: string | null; at: number; 
   return (
     <li className="grid gap-1 rounded-md border border-border bg-sunk p-2.5" data-testid="activity-run">
       <div className="flex items-start justify-between gap-2">
-        <p className="min-w-0 text-[0.8125rem] font-medium leading-snug text-foreground">{run.query || state?.ledger?.query || 'Run without a question'}</p>
-        <span className="shrink-0 font-mono text-xs text-muted-foreground">{formatDistanceToNow(run.at, { addSuffix: true })}</span>
+        <p className="min-w-0 text-body-strong leading-snug text-foreground">{run.query || state?.ledger?.query || 'Run without a question'}</p>
+        <span className="shrink-0 text-data text-muted-foreground">{formatDistanceToNow(run.at, { addSuffix: true })}</span>
       </div>
-      <p className="font-mono text-xs text-muted-foreground">{run.id}</p>
-      {!fromServer && !state && <p className="inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Loader2 className="size-3 animate-spin" aria-hidden />Reading the ledger</p>}
-      {state?.error && <p className="text-xs text-warning">{state.error}</p>}
-      {ops.length > 0 && <p className="text-xs text-muted-foreground">{ops.length} operation{ops.length === 1 ? '' : 's'}: {[...new Set(ops.map((o) => o.replace(/_/g, ' ')))].join(', ')}</p>}
+      <p className="text-data text-muted-foreground">{run.id}</p>
+      {!fromServer && !state && <p className="inline-flex items-center gap-1.5 text-caption text-muted-foreground"><Loader2 className="size-3 animate-spin" aria-hidden />Reading the ledger</p>}
+      {state?.error && <p className="text-caption text-warning">{state.error}</p>}
+      {ops.length > 0 && <p className="text-caption text-muted-foreground">{ops.length} operation{ops.length === 1 ? '' : 's'}: {[...new Set(ops.map((o) => o.replace(/_/g, ' ')))].join(', ')}</p>}
       {(fromServer || state?.ledger) && (
         <div className="mt-0.5 flex flex-wrap gap-1.5">
-          <button type="button" className={BTN} onClick={() => void downloadBundle(run.id)}><ShieldCheck className="size-3.5" aria-hidden />Signed bundle</button>
-          <button type="button" className={BTN} onClick={() => void openSummary(run.id)}><FileCheck2 className="size-3.5" aria-hidden />PDF summary</button>
+          <button type="button" className={BTN} onClick={() => void downloadBundle(run.id)}><ShieldCheck aria-hidden />Signed bundle</button>
+          <button type="button" className={BTN} onClick={() => void openSummary(run.id)}><FileCheck2 aria-hidden />PDF summary</button>
         </div>
       )}
     </li>
@@ -88,14 +88,14 @@ function LedgerRuns() {
 
   return (
     <section className="grid gap-1.5" aria-label="Ledger runs">
-      <p className="font-mono text-xs uppercase tracking-[0.09em] text-muted-foreground">Evidence ledger runs</p>
+      <p className="text-muted-foreground text-label">Evidence ledger runs</p>
       {source === 'loading' ? (
-        <p className="inline-flex items-center gap-1.5 text-xs text-muted-foreground"><Loader2 className="size-3 animate-spin" aria-hidden />Reading the ledger</p>
+        <p className="inline-flex items-center gap-1.5 text-caption text-muted-foreground"><Loader2 className="size-3 animate-spin" aria-hidden />Reading the ledger</p>
       ) : empty ? (
         <Callout icon={<History />}>No runs yet. Every question that runs operations is written to the evidence ledger, with its sources and a content-hash id per result.</Callout>
       ) : (
         <>
-          {source === 'local' && <p className="text-xs text-warning">The server ledger could not be read, so these are the runs this browser remembers.</p>}
+          {source === 'local' && <p className="text-caption text-warning">The server ledger could not be read, so these are the runs this browser remembers.</p>}
           <ul className="grid gap-2">
             {source === 'server'
               ? rows.map((r) => <RunRow key={r.id} run={{ id: r.id, query: r.query, at: Date.parse(r.createdAt), operations: r.operations }} />)
@@ -120,7 +120,7 @@ export function ActivityLists({ onOpened }: { onOpened?: () => void }) {
   return (
     <>
       <section className="grid gap-1.5" aria-label="Conversations">
-        <p className="font-mono text-xs uppercase tracking-[0.09em] text-muted-foreground">Conversations in this browser</p>
+        <p className="text-muted-foreground text-label">Conversations in this browser</p>
         {chatHistory.length === 0 ? (
           <Callout icon={<MessageSquare />}>No earlier conversations. Each finished question is saved here, and you can reopen it.</Callout>
         ) : (
@@ -129,7 +129,7 @@ export function ActivityLists({ onOpened }: { onOpened?: () => void }) {
               <li key={c.id}>
                 <button
                   type="button"
-                  className="flex w-full items-baseline justify-between gap-3 rounded-md border border-border bg-sunk px-2.5 py-2 text-left text-[0.8125rem] text-foreground hover:bg-hover"
+                  className="menu-item"
                   onClick={() => {
                     loadFromHistory(c.id)
                     setInspectorTab('assistant')
@@ -138,7 +138,7 @@ export function ActivityLists({ onOpened }: { onOpened?: () => void }) {
                   }}
                 >
                   <span className="min-w-0 truncate">{c.query}</span>
-                  <span className="shrink-0 font-mono text-xs text-muted-foreground">{formatDistanceToNow(c.timestamp, { addSuffix: true })}</span>
+                  <span className="shrink-0 text-data text-muted-foreground">{formatDistanceToNow(c.timestamp, { addSuffix: true })}</span>
                 </button>
               </li>
             ))}

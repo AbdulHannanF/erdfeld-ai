@@ -30,9 +30,9 @@ export function ThemeToggle() {
           type="button"
           aria-label="Theme"
           title="Theme"
-          className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="btn btn-ghost btn-icon-md"
         >
-          <Icon className="size-[1.0625rem]" aria-hidden />
+          <Icon aria-hidden />
         </button>
       </PopoverTrigger>
       <PopoverContent align="end" sideOffset={8} className="w-auto p-1.5">

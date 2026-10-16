@@ -35,17 +35,17 @@ export function WbDialog({
         showCloseButton={false}
         data-testid={testId}
         className={cn(
-          'flex max-h-[min(82dvh,47.5rem)] flex-col gap-0 overflow-hidden rounded-[0.5625rem] border-[#43504a] bg-popover p-0 shadow-[0_1.5625rem_5.625rem_#000a] sm:max-w-none',
+          'flex max-h-[min(82dvh,47.5rem)] flex-col gap-0 overflow-hidden rounded-lg border-border bg-popover p-0 shadow-float sm:max-w-none',
           wide ? 'w-[min(45rem,calc(100vw-1.75rem))]' : 'w-[min(29.375rem,calc(100vw-1.75rem))]',
         )}
       >
         <header className="flex items-start justify-between gap-3 border-b border-border px-4 pb-3 pt-3.5">
           <div className="min-w-0">
             <div className={OVERLINE}>{kicker}</div>
-            <DialogTitle className="mt-1 font-heading text-[1.0625rem] font-semibold leading-snug text-foreground">{title}</DialogTitle>
+            <DialogTitle className="mt-1 font-heading text-title text-foreground">{title}</DialogTitle>
           </div>
           <button type="button" onClick={onClose} className={ICON_BTN} aria-label={`Close ${title}`}>
-            <X className="size-4" aria-hidden />
+            <X aria-hidden />
           </button>
         </header>
         <DialogDescription className="sr-only">{description}</DialogDescription>
@@ -62,14 +62,14 @@ export function Callout({ icon, children, tone = 'info', className }: { icon?: R
     <div
       role={tone === 'info' ? undefined : 'status'}
       className={cn(
-        'flex gap-2 rounded-[0.3125rem] border px-2.5 py-2 text-[0.8125rem] leading-snug',
+        'flex gap-2 rounded-md border px-2.5 py-2 text-body leading-snug',
         tone === 'info' && 'border-border bg-sunk text-muted-foreground',
         tone === 'warn' && 'border-warning/40 bg-warning/10 text-foreground',
         tone === 'bad' && 'border-danger/40 bg-danger/10 text-foreground',
         className,
       )}
     >
-      {icon && <span className="mt-0.5 shrink-0 [&_svg]:size-4 [&_svg]:text-[#b7c994]">{icon}</span>}
+      {icon && <span className="mt-0.5 shrink-0 [&_svg]:size-4 [&_svg]:text-warning">{icon}</span>}
       <div className="min-w-0">{children}</div>
     </div>
   )

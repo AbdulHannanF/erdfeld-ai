@@ -22,7 +22,7 @@ import { humanizeKey, unitOf } from '@/components/answer/derive'
 import { useUi } from '@/store/useUi'
 
 const PILL =
-  'not-prose mx-0.5 inline-flex h-[1.125rem] min-w-[1.125rem] items-center justify-center rounded px-1 align-baseline text-xs font-semibold leading-none tabular-nums transition-colors'
+  'not-prose mx-0.5 inline-flex h-[1.125rem] min-w-[1.125rem] items-center justify-center rounded-sm px-1 align-baseline text-caption-strong leading-none tabular-nums transition-colors'
 
 /** A single inline citation marker. `index` is the 1-based display number. */
 export function CitationPill({
@@ -53,13 +53,13 @@ export function CitationPill({
             !
           </button>
         </PopoverTrigger>
-        <PopoverContent align="start" className="w-64 p-3 text-xs">
+        <PopoverContent align="start" className="w-64 p-3 text-caption">
           <div className="flex items-center gap-1.5 font-semibold text-danger">
             <AlertCircle className="size-3.5" aria-hidden />
             Unresolved citation
           </div>
           <p className="mt-1.5 leading-relaxed text-muted-foreground">
-            The answer referred to <code className="rounded bg-muted px-1">{resultId}#{citeKey}</code>, but no result with that id and field exists in this session.
+            The answer referred to <code className="rounded-sm bg-muted px-1">{resultId}#{citeKey}</code>, but no result with that id and field exists in this session.
           </p>
         </PopoverContent>
       </Popover>
@@ -104,7 +104,7 @@ export function MiniCitationChart({ title, data }: { title: string; data: Citati
   const spec = useMemo(() => seriesSpec(data.slice(0, 24)), [data])
   return (
     <div className="not-prose mt-3 rounded-lg border border-border bg-muted/50 p-2.5">
-      <div className="mb-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">{title}</div>
+      <div className="mb-1.5 text-muted-foreground text-label">{title}</div>
       <VegaChart spec={spec} height={140} />
     </div>
   )

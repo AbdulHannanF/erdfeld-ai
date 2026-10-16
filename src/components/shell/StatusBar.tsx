@@ -25,7 +25,7 @@ export default function StatusBar() {
   const message = isLoading ? `Working · ${stage.replace(/_/g, ' ')}` : 'Open data · sources shown with every result'
 
   return (
-    <footer aria-label="Map status" className="flex h-7 items-center justify-between gap-2.5 whitespace-nowrap bg-sidebar px-2.5 font-mono text-xs text-muted-foreground">
+    <footer aria-label="Map status" className="flex h-7 items-center justify-between gap-2.5 whitespace-nowrap bg-sidebar px-2.5 text-data text-muted-foreground">
       <div className="flex min-w-0 items-center gap-3">
         <span className="flex items-center gap-1.5" role="status" aria-live="polite"><HealthDot className="size-auto" /><span className="truncate max-md:hidden" data-testid="status-message">{message}</span></span>
         {showCoordinates && at && <span className="max-md:hidden" data-testid="cursor-coords" title={cursor ? 'Cursor position' : 'Map centre'}>{lat(at.lat)} · {lng(at.lng)}</span>}
@@ -33,7 +33,7 @@ export default function StatusBar() {
       </div>
       <div className="flex items-center gap-3">
         {zoom != null && center && <span className="max-md:hidden" title="Approximate: assumes a 96 dpi screen">Scale ≈ 1:{scaleDenominator(center.lat, zoom).toLocaleString('en-US')}</span>}
-        <button type="button" onClick={() => openDialog('crs')} aria-label={`Output CRS for vector export: ${exportCrs}. Change`} title="Output CRS for vector export" className="rounded px-1 text-secondary-foreground hover:bg-hover hover:text-foreground" data-testid="crs-button">
+        <button type="button" onClick={() => openDialog('crs')} aria-label={`Output CRS for vector export: ${exportCrs}. Change`} title="Output CRS for vector export" className="link-btn font-normal text-muted-foreground" data-testid="crs-button">
           {exportCrs}
         </button>
       </div>

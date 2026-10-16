@@ -49,7 +49,7 @@ const TYPE_CONFIG: Record<
   },
   layer_added: {
     icon: Layers,
-    color: 'text-aqua-text',
+    color: 'text-brand-text',
     bgColor: 'bg-aqua-500/15',
   },
   analysis: {
@@ -89,7 +89,7 @@ function NotificationRow({
       onClick={() => {
         if (!notification.read) onMarkRead(notification.id)
       }}
-      className={`w-full flex items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors duration-150 group ${
+      className={`w-full flex items-start gap-3 rounded-lg px-3 py-2.5 text-left transition-colors duration-150 group ${
         notification.read
           ? 'bg-transparent hover:bg-foreground/[0.03]'
           : 'bg-foreground/[0.04] hover:bg-foreground/[0.06]'
@@ -106,7 +106,7 @@ function NotificationRow({
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2">
           <span
-            className={`text-sm font-medium leading-tight truncate ${
+            className={`text-body-strong leading-tight truncate ${
               notification.read ? 'text-muted-foreground' : 'text-foreground'
             }`}
           >
@@ -117,10 +117,10 @@ function NotificationRow({
             <span className="flex-shrink-0 h-2 w-2 rounded-full bg-brand-400 animate-pulse shadow-sm" />
           )}
         </div>
-        <p className="text-xs text-muted-foreground leading-snug mt-0.5 line-clamp-2">
+        <p className="text-caption text-muted-foreground leading-snug mt-0.5 line-clamp-2">
           {notification.description}
         </p>
-        <span className="text-xs text-muted-foreground font-mono mt-1 block">
+        <span className="text-data text-muted-foreground mt-1 block">
           {relativeTime}
         </span>
       </div>
@@ -135,11 +135,11 @@ function NotificationRow({
 function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
-      <div className="flex items-center justify-center h-14 w-14 rounded-2xl bg-muted/50 border border-border mb-4">
+      <div className="flex items-center justify-center h-14 w-14 rounded-lg bg-muted/50 border border-border mb-4">
         <Bell className="h-6 w-6 text-muted-foreground" />
       </div>
-      <p className="text-sm font-medium text-muted-foreground">No notifications yet</p>
-      <p className="text-xs text-muted-foreground mt-1">
+      <p className="text-body-strong text-muted-foreground">No notifications yet</p>
+      <p className="text-caption text-muted-foreground mt-1">
         Alerts will appear here when tools complete or layers are added
       </p>
     </div>
@@ -187,19 +187,16 @@ export default function NotificationPanel() {
                 aria-label a screen reader announces nothing at all here. */}
             <Button
               variant="ghost"
-              size="icon"
+              size="icon-md"
               aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
-              className={`size-[1.875rem] relative transition-colors ${
-                open
-                  ? 'text-brand-text bg-brand-500/10'
-                  : 'text-muted-foreground hover:text-brand-text hover:bg-brand-500/10'
-              }`}
+              aria-expanded={open}
+              className="relative"
               onClick={() => setOpen(true)}
             >
               <Bell className="h-3.5 w-3.5" />
               {unreadCount > 0 && (
                 <span
-                  className={`absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-[0.875rem] h-[0.875rem] rounded-full bg-primary text-xs font-bold text-primary-foreground shadow-lg transition-transform duration-300 ${
+                  className={`absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-[0.875rem] h-[0.875rem] rounded-full bg-primary text-caption-strong text-primary-foreground shadow-lg transition-transform duration-300 ${
                     animateBadge ? 'scale-150' : 'scale-100'
                   }`}
                 >
@@ -223,10 +220,10 @@ export default function NotificationPanel() {
           <SheetHeader className="px-4 pt-4 pb-2 border-b border-border">
             <div className="flex items-center justify-between">
               <div>
-                <SheetTitle className="text-sm font-semibold text-foreground">
+                <SheetTitle>
                   Notifications
                 </SheetTitle>
-                <SheetDescription className="text-xs text-muted-foreground mt-0.5">
+                <SheetDescription className="text-caption text-muted-foreground mt-0.5">
                   {unreadCount > 0
                     ? `${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`
                     : 'All caught up'}
@@ -240,8 +237,8 @@ export default function NotificationPanel() {
                       <TooltipTrigger asChild>
                         <Button
                           variant="ghost"
-                          size="icon"
-                          className="h-7 w-7 text-muted-foreground hover:text-brand-text hover:bg-brand-500/10"
+                          size="icon-sm"
+                          aria-label="Mark all as read"
                           onClick={handleMarkAllRead}
                         >
                           <CheckCheck className="h-3.5 w-3.5" />
@@ -263,8 +260,8 @@ export default function NotificationPanel() {
                           <AlertDialogTrigger asChild>
                             <Button
                               variant="ghost"
-                              size="icon"
-                              className="h-7 w-7 text-muted-foreground hover:text-danger hover:bg-danger/10"
+                              size="icon-sm"
+                              aria-label="Clear all"
                             >
                               <Trash2 className="h-3.5 w-3.5" />
                             </Button>

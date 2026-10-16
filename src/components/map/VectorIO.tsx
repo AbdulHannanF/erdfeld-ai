@@ -134,20 +134,20 @@ export default function VectorLayerActions({ layer }: { layer: MapLayer }) {
       {hasPolygons && (
         <button
           onClick={useAsAoi}
-          className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded bg-foreground/5 px-1.5 py-0.5 text-xs text-foreground transition-colors hover:bg-foreground/10"
+          className="btn btn-secondary btn-sm"
           aria-label={`Use ${layer.name} as AOI`}
         >
-          <Crop className="size-2.5" />
+          <Crop aria-hidden />
           Use as AOI
         </button>
       )}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <button
-            className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded bg-foreground/5 px-1.5 py-0.5 text-xs text-foreground transition-colors hover:bg-foreground/10"
+            className="btn btn-secondary btn-sm"
             aria-label={`Download ${layer.name}`}
           >
-            <Download className="size-2.5" />
+            <Download aria-hidden />
             Download
           </button>
         </PopoverTrigger>
@@ -156,7 +156,7 @@ export default function VectorLayerActions({ layer }: { layer: MapLayer }) {
             <button
               key={f.id}
               onClick={() => doExport(f.id)}
-              className="block w-full rounded px-2 py-1 text-left text-xs text-foreground hover:bg-foreground/10"
+              className="menu-item"
             >
               {f.label}
             </button>

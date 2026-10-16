@@ -93,7 +93,7 @@ export default function AnswerView({ onRetry }: { onRetry: () => void }) {
   const quickNotes = quick.length > 0 && (
     <section aria-label="Quick layer results" className="grid gap-3" data-testid="quick-notes">
       {quick.map((m) => (
-        <div key={m.id} className="rounded-lg border border-border bg-muted/40 px-3.5 py-3 text-[0.8125rem]">
+        <div key={m.id} className="rounded-lg border border-border bg-muted/40 px-3.5 py-3 text-body">
           <CitedMarkdown content={m.content} toolResults={liveResults} />
         </div>
       ))}
@@ -103,7 +103,7 @@ export default function AnswerView({ onRetry }: { onRetry: () => void }) {
   if (!question) {
     return (
       <div className="grid gap-5" data-testid="answer-view">
-        <h2 className="font-heading text-lg font-medium text-foreground">Quick layer</h2>
+        <h2 className="font-heading text-section text-foreground">Quick layer</h2>
         <StepList />
         {quickNotes}
         <FeatureList />
@@ -121,13 +121,13 @@ export default function AnswerView({ onRetry }: { onRetry: () => void }) {
       )}
 
       <div>
-        <h2 className="font-heading text-lg font-medium tracking-[-0.005em] text-foreground">{question.content}</h2>
-        <p className="mt-1.5 text-xs text-muted-foreground">
+        <h2 className="font-heading text-section text-foreground">{question.content}</h2>
+        <p className="mt-1.5 text-caption text-muted-foreground">
           You · {time(question.timestamp)}
           {aoi && ` · ${aoi.type} area${km2 != null ? `, ${formatAreaKm2(km2)}` : ''}`}
         </p>
         {runNotice && (
-          <p className="mt-1 flex items-start gap-1.5 text-xs leading-relaxed text-muted-foreground" role="status" data-testid="run-notice">
+          <p className="mt-1 flex items-start gap-1.5 text-caption leading-relaxed text-muted-foreground" role="status" data-testid="run-notice">
             <Info className="mt-0.5 size-3.5 shrink-0" aria-hidden />{runNotice}
           </p>
         )}
@@ -140,21 +140,21 @@ export default function AnswerView({ onRetry }: { onRetry: () => void }) {
       {!isLoading && run.state === 'cannot_determine' && <CannotDetermineNotice run={run} />}
 
       {head && (
-        <p className="font-heading text-2xl font-semibold tracking-[-0.015em] text-foreground" data-testid="answer-headline">
+        <p className="font-heading text-display text-foreground" data-testid="answer-headline">
           {head.text}
-          {head.label && <span className="ml-2 font-medium text-muted-foreground">{head.label}</span>}
+          {head.label && <span className="ml-2 font-semibold text-muted-foreground">{head.label}</span>}
           {head.lowConfidence && (
-            <span className="ml-2 inline-block rounded border border-warning/40 bg-warning/10 px-1.5 py-0.5 align-middle text-xs font-medium text-warning">Low confidence</span>
+            <span className="ml-2 inline-block rounded-sm border border-warning/40 bg-warning/10 px-1.5 py-0.5 align-middle text-caption-strong text-warning">Low confidence</span>
           )}
         </p>
       )}
 
       <div aria-live="polite" aria-atomic="false" aria-busy={isLoading} className={cn(isLoading && !content && 'min-h-6')}>
         {isLoading && !content ? (
-          <div className="grid gap-1 text-[0.8125rem] text-muted-foreground" data-testid="working">
+          <div className="grid gap-1 text-body text-muted-foreground" data-testid="working">
             <p className="inline-flex items-center gap-2"><Loader2 className="size-3.5 animate-spin" aria-hidden />Working on it<span className="tabular-nums">({elapsed} s)</span></p>
-            {thinking.slice(-3).map((t) => <p key={t.id} className="pl-5 text-xs leading-snug" data-testid="status-line">{t.content}</p>)}
-            {elapsed > 60 && <p className="pl-5 text-xs">Some analyses take a few minutes. The steps above show what has finished.</p>}
+            {thinking.slice(-3).map((t) => <p key={t.id} className="pl-5 text-caption leading-snug" data-testid="status-line">{t.content}</p>)}
+            {elapsed > 60 && <p className="pl-5 text-caption">Some analyses take a few minutes. The steps above show what has finished.</p>}
           </div>
         ) : content ? (
           <CitedMarkdown content={content} toolResults={isLoading ? undefined : results} charts={reply?.charts} liveCharts={isLoading} />
@@ -167,15 +167,15 @@ export default function AnswerView({ onRetry }: { onRetry: () => void }) {
           <dl className="grid grid-flow-col auto-cols-fr border-y border-border" data-testid="key-figures">
             {(keys.length > 0 ? keys.map((k) => ({ id: k.label, label: k.label, value: k.value })) : figures.slice(1, 4).map((f) => ({ id: `${f.resultId}#${f.key}`, label: `${f.label}${f.range ? ` · ${f.range.low} to ${f.range.high}` : ''}`, value: f.value }))).map((f, i) => (
               <div key={f.id} className={cn('grid content-start gap-0.5 py-3', i > 0 && 'border-l border-border pl-3')}>
-                <dt className="order-2 text-xs text-muted-foreground">{f.label}</dt>
-                <dd className="order-1 font-heading text-lg font-semibold">{f.value}</dd>
+                <dt className="order-2 text-caption text-muted-foreground">{f.label}</dt>
+                <dd className="order-1 font-heading text-section">{f.value}</dd>
               </div>
             ))}
           </dl>
           {keys.length === 0 && figures.length > 4 && (
             <ul className="divide-y divide-border border-b border-border">
               {figures.slice(4).map((f) => (
-                <li key={`${f.resultId}#${f.key}`} className="py-2 text-sm leading-snug text-foreground">{f.sentence}</li>
+                <li key={`${f.resultId}#${f.key}`} className="py-2 text-body leading-snug text-foreground">{f.sentence}</li>
               ))}
             </ul>
           )}
@@ -196,14 +196,14 @@ export default function AnswerView({ onRetry }: { onRetry: () => void }) {
               <Button size="sm"><Download aria-hidden />Export</Button>
             </ExportMenu>
             {runId && (
-              <Button variant="outline" size="sm" onClick={() => void downloadBundle(runId)}><ShieldCheck aria-hidden />Signed bundle</Button>
+              <Button variant="secondary" size="sm" onClick={() => void downloadBundle(runId)}><ShieldCheck aria-hidden />Signed bundle</Button>
             )}
             <ShareMenu />
             {runId && (
               <Button variant="ghost" size="sm" onClick={showResults}><FileCheck2 aria-hidden />See evidence</Button>
             )}
           </div>
-          <p className="text-xs leading-relaxed text-muted-foreground">
+          <p className="text-caption leading-relaxed text-muted-foreground">
             {runResultIds.length > 0 ? `${runResultIds.length} ${runResultIds.length === 1 ? 'result' : 'results'} · ` : ''}
             computed {time(reply.timestamp)}
             {runId ? ' · reproducible from the evidence ledger' : ''}
@@ -213,17 +213,17 @@ export default function AnswerView({ onRetry }: { onRetry: () => void }) {
 
       {earlier.length > 0 && (
         <section aria-label="Earlier in this session" className="border-t border-border pt-3">
-          <h3 className="mb-1 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">Earlier in this session</h3>
+          <h3 className="mb-1 text-muted-foreground text-label">Earlier in this session</h3>
           <ul className="divide-y divide-border">
             {earlier.map(({ q, a }) => (
               <li key={q.id}>
                 <details className="group py-2">
-                  <summary className="cursor-pointer list-none text-[0.8125rem] text-foreground marker:hidden [&::-webkit-details-marker]:hidden">
+                  <summary className="cursor-pointer list-none text-body text-foreground marker:hidden [&::-webkit-details-marker]:hidden">
                     <span className="mr-1.5 text-muted-foreground group-open:hidden">+</span>
                     <span className="mr-1.5 hidden text-muted-foreground group-open:inline">−</span>
                     {q.content}
                   </summary>
-                  {a ? <div className="mt-2 pl-4"><CitedMarkdown content={a.content} toolResults={a.toolResults} charts={a.charts} /></div> : <p className="mt-2 pl-4 text-xs text-muted-foreground">No answer was recorded.</p>}
+                  {a ? <div className="mt-2 pl-4"><CitedMarkdown content={a.content} toolResults={a.toolResults} charts={a.charts} /></div> : <p className="mt-2 pl-4 text-caption text-muted-foreground">No answer was recorded.</p>}
                 </details>
               </li>
             ))}

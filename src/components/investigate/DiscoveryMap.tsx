@@ -39,10 +39,10 @@ export function DiscoveryMap({ discovery }: { discovery: NonNullable<Investigati
         ))}
         {cells[chosen] && <rect {...rect(cells[chosen])} fill="none" stroke="var(--foreground)" strokeWidth={2} />}
       </svg>
-      <ol className="min-w-0 text-xs">
+      <ol className="min-w-0 text-caption">
         {cells.map((c, i) => (
           <li key={i} className="flex items-baseline justify-between gap-3 py-0.5 tabular-nums">
-            <span className={i === chosen ? 'font-medium text-foreground' : 'text-muted-foreground'}>Cell {i + 1}{i === chosen ? ' (chosen)' : ''}</span>
+            <span className={i === chosen ? 'font-semibold text-foreground' : 'text-muted-foreground'}>Cell {i + 1}{i === chosen ? ' (chosen)' : ''}</span>
             <span className="text-muted-foreground" title={c.reason}>{c.score == null ? 'not scored' : `score ${c.score.toFixed(2)}`}</span>
           </li>
         ))}

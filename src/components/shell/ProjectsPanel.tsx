@@ -204,11 +204,11 @@ export default function ProjectsPanel({ children }: { children: React.ReactNode 
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent side="right" className="w-[21.25rem] bg-card border-l border-border p-0">
         <SheetHeader className="px-4 py-3 border-b border-border">
-          <SheetTitle className="flex items-center gap-2 text-sm font-semibold text-foreground">
+          <SheetTitle className="flex items-center gap-2">
             <FolderOpen className="h-4 w-4 text-brand-text" />
             Projects
             {projects.length > 0 && (
-              <span className="rounded-full bg-muted px-1.5 py-0.5 text-xs text-muted-foreground font-normal">
+              <span className="rounded-full bg-muted px-1.5 py-0.5 text-caption text-muted-foreground font-normal">
                 {projects.length}
               </span>
             )}
@@ -227,14 +227,14 @@ export default function ProjectsPanel({ children }: { children: React.ReactNode 
               else handleSaveNew()
             }}
             placeholder={currentProjectId ? 'Rename (optional)…' : 'Project name…'}
-            className="w-full bg-foreground/[0.06] border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground/90 placeholder:text-muted-foreground focus:outline-none focus:border-brand-500/40 focus:ring-1 focus:ring-brand-500/20 transition-colors"
+            className="field"
           />
           <div className="flex items-center gap-1.5 mt-2">
             {currentProjectId ? (
               <>
                 <Button
                   size="sm"
-                  className="h-7 flex-1 bg-primary hover:bg-primary/90 text-primary-foreground text-xs gap-1.5"
+                  className="flex-1"
                   disabled={saving}
                   onClick={handleUpdate}
                 >
@@ -244,7 +244,7 @@ export default function ProjectsPanel({ children }: { children: React.ReactNode 
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 text-xs text-muted-foreground hover:text-brand-text gap-1"
+
                   disabled={saving}
                   onClick={handleSaveNew}
                   title="Save as a new project"
@@ -256,7 +256,7 @@ export default function ProjectsPanel({ children }: { children: React.ReactNode 
             ) : (
               <Button
                 size="sm"
-                className="h-7 flex-1 bg-primary hover:bg-primary/90 text-primary-foreground text-xs gap-1.5"
+                className="flex-1"
                 disabled={saving}
                 onClick={handleSaveNew}
               >
@@ -266,7 +266,7 @@ export default function ProjectsPanel({ children }: { children: React.ReactNode 
             )}
           </div>
           {currentProjectId && (
-            <p className="mt-1.5 text-xs text-muted-foreground">
+            <p className="mt-1.5 text-caption text-muted-foreground">
               Editing a saved project — “Update” overwrites it, “New” forks a copy.
             </p>
           )}
@@ -276,14 +276,14 @@ export default function ProjectsPanel({ children }: { children: React.ReactNode 
         <ScrollArea className="h-[calc(100vh-11.25rem)]">
           <div className="flex flex-col gap-1 p-2">
             {listLoading ? (
-              <div className="flex items-center justify-center gap-2 py-8 text-muted-foreground text-xs">
+              <div className="flex items-center justify-center gap-2 py-8 text-muted-foreground text-caption">
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 Loading…
               </div>
             ) : projects.length === 0 ? (
               <div className="flex flex-col items-center gap-2 py-10 px-4">
                 <FolderClosed className="h-7 w-7 text-muted-foreground" />
-                <p className="text-xs text-muted-foreground text-center leading-relaxed">
+                <p className="text-caption text-muted-foreground text-center leading-relaxed">
                   No saved projects yet.
                   <br />
                   Draw an AOI, run an analysis, then save it here to reopen later.
@@ -304,10 +304,10 @@ export default function ProjectsPanel({ children }: { children: React.ReactNode 
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs font-medium text-foreground truncate flex-1">
+                      <span className="text-caption-strong text-foreground truncate flex-1">
                         {p.name}
                         {active && (
-                          <span className="ml-1.5 text-xs text-brand-text font-normal">· open</span>
+                          <span className="ml-1.5 text-caption text-brand-text font-normal">· open</span>
                         )}
                       </span>
                       <span className="flex items-center gap-0.5 shrink-0">
@@ -318,7 +318,7 @@ export default function ProjectsPanel({ children }: { children: React.ReactNode 
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') handleShare(p.id, e as unknown as React.MouseEvent)
                           }}
-                          className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-primary/20 text-muted-foreground hover:text-brand-text transition-all cursor-pointer"
+                          className="opacity-0 group-hover:opacity-100 p-1 rounded-sm hover:bg-primary/20 text-muted-foreground hover:text-brand-text transition-all cursor-pointer"
                           title="Copy read-only share link"
                         >
                           <Share2 className="h-3 w-3" />
@@ -330,14 +330,14 @@ export default function ProjectsPanel({ children }: { children: React.ReactNode 
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') handleDelete(p.id, e as unknown as React.MouseEvent)
                           }}
-                          className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-danger/20 text-muted-foreground hover:text-danger transition-all cursor-pointer"
+                          className="opacity-0 group-hover:opacity-100 p-1 rounded-sm hover:bg-danger/20 text-muted-foreground hover:text-danger transition-all cursor-pointer"
                           title="Delete project"
                         >
                           <Trash2 className="h-3 w-3" />
                         </span>
                       </span>
                     </div>
-                    <div className="flex items-center gap-2.5 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-2.5 text-caption text-muted-foreground">
                       <span className="flex items-center gap-0.5">
                         <LayersIcon className="h-2.5 w-2.5" />
                         {p.layerCount}

@@ -137,6 +137,6 @@ export default function VegaChartView({
     if (linked) resultRef.current?.view.signal(HIGHLIGHT_PARAM, fid).runAsync()
   }, [fid, linked])
 
-  if (error) return <div className="px-2 py-3 text-xs text-warning">Chart error: {error}</div>
+  if (error) return <div className="px-2 py-3 text-caption text-warning">Chart error: {error}</div>
   return <div ref={hostRef} className={`vega-host w-full min-w-0 ${className ?? ''}`} role="img" aria-label={String(spec?.title?.text ?? spec?.title ?? 'Chart')} />
 }

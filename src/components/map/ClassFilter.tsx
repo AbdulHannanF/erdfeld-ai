@@ -27,10 +27,10 @@ export default function ClassFilter() {
         const allValues = rows.map((r) => r.value)
         return (
           <div key={layer.id}>
-            <div className="mb-1 flex items-center justify-between px-1 text-xs text-muted-foreground">
+            <div className="mb-1 flex items-center justify-between px-1 text-caption text-muted-foreground">
               <span className="truncate">{sets.length > 1 ? layer.name : `By ${layer.vectorStyle?.property}`}</span>
               {current && (
-                <button type="button" onClick={() => setClassFilter(layer.id, null)} className="font-medium text-brand-text underline-offset-2 hover:underline">
+                <button type="button" onClick={() => setClassFilter(layer.id, null)} className="link-btn">
                   Show all
                 </button>
               )}
@@ -45,15 +45,15 @@ export default function ClassFilter() {
                       aria-pressed={on}
                       onClick={() => setClassFilter(layer.id, toggleClass(current, row.value, allValues))}
                       className={cn(
-                        'grid w-full grid-cols-[0.625rem_1fr_auto_auto] items-center gap-2 rounded-sm px-1.5 py-1.5 text-left text-[0.8125rem] transition-[background-color,opacity] duration-150 hover:bg-muted',
+                        'menu-item',
                         !on && 'opacity-45',
                         current && on && 'bg-muted',
                       )}
                     >
-                      <i className="size-2.5 rounded-[0.125rem]" style={{ background: row.color }} aria-hidden />
+                      <i className="size-2.5 rounded-sm" style={{ background: row.color }} aria-hidden />
                       <span className="truncate text-foreground">{row.label}</span>
-                      <span className="min-w-[2.5ch] text-right text-xs tabular-nums text-muted-foreground">{row.count.toLocaleString('en-US')}</span>
-                      <span className="min-w-[6ch] text-right text-xs tabular-nums text-foreground/80">{row.areaHa != null ? `${Math.round(row.areaHa).toLocaleString('en-US')} ha` : ''}</span>
+                      <span className="min-w-[2.5ch] text-right text-caption tabular-nums text-muted-foreground">{row.count.toLocaleString('en-US')}</span>
+                      <span className="min-w-[6ch] text-right text-caption tabular-nums text-foreground">{row.areaHa != null ? `${Math.round(row.areaHa).toLocaleString('en-US')} ha` : ''}</span>
                     </button>
                   </li>
                 )

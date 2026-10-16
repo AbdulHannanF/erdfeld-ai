@@ -28,9 +28,9 @@ export function BrandMark({
         <path d="M4 42 44 64 84 42M4 63 44 85 84 63" stroke="#D9EBDD" strokeWidth="1.2" />
       </svg>
       {variant === 'lockup' && (
-        <span aria-hidden="true" className="min-w-0 whitespace-nowrap font-heading text-[0.875rem] font-bold leading-none tracking-[0.16em]">
+        <span aria-hidden="true" className="min-w-0 whitespace-nowrap font-heading text-body-strong leading-none tracking-[0.16em]">
           ERDFELD<em className="ml-[0.4em] not-italic text-brand-text">AI</em>
-          {tagline && <span className="mt-[0.3125rem] block whitespace-normal font-mono text-xs font-normal leading-[1.25] tracking-[0.04em] text-muted-foreground">SPATIAL<br />INTELLIGENCE</span>}
+          {tagline && <span className="mt-[0.3125rem] block whitespace-normal text-data font-normal leading-[1.25] tracking-[0.04em] text-muted-foreground">SPATIAL<br />INTELLIGENCE</span>}
         </span>
       )}
     </span>

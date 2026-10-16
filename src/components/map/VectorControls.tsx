@@ -20,8 +20,7 @@ import {
 // the legend follows — no agent round trip.
 // ---------------------------------------------------------------------------
 
-const selectCls =
-  'min-w-0 flex-1 rounded border border-border bg-card px-1 py-0.5 text-xs text-foreground focus:outline-none'
+const selectCls = 'field field-sm min-w-0 flex-1'
 
 export default function VectorControls({ layer }: { layer: MapLayer }) {
   const setStyle = useStore((s) => s.setLayerVectorStyle)
@@ -51,7 +50,7 @@ export default function VectorControls({ layer }: { layer: MapLayer }) {
   return (
     <div className="flex flex-col gap-1 pl-7 pr-1 pt-1" data-testid="vector-controls">
       <div className="flex items-center gap-1.5">
-        <span className="w-9 shrink-0 text-xs text-muted-foreground">Colour by</span>
+        <span className="w-9 shrink-0 text-caption text-muted-foreground">Colour by</span>
         <select value={style?.property ?? ''} onChange={(e) => pickProperty(e.target.value)} aria-label="Colour by property" className={selectCls}>
           <option value="">Default colour</option>
           {props.map((p) => (
@@ -62,7 +61,7 @@ export default function VectorControls({ layer }: { layer: MapLayer }) {
       {style && (
         <>
           <div className="flex items-center gap-1.5">
-            <span className="w-9 shrink-0 text-xs text-muted-foreground">Type</span>
+            <span className="w-9 shrink-0 text-caption text-muted-foreground">Type</span>
             <select
               value={style.kind}
               onChange={(e) => apply({ kind: e.target.value as VectorStyle['kind'] })}
@@ -94,7 +93,7 @@ export default function VectorControls({ layer }: { layer: MapLayer }) {
           </div>
           {style.kind === 'graduated' && (
             <div className="flex items-center gap-1.5">
-              <span className="w-9 shrink-0 text-xs text-muted-foreground">Classes</span>
+              <span className="w-9 shrink-0 text-caption text-muted-foreground">Classes</span>
               <select
                 value={style.numClasses ?? DEFAULT_CLASSES}
                 onChange={(e) => apply({ numClasses: Number(e.target.value), breaks: undefined })}

@@ -175,13 +175,13 @@ const CitedMarkdown = memo(function CitedMarkdown({
         </ReactMarkdown>
       </div>
       {split.unverified && (
-        <aside role="note" className="rounded-md bg-amber-wash px-4 py-3 text-sm text-amber-ink" data-testid="unverified-note">
+        <aside role="note" className="rounded-md bg-amber-wash px-4 py-3 text-body text-warning" data-testid="unverified-note">
           <p className="font-semibold">Unverified statements</p>
           <div className="answer-prose mt-0.5"><ReactMarkdown>{split.unverified}</ReactMarkdown></div>
         </aside>
       )}
       {split.budget && (
-        <aside role="note" className="rounded-md bg-amber-wash px-4 py-3 text-sm text-amber-ink" data-testid="budget-note">
+        <aside role="note" className="rounded-md bg-amber-wash px-4 py-3 text-body text-warning" data-testid="budget-note">
           <p className="font-semibold">Run cut short</p>
           <p className="mt-0.5">{split.budget.replace(/\*\*/g, '')}</p>
         </aside>

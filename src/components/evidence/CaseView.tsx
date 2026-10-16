@@ -86,14 +86,14 @@ export default function CaseView({ id }: { id: string }) {
   const shell = (children: React.ReactNode) => (
     <div className="h-screen overflow-y-auto bg-background text-foreground" data-testid="case-page">
       <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-border bg-background/95 px-4 py-3">
-        <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-brand-text hover:underline"><ArrowLeft className="h-4 w-4" aria-hidden /> Back to the map</Link>
+        <Link href="/" className="inline-flex items-center gap-1.5 text-body text-brand-text hover:underline"><ArrowLeft className="h-4 w-4" aria-hidden /> Back to the map</Link>
         <BrandMark height={32} className="ml-auto" />
       </header>
       {children}
     </div>
   )
 
-  if (error) return shell(<p className="mx-auto max-w-2xl p-6 text-destructive" role="alert" data-testid="case-error">{error}</p>)
+  if (error) return shell(<p className="mx-auto max-w-2xl p-6 text-danger" role="alert" data-testid="case-error">{error}</p>)
   if (!view) return shell(<p className="flex items-center gap-2 p-6 text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" /> Loading the case...</p>)
 
   const confidence = view.confidence != null ? `${Math.round(view.confidence * 100)}%` : null
@@ -105,13 +105,13 @@ export default function CaseView({ id }: { id: string }) {
           <div className="h-[18.75rem] lg:h-[calc(100vh-14rem)] lg:min-h-[22.5rem] overflow-hidden rounded-lg border border-border"><CaseMap geometry={view.geometry} layers={mapLayers} /></div>
           {layers.length > 0 && (
             <fieldset className="min-w-0 rounded-lg border border-border bg-card p-3">
-              <legend className="px-1 text-xs text-muted-foreground">Evidence layers</legend>
-              <ul className="space-y-1.5 text-sm">
+              <legend className="px-1 text-caption text-muted-foreground">Evidence layers</legend>
+              <ul className="space-y-1.5 text-body">
                 {layers.map((l) => (
                   <li key={l.key}>
                     <label className="flex cursor-pointer items-center gap-2">
                       <input type="checkbox" className="accent-brand-500" checked={!hidden.has(l.key)} onChange={() => setHidden((h) => { const n = new Set(h); if (n.has(l.key)) n.delete(l.key); else n.add(l.key); return n })} />
-                      <span className="min-w-0 truncate">{l.label}</span><span className="ml-auto shrink-0 whitespace-nowrap text-xs text-muted-foreground">step {l.step}</span>
+                      <span className="min-w-0 truncate">{l.label}</span><span className="ml-auto shrink-0 whitespace-nowrap text-caption text-muted-foreground">step {l.step}</span>
                     </label>
                   </li>
                 ))}
@@ -122,61 +122,61 @@ export default function CaseView({ id }: { id: string }) {
       </aside>
       <div className="min-w-0 space-y-6 lg:order-1">
         <section aria-labelledby="case-claim">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">Claim</p>
-          <h1 id="case-claim" className="mt-1 font-heading text-2xl font-medium leading-snug">{view.claim}</h1>
+          <p className="text-muted-foreground text-label">Claim</p>
+          <h1 id="case-claim" className="mt-1 font-heading text-display leading-snug">{view.claim}</h1>
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            <span data-testid="verdict-badge" className={`inline-flex items-center rounded-md border px-3 py-1.5 font-heading text-lg font-medium ${VERDICT_CLASS[view.verdict]}`}>
+            <span data-testid="verdict-badge" className={`inline-flex items-center rounded-md border px-3 py-1.5 font-heading text-section ${VERDICT_CLASS[view.verdict]}`}>
               {VERDICT_LABEL[view.verdict]}
             </span>
             {confidence && (
-              <span data-testid="confidence" className="text-sm text-muted-foreground" title="A stated heuristic score from the recipe, not a probability; the evaluation reports how well it is calibrated.">
+              <span data-testid="confidence" className="text-body text-muted-foreground" title="A stated heuristic score from the recipe, not a probability; the evaluation reports how well it is calibrated.">
                 confidence <strong className="tabular-nums text-foreground">{confidence}</strong>
               </span>
             )}
             {view.verdict === 'cannot_determine' && view.decision.kind && (
-              <span className="text-sm text-aqua-text">{ABSTAIN_LABEL[view.decision.kind] ?? view.decision.kind}</span>
+              <span className="text-body text-brand-text">{ABSTAIN_LABEL[view.decision.kind] ?? view.decision.kind}</span>
             )}
           </div>
-          <p className="mt-3 text-sm leading-relaxed">{view.decision.reason}</p>
-          <p className="mt-2 text-xs text-muted-foreground">
+          <p className="mt-3 text-body leading-relaxed">{view.decision.reason}</p>
+          <p className="mt-2 text-caption text-muted-foreground">
             Recipe <code>{view.recipe}</code> · rule <code>{view.decision.rule}</code> · {new Date(view.created_at).toISOString().slice(0, 10)}
             {view.run_id && <> · ledger run <code>{short(view.run_id)}</code></>}
           </p>
           {view.bundle_url && (
-            <button onClick={download} data-testid="download-bundle" className="mt-4 inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-              <Download className="h-4 w-4" aria-hidden /> Download signed evidence bundle
+            <button onClick={download} data-testid="download-bundle" className="btn btn-primary btn-md mt-4">
+              <Download aria-hidden /> Download signed evidence bundle
             </button>
           )}
         </section>
 
         <section aria-labelledby="case-timeline">
-          <h2 id="case-timeline" className="font-heading text-lg font-medium">Evidence timeline</h2>
+          <h2 id="case-timeline" className="font-heading text-section">Evidence timeline</h2>
           <ol className="mt-3 space-y-3" data-testid="timeline">
             {view.timeline.map((t) => (
               <li key={t.step} className="rounded-lg border border-border bg-card p-3" data-testid="timeline-node">
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="text-xs text-muted-foreground tabular-nums">Step {t.step}</span>
-                  <span className="font-medium">{t.op}<span className="text-muted-foreground">@{t.version}</span></span>
-                  {t.date && <span className="text-sm tabular-nums text-aqua-text">{t.date}</span>}
-                  <span className={`text-xs ${t.status === 'ok' ? 'text-leaf-text' : 'text-destructive'}`}>{t.status}</span>
+                  <span className="text-caption text-muted-foreground tabular-nums">Step {t.step}</span>
+                  <span className="font-semibold">{t.op}<span className="text-muted-foreground">@{t.version}</span></span>
+                  {t.date && <span className="text-body tabular-nums text-brand-text">{t.date}</span>}
+                  <span className={`text-caption ${t.status === 'ok' ? 'text-success' : 'text-danger'}`}>{t.status}</span>
                   {t.result_id && <span className="ml-auto min-w-0"><ResultIdChip id={t.result_id} /></span>}
                 </div>
                 {Object.keys(t.stats).length > 0 ? (
                   <FigureGrid className="mt-2" entries={Object.entries(t.stats).slice(0, 9).map(([k, v]) => [k, String(v)])} />
-                ) : t.summary ? <p className="mt-2 text-xs text-muted-foreground">{t.summary}</p> : null}
+                ) : t.summary ? <p className="mt-2 text-caption text-muted-foreground">{t.summary}</p> : null}
               </li>
             ))}
           </ol>
         </section>
 
         <section aria-labelledby="case-explain">
-          <h2 id="case-explain" className="font-heading text-lg font-medium">Explain</h2>
-          <p className="mt-1 text-xs text-muted-foreground">Built from the recorded results and the recipe only; no model wrote it. Each sentence names the result it rests on.</p>
-          <ul className="mt-3 space-y-2 text-sm leading-relaxed" data-testid="explain">
+          <h2 id="case-explain" className="font-heading text-section">Explain</h2>
+          <p className="mt-1 text-caption text-muted-foreground">Built from the recorded results and the recipe only; no model wrote it. Each sentence names the result it rests on.</p>
+          <ul className="mt-3 space-y-2 text-body leading-relaxed" data-testid="explain">
             {view.explain.map((l, i) => (
               <li key={i}>
                 {l.text}
-                {l.cites.length > 0 && <span className="ml-2 inline-flex flex-wrap gap-1 align-middle">{[...new Set(l.cites)].map((c) => <code key={c} className="rounded bg-secondary px-1.5 py-0.5 text-xs text-secondary-foreground">{c}</code>)}</span>}
+                {l.cites.length > 0 && <span className="ml-2 inline-flex flex-wrap gap-1 align-middle">{[...new Set(l.cites)].map((c) => <code key={c} className="rounded-sm bg-secondary px-1.5 py-0.5 text-caption text-secondary-foreground">{c}</code>)}</span>}
               </li>
             ))}
           </ul>

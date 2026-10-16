@@ -12,7 +12,7 @@ export interface SegmentedOption<T extends string> {
 
 /** A small exclusive choice, drawn the same way everywhere (view mode, basemap, theme, Ask or
  *  Investigate). Buttons with `aria-pressed` inside a labelled group: the same semantics as a
- *  toolbar of toggles, and keyboard order is the visual order. */
+ *  toolbar of toggles, and keyboard order is the visual order. Styled by `.segmented` in globals.css. */
 export function Segmented<T extends string>({
   value,
   onChange,
@@ -35,7 +35,7 @@ export function Segmented<T extends string>({
     <div
       role="group"
       aria-label={label}
-      className={cn('inline-flex items-center gap-0.5 rounded-lg border border-border p-[0.1875rem]', surface === 'card' ? 'rounded-[0.625rem] bg-card shadow-float' : 'bg-muted', className)}
+      className={cn('segmented', size === 'sm' && 'segmented-sm', surface === 'card' && 'segmented-card', className)}
     >
       {options.map((o) => (
         <button
@@ -46,15 +46,6 @@ export function Segmented<T extends string>({
           title={o.title}
           disabled={o.disabled}
           onClick={() => onChange(o.value)}
-          className={cn(
-            'inline-flex items-center justify-center gap-1.5 font-medium transition-colors disabled:opacity-40',
-            surface === 'card' ? 'rounded-[0.4375rem]' : 'rounded-md',
-            size === 'sm' ? 'h-6 px-2 text-xs' : 'h-7 px-3 text-[0.8125rem]',
-            surface === 'card' && 'h-auto px-3 py-[0.3125rem]',
-            value === o.value
-              ? surface === 'card' ? 'bg-muted text-foreground' : 'bg-card text-foreground shadow-sm ring-1 ring-border'
-              : surface === 'card' ? 'text-muted-foreground hover:text-foreground' : 'text-muted-foreground hover:text-foreground',
-          )}
         >
           {o.label}
         </button>

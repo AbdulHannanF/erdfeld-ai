@@ -97,7 +97,7 @@ export default function BatchView({ id }: { id: string }) {
   const shell = (children: React.ReactNode) => (
     <div className="h-screen overflow-y-auto bg-background text-foreground" data-testid="batch-page">
       <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-border bg-background/95 px-4 py-3">
-        <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-brand-text hover:underline"><ArrowLeft className="h-4 w-4" aria-hidden /> Back to the map</Link>
+        <Link href="/" className="inline-flex items-center gap-1.5 text-body text-brand-text hover:underline"><ArrowLeft className="h-4 w-4" aria-hidden /> Back to the map</Link>
         <BrandMark height={32} className="ml-auto" />
       </header>
       {children}
@@ -106,7 +106,7 @@ export default function BatchView({ id }: { id: string }) {
 
   if (!data) {
     return shell(error
-      ? <p className="mx-auto max-w-2xl p-6 text-destructive" role="alert" data-testid="batch-error">{error}</p>
+      ? <p className="mx-auto max-w-2xl p-6 text-danger" role="alert" data-testid="batch-error">{error}</p>
       : <p className="flex items-center gap-2 p-6 text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" /> Loading the batch...</p>)
   }
 
@@ -123,7 +123,7 @@ export default function BatchView({ id }: { id: string }) {
           <div className="h-[20rem] overflow-hidden rounded-lg border border-border lg:h-[calc(100vh-14rem)] lg:min-h-[22.5rem]">
             <BatchMap rows={rows} selected={selected} onSelect={setSelected} />
           </div>
-          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label="Map legend" data-testid="batch-legend">
+          <ul className="flex flex-wrap gap-x-4 gap-y-1 text-caption text-muted-foreground" aria-label="Map legend" data-testid="batch-legend">
             {VERDICTS.map((v) => <li key={v} className="inline-flex items-center gap-1.5"><Dot color={VERDICT_COLOR[v]} />{VERDICT_LABEL[v]}</li>)}
             <li className="inline-flex items-center gap-1.5"><Dot color={PENDING_COLOR} />Not decided yet</li>
           </ul>
@@ -132,12 +132,12 @@ export default function BatchView({ id }: { id: string }) {
 
       <div className="min-w-0 space-y-6 lg:order-1">
         <section aria-labelledby="batch-title">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">Batch of claims</p>
-          <h1 id="batch-title" className="mt-1 font-heading text-2xl font-medium leading-snug" data-testid="batch-title">{data.label ?? data.recipe_title ?? data.claim_type}</h1>
-          <p className="mt-1 text-xs text-muted-foreground">Recipe <code>{data.claim_type}</code> · {progress.total} plots · {new Date(data.created_at).toISOString().slice(0, 10)}</p>
+          <p className="text-muted-foreground text-label">Batch of claims</p>
+          <h1 id="batch-title" className="mt-1 font-heading text-display leading-snug" data-testid="batch-title">{data.label ?? data.recipe_title ?? data.claim_type}</h1>
+          <p className="mt-1 text-caption text-muted-foreground">Recipe <code>{data.claim_type}</code> · {progress.total} plots · {new Date(data.created_at).toISOString().slice(0, 10)}</p>
 
           <div className="mt-4" data-testid="batch-progress">
-            <div className="flex items-baseline justify-between text-sm">
+            <div className="flex items-baseline justify-between text-body">
               <span>{data.state === 'active' ? <span className="inline-flex items-center gap-2"><Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />Checking plots</span> : 'Finished'}</span>
               <span className="tabular-nums text-muted-foreground" data-testid="batch-progress-text">{finished} of {progress.total} plots{progress.failed ? `, ${progress.failed} failed` : ''}</span>
             </div>
@@ -149,55 +149,55 @@ export default function BatchView({ id }: { id: string }) {
           <dl className="mt-4 grid grid-cols-3 gap-2" data-testid="batch-summary">
             {VERDICTS.map((v) => (
               <div key={v} className="rounded-lg border border-border bg-card p-3">
-                <dt className="flex items-center gap-1.5 text-xs text-muted-foreground"><Dot color={VERDICT_COLOR[v]} />{VERDICT_LABEL[v]}</dt>
-                <dd className="mt-1 font-heading text-2xl tabular-nums" data-testid={`count-${v}`}>{counts[v]}</dd>
+                <dt className="flex items-center gap-1.5 text-caption text-muted-foreground"><Dot color={VERDICT_COLOR[v]} />{VERDICT_LABEL[v]}</dt>
+                <dd className="mt-1 font-heading text-display tabular-nums" data-testid={`count-${v}`}>{counts[v]}</dd>
               </div>
             ))}
           </dl>
           {kinds.length > 0 && (
-            <p className="mt-2 text-xs text-muted-foreground" data-testid="batch-kinds">
+            <p className="mt-2 text-caption text-muted-foreground" data-testid="batch-kinds">
               Cannot determine, by reason: {kinds.map(([k, n]) => `${ABSTAIN_LABEL[k] ?? k} (${n})`).join('; ')}.
             </p>
           )}
           {(counts.pending > 0 || counts.failed > 0) && (
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-1 text-caption text-muted-foreground">
               {counts.pending > 0 && <>{counts.pending} not decided yet. </>}
-              {counts.failed > 0 && <span className="text-destructive">{counts.failed} could not be run (an error, not a verdict).</span>}
+              {counts.failed > 0 && <span className="text-danger">{counts.failed} could not be run (an error, not a verdict).</span>}
             </p>
           )}
 
           <div className="mt-4 flex flex-wrap gap-2">
             {([['csv', 'Export CSV', 'claims.csv'], ['geojson', 'Export GeoJSON', 'claims.geojson'], ['bundles', 'Signed bundles (zip)', 'bundles.zip']] as const).map(([kind, label, name]) => (
               <button key={kind} onClick={() => download(kind, name)} disabled={busy !== null || (kind === 'bundles' && counts.supported + counts.contradicted + counts.cannot_determine === 0)} data-testid={`export-${kind}`}
-                className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50">
+                className="btn btn-primary btn-md">
                 {busy === kind ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <Download className="h-4 w-4" aria-hidden />}{label}
               </button>
             ))}
           </div>
-          {error && <p className="mt-3 text-sm text-destructive" role="alert" data-testid="batch-error">{error}</p>}
+          {error && <p className="mt-3 text-body text-danger" role="alert" data-testid="batch-error">{error}</p>}
         </section>
 
         <section aria-labelledby="batch-table">
-          <h2 id="batch-table" className="font-heading text-lg font-medium">Verdicts</h2>
+          <h2 id="batch-table" className="font-heading text-section">Verdicts</h2>
           <div className="mt-3 overflow-x-auto rounded-lg border border-border">
-            <table className="w-full min-w-[34rem] text-left text-sm" data-testid="batch-table">
-              <thead className="bg-card text-xs text-muted-foreground">
-                <tr><th className="px-3 py-2 font-medium">Plot</th><th className="px-3 py-2 font-medium">Verdict</th><th className="px-3 py-2 font-medium">Confidence</th><th className="px-3 py-2 font-medium">Cannot determine because</th><th className="px-3 py-2 font-medium"><span className="sr-only">Case</span></th></tr>
+            <table className="w-full min-w-[34rem] text-left text-body" data-testid="batch-table">
+              <thead className="bg-card text-caption text-muted-foreground">
+                <tr><th className="px-3 py-2 font-semibold">Plot</th><th className="px-3 py-2 font-semibold">Verdict</th><th className="px-3 py-2 font-semibold">Confidence</th><th className="px-3 py-2 font-semibold">Cannot determine because</th><th className="px-3 py-2 font-semibold"><span className="sr-only">Case</span></th></tr>
               </thead>
               <tbody>
                 {rows.map((r) => (
                   <tr key={r.idx} ref={(n) => { if (n) rowEls.current.set(r.idx, n); else rowEls.current.delete(r.idx) }} onClick={() => setSelected(r.idx)} data-testid="batch-row" data-verdict={r.verdict ?? r.status}
                     className={`cursor-pointer border-t border-border align-top ${selected === r.idx ? 'bg-secondary' : 'hover:bg-card'}`}>
-                    <td className="px-3 py-2 font-medium">{r.name}</td>
+                    <td className="px-3 py-2 font-semibold">{r.name}</td>
                     <td className="px-3 py-2">
                       {r.verdict
                         ? <span className="inline-flex items-center gap-2"><Dot color={VERDICT_COLOR[r.verdict]} />{VERDICT_LABEL[r.verdict]}</span>
                         : r.status === 'failed'
-                          ? <span className="text-destructive" title={r.error ?? undefined}>Error</span>
+                          ? <span className="text-danger" title={r.error ?? undefined}>Error</span>
                           : <span className="inline-flex items-center gap-2 text-muted-foreground"><Dot color={PENDING_COLOR} />{STATUS_LABEL[r.status]}{r.error ? ' (retrying)' : ''}</span>}
                     </td>
                     <td className="px-3 py-2 tabular-nums">{r.confidence != null ? `${Math.round(r.confidence * 100)}%` : ''}</td>
-                    <td className="px-3 py-2 text-xs text-muted-foreground">{r.verdict === 'cannot_determine' ? (r.kind ? ABSTAIN_LABEL[r.kind] ?? r.kind : '') : r.status === 'failed' ? r.error : ''}</td>
+                    <td className="px-3 py-2 text-caption text-muted-foreground">{r.verdict === 'cannot_determine' ? (r.kind ? ABSTAIN_LABEL[r.kind] ?? r.kind : '') : r.status === 'failed' ? r.error : ''}</td>
                     <td className="whitespace-nowrap px-3 py-2 text-right">{r.case_id && <Link href={`/cases/${r.case_id}`} onClick={(e) => e.stopPropagation()} className="text-brand-text hover:underline" aria-label={`Open the case for ${r.name}`}>Open</Link>}</td>
                   </tr>
                 ))}

@@ -49,7 +49,7 @@ export default function ShareLink({ className }: { className?: string }) {
   }, [])
 
   return (
-    <Button variant="outline" size="sm" onClick={share} disabled={busy} className={className}>
+    <Button variant="secondary" size="sm" onClick={share} disabled={busy} className={className}>
       {busy ? <Loader2 className="animate-spin" aria-hidden /> : copied ? <Check aria-hidden /> : <Link2 aria-hidden />}
       {copied ? 'Link copied' : 'Share link'}
     </Button>

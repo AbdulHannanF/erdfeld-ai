@@ -21,7 +21,7 @@ const OUTPUTS = ['all', 'raster', 'vector', 'table'] as const
 type OutputFilter = (typeof OUTPUTS)[number]
 
 const row =
-  'grid min-h-[2.75rem] w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-[0.1875rem] border-0 border-t border-border bg-transparent px-1.5 py-1.5 text-left transition-colors first:border-t-0 hover:bg-hover disabled:opacity-50 disabled:hover:bg-transparent'
+  'grid min-h-[2.75rem] w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-sm border-0 border-t border-border bg-transparent px-1.5 py-1.5 text-left transition-colors first:border-t-0 hover:bg-hover disabled:opacity-50 disabled:hover:bg-transparent'
 
 /** A collapsible group. Closed groups are not rendered at all, so nothing hidden can be tabbed to or
  *  covered; the button carries aria-expanded. */
@@ -29,12 +29,12 @@ function Group({ id, label, count, icon, defaultOpen, forceOpen, children }: { i
   const [open, setOpen] = useState(defaultOpen)
   const shown = open || !!forceOpen
   return (
-    <section className="rounded-[0.3125rem] border border-border bg-sunk" data-testid={`group-${id}`}>
+    <section className="rounded-md border border-border bg-sunk" data-testid={`group-${id}`}>
       <h3>
         <button type="button" aria-expanded={shown} onClick={() => setOpen(!shown)} className="flex min-h-[2.125rem] w-full items-center gap-2 px-2 text-left">
           {icon}
-          <span className="flex-1 text-[0.8125rem] font-semibold text-foreground">{label}</span>
-          <span className="font-mono text-xs text-muted-foreground">{count}</span>
+          <span className="flex-1 text-body-strong text-foreground">{label}</span>
+          <span className="text-data text-muted-foreground">{count}</span>
           <ChevronDown className={cn('size-3 text-muted-foreground transition-transform', shown && 'rotate-180')} aria-hidden />
         </button>
       </h3>
@@ -90,14 +90,14 @@ export default function ToolboxPanel() {
       <div className="flex items-center justify-between gap-2">
         <div>
           <p className={OVERLINE}>Processing</p>
-          <h2 className="mt-1 font-heading text-[0.9375rem] font-semibold text-foreground">Toolbox</h2>
+          <h2 className="mt-1 font-heading text-panel text-foreground">Toolbox</h2>
         </div>
-        <span className="rounded border border-border bg-accent px-1.5 py-0.5 font-mono text-xs text-accent-foreground" data-testid="toolbox-count" aria-live="polite">
+        <span className="badge badge-accent" data-testid="toolbox-count" aria-live="polite">
           {ops ? `${groups.length} ${groups.length === 1 ? 'domain' : 'domains'} · ${total} tools` : 'loading'}
         </span>
       </div>
 
-      <label className="flex h-9 items-center gap-2 rounded-[0.3125rem] border border-input bg-secondary px-2 text-muted-foreground focus-within:border-[#6fc0c97a]">
+      <label className="field gap-2 text-muted-foreground focus-within:border-ring">
         <Search className="size-3.5 shrink-0" aria-hidden />
         <span className="sr-only">Search operations</span>
         <input
@@ -106,12 +106,12 @@ export default function ToolboxPanel() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search algorithms…"
-          className="w-full min-w-0 border-0 bg-transparent text-[0.8125rem] text-foreground outline-none placeholder:text-muted-foreground"
+          className="w-full min-w-0 border-0 bg-transparent text-body text-foreground outline-none placeholder:text-muted-foreground"
           data-testid="toolbox-search"
         />
       </label>
 
-      <div className="flex items-center justify-between gap-2 font-mono text-xs text-muted-foreground">
+      <div className="flex items-center justify-between gap-2 text-label text-muted-foreground">
         <span>Output</span>
         <div className="flex gap-[0.1875rem]" role="group" aria-label="Filter by output">
           {OUTPUTS.map((o) => (
@@ -120,7 +120,7 @@ export default function ToolboxPanel() {
               type="button"
               aria-pressed={output === o}
               onClick={() => setOutput(o)}
-              className={cn('rounded border px-1.5 py-0.5 font-mono text-xs capitalize', output === o ? 'border-[#477156] bg-accent text-accent-foreground' : 'border-border bg-secondary text-muted-foreground hover:text-foreground')}
+              className="chip capitalize"
             >
               {o}
             </button>
@@ -128,28 +128,28 @@ export default function ToolboxPanel() {
         </div>
       </div>
 
-      <div className="flex gap-2 rounded-[0.3125rem] border border-border bg-sunk px-2 py-1.5 text-[0.8125rem] leading-snug text-muted-foreground">
+      <div className="flex gap-2 rounded-md border border-border bg-sunk px-2 py-1.5 text-body leading-snug text-muted-foreground">
         <Info className="mt-0.5 size-3.5 shrink-0 text-warning" aria-hidden />
         <span>These are the operations Erdfeld can run, as the registry lists them. A run is queued over the drawn area, its sources and checks are recorded in the evidence ledger.</span>
       </div>
 
       {error && (
-        <div className="grid gap-1.5 rounded-[0.3125rem] border border-danger/40 bg-danger/10 p-2.5 text-[0.8125rem] text-foreground" role="alert">
+        <div className="grid gap-1.5 rounded-md border border-danger/40 bg-danger/10 p-2.5 text-body text-foreground" role="alert">
           <p>The operation registry could not be read: {error}</p>
-          <button type="button" onClick={load} className="inline-flex w-fit items-center gap-1.5 rounded border border-input bg-secondary px-2 py-1 text-[0.8125rem] hover:bg-hover"><RotateCw className="size-3.5" aria-hidden />Try again</button>
+          <button type="button" onClick={load} className="btn btn-secondary btn-sm w-fit"><RotateCw aria-hidden />Try again</button>
         </div>
       )}
-      {!ops && !error && <p className="inline-flex items-center gap-2 text-[0.8125rem] text-muted-foreground" role="status"><Loader2 className="size-3.5 animate-spin" aria-hidden />Reading the operation registry</p>}
+      {!ops && !error && <p className="inline-flex items-center gap-2 text-body text-muted-foreground" role="status"><Loader2 className="size-3.5 animate-spin" aria-hidden />Reading the operation registry</p>}
 
       {!searching && (
-        <Group id="quick" label="Quick layers and claims" count={QUICK_LAYER_IDS.length + 1} defaultOpen icon={<span className="grid size-[1.1875rem] place-items-center rounded border border-border text-muted-foreground"><ImageIcon className="size-3" aria-hidden /></span>}>
+        <Group id="quick" label="Quick layers and claims" count={QUICK_LAYER_IDS.length + 1} defaultOpen icon={<span className="grid size-[1.1875rem] place-items-center rounded-sm border border-border text-muted-foreground"><ImageIcon className="size-3" aria-hidden /></span>}>
             {QUICK_LAYER_IDS.map((id) => {
               const { icon: Icon, detail } = QUICK_META[id]
               return (
                 <button key={id} type="button" className={row} disabled={quickDisabled} title={aoi ? undefined : 'Draw an area first'} onClick={() => run(id)} data-testid={`quick-layer-${id}`}>
                   <span className="min-w-0">
-                    <span className="block truncate text-[0.8125rem] font-medium text-foreground">{QUICK_LAYERS[id].label}</span>
-                    <span className="mt-0.5 block truncate text-xs text-muted-foreground">{detail}</span>
+                    <span className="block truncate text-body-strong text-foreground">{QUICK_LAYERS[id].label}</span>
+                    <span className="mt-0.5 block truncate text-caption text-muted-foreground">{detail}</span>
                   </span>
                   {running === id ? <Loader2 className="size-3.5 animate-spin text-brand-text" aria-hidden /> : <Icon className="size-3.5 text-muted-foreground" aria-hidden />}
                 </button>
@@ -157,8 +157,8 @@ export default function ToolboxPanel() {
             })}
             <button type="button" className={row} onClick={() => window.dispatchEvent(new CustomEvent(OPEN_VERIFY_CLAIM))} data-testid="verify-claim" title="Check a statement about the drawn area, such as not cleared since a date">
               <span className="min-w-0">
-                <span className="block truncate text-[0.8125rem] font-medium text-foreground">Verify a claim</span>
-                <span className="mt-0.5 block truncate text-xs text-muted-foreground">Supported, contradicted or unknown</span>
+                <span className="block truncate text-body-strong text-foreground">Verify a claim</span>
+                <span className="mt-0.5 block truncate text-caption text-muted-foreground">Supported, contradicted or unknown</span>
               </span>
               <ShieldCheck className="size-3.5 text-brand-text" aria-hidden />
             </button>
@@ -166,7 +166,7 @@ export default function ToolboxPanel() {
       )}
 
       {ops && groups.length === 0 && (
-        <p className="rounded-[0.3125rem] border border-dashed border-input p-3 text-[0.8125rem] text-muted-foreground" data-testid="toolbox-empty">No operation matches &ldquo;{query}&rdquo;. This is an empty result: the registry has {ops.length} operations.</p>
+        <p className="rounded-md border border-dashed border-input p-3 text-body text-muted-foreground" data-testid="toolbox-empty">No operation matches &ldquo;{query}&rdquo;. This is an empty result: the registry has {ops.length} operations.</p>
       )}
 
       {groups.map((g, i) => (
@@ -174,8 +174,8 @@ export default function ToolboxPanel() {
           {g.ops.map((o) => (
             <button key={o.name} type="button" className={row} onClick={() => openDialog('tool', o.name)} data-testid={`tool-${o.name}`} title={o.description}>
               <span className="min-w-0">
-                <span className="block truncate text-[0.8125rem] font-medium text-foreground">{humanName(o.name)}</span>
-                <span className="mt-0.5 block truncate text-xs text-muted-foreground">{oneLine(o.description)}</span>
+                <span className="block truncate text-body-strong text-foreground">{humanName(o.name)}</span>
+                <span className="mt-0.5 block truncate text-caption text-muted-foreground">{oneLine(o.description)}</span>
               </span>
               <span className={cn(PILL, 'bg-accent text-accent-foreground')}>{o.output}</span>
             </button>

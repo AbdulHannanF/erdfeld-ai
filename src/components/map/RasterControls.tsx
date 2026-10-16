@@ -24,8 +24,7 @@ export function isRestylable(layer: MapLayer): boolean {
     && !!layer.tileUrl && /\{z\}/.test(layer.tileUrl)
 }
 
-const inputCls =
-  'w-14 rounded border border-border bg-foreground/5 px-1 py-0.5 text-xs font-mono tabular-nums text-foreground focus:border-brand-400/60 focus:outline-none'
+const inputCls = 'field field-sm w-16 font-mono tabular-nums'
 
 export default function RasterControls({ layer }: { layer: MapLayer }) {
   const setStyle = useStore((s) => s.setLayerRasterStyle)
@@ -68,7 +67,7 @@ export default function RasterControls({ layer }: { layer: MapLayer }) {
             value={raster.colormap ?? ''}
             onChange={(e) => apply({ colormap: e.target.value })}
             aria-label="Colormap"
-            className="min-w-0 flex-1 rounded border border-border bg-card px-1 py-0.5 text-xs text-foreground focus:outline-none"
+            className="field field-sm min-w-0 flex-1"
           >
             {colormaps.map((c) => (
               <option key={c} value={c}>{c}</option>
@@ -77,7 +76,7 @@ export default function RasterControls({ layer }: { layer: MapLayer }) {
         </div>
       )}
       {(raster.rescale ?? []).map((pair, i) => (
-        <div key={`${i}-${pair[0]}-${pair[1]}`} className="flex items-center gap-1 text-xs text-muted-foreground">
+        <div key={`${i}-${pair[0]}-${pair[1]}`} className="flex items-center gap-1 text-caption text-muted-foreground">
           <span className="w-7 shrink-0 font-mono">{raster.kind === 'rgb' ? (raster.bands?.[i] ?? `b${i + 1}`) : 'min'}</span>
           <input
             type="number"

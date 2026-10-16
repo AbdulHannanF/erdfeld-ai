@@ -22,11 +22,11 @@ export function ValidationBadge({ verdict }: { verdict?: ResultVerdict }) {
       data-testid="validation-badge"
       data-status={verdict.status}
       title={messages(verdict).join('\n')}
-      className={`inline-flex shrink-0 items-center gap-0.5 rounded px-1 py-px text-xs font-medium uppercase leading-none ${
-        refused ? 'bg-danger/20 text-danger' : 'bg-warning/20 text-warning'
+      className={`badge ${
+        refused ? 'badge-danger' : 'badge-warning'
       }`}
     >
-      <Icon className="h-2.5 w-2.5" aria-hidden />
+      <Icon aria-hidden />
       {verdict.status}
     </span>
   )
@@ -39,7 +39,7 @@ export function ValidationNotice({ verdict }: { verdict?: ResultVerdict }) {
   return (
     <ul
       data-testid="validation-notice"
-      className={`mt-1 space-y-0.5 rounded border px-2 py-1 text-xs leading-snug ${
+      className={`mt-1 space-y-0.5 rounded-sm border px-2 py-1 text-caption leading-snug ${
         refused ? 'border-danger/30 bg-danger/10 text-danger' : 'border-warning/30 bg-warning/10 text-warning'
       }`}
     >

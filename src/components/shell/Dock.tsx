@@ -22,7 +22,7 @@ const TABS: Array<{ id: DockTab; label: string }> = [
 ]
 
 function Count({ n }: { n: number }) {
-  return <span className="rounded bg-hover px-1 font-mono text-xs text-muted-foreground">{n}</span>
+  return <span className="badge">{n}</span>
 }
 
 /** The dock's tab strip. Counts are real: features in the active vector layer, results of the
@@ -71,10 +71,7 @@ export function DockTabs({ compact = false }: { compact?: boolean }) {
                 document.getElementById(`dock-tab-${next.id}`)?.focus()
               }
             }}
-            className={cn(
-              'relative flex shrink-0 items-center gap-[0.3125rem] whitespace-nowrap px-2 text-[0.8125rem] transition-colors',
-              selected ? 'text-foreground after:absolute after:inset-x-1.5 after:bottom-0 after:h-0.5 after:bg-teal' : 'text-muted-foreground hover:text-foreground',
-            )}
+            className="tab"
           >
             {t.label}
             {n != null && <Count n={n} />}
@@ -113,8 +110,8 @@ export default function WorkspaceDock() {
   return (
     <section aria-label="Data and processing dock" data-testid="data-dock" data-collapsed={collapsed} className="flex min-h-0 min-w-0 flex-col overflow-hidden bg-card [grid-column:1] [grid-row:2]">
       <div className="flex h-10 shrink-0 items-center gap-3 border-b border-border px-2.5">
-        <div className="flex items-center gap-1.5 whitespace-nowrap font-mono text-xs tracking-[0.07em] text-secondary-foreground max-[900px]:hidden">
-          <Layers className="size-3.5 text-muted-foreground" aria-hidden />WORKSPACE DOCK
+        <div className="flex items-center gap-1.5 whitespace-nowrap text-label text-ink-2 max-[900px]:hidden">
+          <Layers className="size-3.5 text-muted-foreground" aria-hidden />Workspace dock
         </div>
         <div className="min-w-0 flex-1 self-stretch"><DockTabs /></div>
         <button

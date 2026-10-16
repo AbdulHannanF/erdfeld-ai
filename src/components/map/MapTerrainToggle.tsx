@@ -54,23 +54,23 @@ export default function MapTerrainToggle({ map, className }: { map: maplibregl.M
           aria-pressed={active}
           data-testid="terrain-button"
           className={cn(
-            'inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-card px-2.5 text-[0.8125rem] font-medium shadow-sm transition-colors hover:bg-muted',
+            'btn btn-ghost btn-md',
             active ? 'text-brand-text' : 'text-muted-foreground hover:text-foreground',
             className,
           )}
         >
-          <Mountain className="size-4" aria-hidden />
+          <Mountain aria-hidden />
           <span className="sr-only">3D</span>
         </button>
       </PopoverTrigger>
       <PopoverContent align="center" side="left" sideOffset={10} className="w-64 space-y-3 p-3">
         <div className="flex items-center justify-between gap-3">
-          <label htmlFor={`${id}-terrain`} className="text-[0.8125rem] text-foreground">3D terrain</label>
+          <label htmlFor={`${id}-terrain`} className="text-body text-foreground">3D terrain</label>
           <Switch id={`${id}-terrain`} checked={terrainEnabled} onCheckedChange={toggleTerrain} />
         </div>
         {terrainEnabled && (
           <div>
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <div className="flex items-center justify-between text-caption text-muted-foreground">
               <label htmlFor={`${id}-ex`}>Vertical scale</label>
               <span className="tabular-nums">{exaggeration.toFixed(1)}×</span>
             </div>
@@ -85,19 +85,19 @@ export default function MapTerrainToggle({ map, className }: { map: maplibregl.M
               className="mt-1 w-full accent-[var(--primary)]"
             />
             {Math.abs(exaggeration - 1) > 0.05 && (
-              <p className="mt-1 text-xs leading-snug text-warning">Relief is drawn {exaggeration.toFixed(1)}× taller than it is.</p>
+              <p className="mt-1 text-caption leading-snug text-warning">Relief is drawn {exaggeration.toFixed(1)}× taller than it is.</p>
             )}
           </div>
         )}
         <div className="flex items-center justify-between gap-3">
-          <label htmlFor={`${id}-globe`} className="text-[0.8125rem] text-foreground">Globe view</label>
+          <label htmlFor={`${id}-globe`} className="text-body text-foreground">Globe view</label>
           <Switch id={`${id}-globe`} checked={isGlobe} onCheckedChange={(on) => setProjection(on ? 'globe' : 'mercator')} />
         </div>
         <div className="flex items-center justify-between gap-3">
-          <label htmlFor={`${id}-sky`} className="text-[0.8125rem] text-foreground">Atmosphere</label>
+          <label htmlFor={`${id}-sky`} className="text-body text-foreground">Atmosphere</label>
           <Switch id={`${id}-sky`} checked={skyEnabled || isGlobe} disabled={isGlobe} onCheckedChange={setSkyEnabled} />
         </div>
-        <p className="border-t border-border pt-2 text-xs tabular-nums text-muted-foreground">Camera pitch {pitch}°</p>
+        <p className="border-t border-border pt-2 text-caption tabular-nums text-muted-foreground">Camera pitch {pitch}°</p>
       </PopoverContent>
     </Popover>
   )

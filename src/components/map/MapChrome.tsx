@@ -25,10 +25,10 @@ function AoiCard({ className }: { className?: string }) {
 
   return (
     <div className={cn('flex max-w-[16.875rem] items-center gap-2.5 rounded-lg px-2.5 py-2', GLASS, className)} data-testid="aoi-card">
-      <span className="grid size-8 shrink-0 place-items-center rounded-md border border-[#68bac548] bg-[#68bac51a] text-[#8bc9d0]"><MapPin className="size-4" aria-hidden /></span>
+      <span className="grid size-8 shrink-0 place-items-center rounded-md border border-border bg-accent text-brand-text"><MapPin className="size-4" aria-hidden /></span>
       <span className="min-w-0">
-        <strong className="block truncate text-[0.8125rem] font-semibold text-foreground">{aoi ? `${aoi.type} area` : 'No area drawn'}</strong>
-        <small className="mt-0.5 block font-mono text-xs leading-snug text-muted-foreground" data-testid="aoi-coords">
+        <strong className="block truncate text-body-strong text-foreground">{aoi ? `${aoi.type} area` : 'No area drawn'}</strong>
+        <small className="mt-0.5 block text-data leading-snug text-muted-foreground" data-testid="aoi-coords">
           {aoi?.center ? (
             <>
               <span className="whitespace-nowrap">{coord(aoi.center.lat, 'N', 'S')}</span>
@@ -40,7 +40,7 @@ function AoiCard({ className }: { className?: string }) {
       </span>
       {aoi && (
         <>
-          {km2 != null && <span className="shrink-0 whitespace-nowrap rounded border border-[#49b5823c] bg-[#49b58214] px-1.5 py-1 font-mono text-xs uppercase text-[#8bc9a7]">{formatAreaKm2(km2)}</span>}
+          {km2 != null && <span className="badge badge-success">{formatAreaKm2(km2)}</span>}
         </>
       )}
     </div>
@@ -77,8 +77,8 @@ export default function MapChrome({ map }: { map: maplibregl.Map | null }) {
       <MapSideControls map={map} className={cn('absolute right-4 top-1/2 z-10 -translate-y-1/2 max-md:right-2.5 max-md:top-[calc(50%+1.5rem)]', sheetOpen)} />
 
       {hint && (
-        <div className={cn('pointer-events-none absolute left-1/2 top-[4.75rem] z-10 flex -translate-x-1/2 items-center gap-2 rounded-[0.4375rem] px-3 py-2 text-[0.8125rem] text-foreground max-md:top-[6.5rem]', GLASS)} role="status" data-testid="tool-hint">
-          <Sparkles className="size-3.5 text-[#82cc9f]" aria-hidden />{hint}
+        <div className={cn('pointer-events-none absolute left-1/2 top-[4.75rem] z-10 flex -translate-x-1/2 items-center gap-2 rounded-md px-3 py-2 text-body text-foreground max-md:top-[6.5rem]', GLASS)} role="status" data-testid="tool-hint">
+          <Sparkles className="size-3.5 text-brand-text" aria-hidden />{hint}
         </div>
       )}
       <MapMeasure map={map} className="absolute left-1/2 top-[4.75rem] z-10 -translate-x-1/2 max-md:top-[6.5rem]" />
@@ -89,7 +89,7 @@ export default function MapChrome({ map }: { map: maplibregl.Map | null }) {
         <MapTimelineSlider />
       </div>
       {zoom != null && (
-        <div className="pointer-events-none absolute bottom-[4.875rem] right-5 z-10 rounded border border-border bg-[color-mix(in_srgb,var(--background)_75%,transparent)] px-1.5 py-1 font-mono text-xs text-muted-foreground max-md:hidden" aria-hidden>
+        <div className="pointer-events-none absolute bottom-[4.875rem] right-5 z-10 rounded-sm border border-border bg-[color-mix(in_srgb,var(--background)_75%,transparent)] px-1.5 py-1 text-data text-muted-foreground max-md:hidden" aria-hidden>
           {zoom.toFixed(1)}× · N {Math.abs(bearing) < 1 ? '↑' : `${Math.round(((bearing % 360) + 360) % 360)}°`}
         </div>
       )}

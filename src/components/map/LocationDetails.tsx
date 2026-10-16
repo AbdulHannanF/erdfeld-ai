@@ -117,7 +117,7 @@ function DetailRow({
   icon: Icon,
   label,
   value,
-  accent = 'text-aqua-text',
+  accent = 'text-brand-text',
 }: {
   icon: React.ElementType
   label: string
@@ -130,8 +130,8 @@ function DetailRow({
         <Icon className="h-3.5 w-3.5" />
       </div>
       <div className="flex-1 min-w-0">
-        <div className="text-xs text-muted-foreground uppercase tracking-wider font-medium">{label}</div>
-        <div className="text-sm text-foreground truncate font-mono">{value || '—'}</div>
+        <div className="text-muted-foreground text-label">{label}</div>
+        <div className="text-body text-foreground truncate font-mono">{value || '—'}</div>
       </div>
     </div>
   )
@@ -294,17 +294,17 @@ export default function LocationDetails({ map }: LocationDetailsPanelProps) {
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           <div className="flex items-center gap-2.5">
             <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-aqua-500/10 border border-aqua-500/20">
-              <Info className="h-4 w-4 text-aqua-text" />
+              <Info className="h-4 w-4 text-brand-text" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-foreground">Location Details</h2>
-              <p className="text-xs text-muted-foreground">Map center information</p>
+              <h2 className="font-heading text-panel text-foreground">Location Details</h2>
+              <p className="text-caption text-muted-foreground">Map center information</p>
             </div>
           </div>
           <Button
             variant="ghost"
-            size="icon"
-            className="h-7 w-7 text-muted-foreground hover:text-foreground hover:bg-foreground/10"
+            size="icon-sm"
+            aria-label="Close"
             onClick={() => setOpen(false)}
           >
             <X className="h-4 w-4" />
@@ -315,15 +315,15 @@ export default function LocationDetails({ map }: LocationDetailsPanelProps) {
         <div className="px-5 py-3 bg-aqua-500/5 border-b border-border">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <MapPin className="h-3.5 w-3.5 text-aqua-text" />
-              <span className="text-xs font-mono text-aqua-text">
+              <MapPin className="h-3.5 w-3.5 text-brand-text" />
+              <span className="text-data text-brand-text">
                 {coords.lat.toFixed(6)}, {coords.lng.toFixed(6)}
               </span>
             </div>
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground hover:bg-foreground/10 gap-1"
+             
               onClick={handleCopyCoords}
             >
               {copied ? (
@@ -341,14 +341,14 @@ export default function LocationDetails({ map }: LocationDetailsPanelProps) {
           {/* Address */}
           {address && (
             <div className="py-2">
-              <DetailRow icon={MapPin} label="Address" value={address} accent="text-aqua-text" />
+              <DetailRow icon={MapPin} label="Address" value={address} accent="text-brand-text" />
             </div>
           )}
 
           {/* Nearest city */}
           {nearestCity && (
             <div className="py-2">
-              <DetailRow icon={Building2} label="Nearest City" value={nearestCity} accent="text-aqua-text" />
+              <DetailRow icon={Building2} label="Nearest City" value={nearestCity} accent="text-brand-text" />
             </div>
           )}
 
@@ -359,13 +359,13 @@ export default function LocationDetails({ map }: LocationDetailsPanelProps) {
             icon={Navigation}
             label="Latitude"
             value={coords.lat.toFixed(6)}
-            accent="text-aqua-text"
+            accent="text-brand-text"
           />
           <DetailRow
             icon={Navigation}
             label="Longitude"
             value={coords.lng.toFixed(6)}
-            accent="text-aqua-text"
+            accent="text-brand-text"
           />
 
           <Separator className="bg-foreground/[0.04]" />
@@ -375,19 +375,19 @@ export default function LocationDetails({ map }: LocationDetailsPanelProps) {
             icon={Compass}
             label="Zoom Level"
             value={zoom.toFixed(1)}
-            accent="text-aqua-text"
+            accent="text-brand-text"
           />
           <DetailRow
             icon={Compass}
             label="Bearing"
             value={`${bearing.toFixed(1)}°`}
-            accent="text-aqua-text"
+            accent="text-brand-text"
           />
           <DetailRow
             icon={Compass}
             label="Pitch"
             value={`${pitch.toFixed(1)}°`}
-            accent="text-aqua-text"
+            accent="text-brand-text"
           />
 
           <Separator className="bg-foreground/[0.04]" />
@@ -397,13 +397,13 @@ export default function LocationDetails({ map }: LocationDetailsPanelProps) {
             icon={Globe}
             label="Timezone"
             value={timezoneLabel}
-            accent="text-aqua-text"
+            accent="text-brand-text"
           />
           <DetailRow
             icon={Clock}
             label="Local Time"
             value={localTimeStr}
-            accent="text-aqua-text"
+            accent="text-brand-text"
           />
 
           <Separator className="bg-foreground/[0.04]" />
@@ -428,7 +428,7 @@ export default function LocationDetails({ map }: LocationDetailsPanelProps) {
             icon={Mountain}
             label="Elevation"
             value={elevation}
-            accent="text-aqua-text"
+            accent="text-brand-text"
           />
         </div>
       </SheetContent>

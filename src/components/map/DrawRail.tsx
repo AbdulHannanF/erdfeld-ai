@@ -73,7 +73,7 @@ export default function DrawRail({ className }: { className?: string }) {
   }
 
   return (
-    <nav aria-label="Draw and measure tools" className={cn('grid gap-[0.1875rem] rounded-[0.5625rem] p-[0.3125rem] [@container(max-height:35rem)]:max-h-[calc(100%-11rem)] [@container(max-height:35rem)]:overflow-y-auto [@container(max-height:35rem)]:overscroll-contain', GLASS, className)} data-testid="draw-rail">
+    <nav aria-label="Draw and measure tools" className={cn('grid gap-[0.1875rem] rounded-lg p-[0.3125rem] [@container(max-height:35rem)]:max-h-[calc(100%-11rem)] [@container(max-height:35rem)]:overflow-y-auto [@container(max-height:35rem)]:overscroll-contain', GLASS, className)} data-testid="draw-rail">
       {ENTRIES.map((e, i) => {
         if (e.kind === 'sep') return <span key={i} className="mx-1 my-0.5 h-px bg-border" role="separator" aria-hidden />
         if (e.kind === 'clear') {
@@ -86,10 +86,10 @@ export default function DrawRail({ className }: { className?: string }) {
               aria-label="Clear the area of interest"
               title="Clear area"
               data-testid="draw-clear"
-              className="group/t relative grid size-9 place-items-center rounded-md border border-transparent text-muted-foreground transition-colors hover:bg-hover hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
+              className="btn btn-ghost btn-icon-md relative"
             >
-              <Trash2 className="size-4" aria-hidden />
-              <span role="tooltip" className="pointer-events-none absolute left-[calc(100%+0.4375rem)] top-1/2 -translate-y-1/2 whitespace-nowrap rounded border border-input bg-popover px-2 py-1 text-xs text-popover-foreground opacity-0 group-hover/t:opacity-100 group-focus-visible/t:opacity-100 max-md:hidden [@container(max-height:35rem)]:hidden">Clear area</span>
+              <Trash2 aria-hidden />
+              <span role="tooltip" className="pointer-events-none absolute left-[calc(100%+0.4375rem)] top-1/2 -translate-y-1/2 whitespace-nowrap rounded-sm border border-input bg-popover px-2 py-1 text-caption text-popover-foreground opacity-0 group-hover/t:opacity-100 group-focus-visible/t:opacity-100 max-md:hidden [@container(max-height:35rem)]:hidden">Clear area</span>
             </button>
           )
         }
@@ -105,12 +105,12 @@ export default function DrawRail({ className }: { className?: string }) {
             data-testid={`draw-${e.id}`}
             onClick={() => choose(e)}
             className={cn(
-              'group/t relative grid size-9 place-items-center rounded-md border border-transparent text-muted-foreground transition-colors hover:bg-hover hover:text-foreground',
-              on && 'border-[#49b5825c] bg-[#49b58224] text-[#b9e5ca]',
+              'btn btn-ghost btn-icon-md relative',
+              on && 'bg-accent text-accent-foreground',
             )}
           >
-            <Icon className="size-4" aria-hidden />
-            <span role="tooltip" className="pointer-events-none absolute left-[calc(100%+0.4375rem)] top-1/2 -translate-y-1/2 whitespace-nowrap rounded border border-input bg-popover px-2 py-1 text-xs text-popover-foreground opacity-0 group-hover/t:opacity-100 group-focus-visible/t:opacity-100 max-md:hidden [@container(max-height:35rem)]:hidden">{e.label}</span>
+            <Icon aria-hidden />
+            <span role="tooltip" className="pointer-events-none absolute left-[calc(100%+0.4375rem)] top-1/2 -translate-y-1/2 whitespace-nowrap rounded-sm border border-input bg-popover px-2 py-1 text-caption text-popover-foreground opacity-0 group-hover/t:opacity-100 group-focus-visible/t:opacity-100 max-md:hidden [@container(max-height:35rem)]:hidden">{e.label}</span>
           </button>
         )
       })}

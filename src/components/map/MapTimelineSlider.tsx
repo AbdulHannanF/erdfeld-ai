@@ -116,14 +116,14 @@ export default function MapTimelineSlider() {
   // No dated scenes: the design's resting bar, disabled, saying why.
   if (totalFrames === 0) {
     return (
-      <div className="flex w-full items-center gap-2.5 rounded-[0.4375rem] border border-[color-mix(in_srgb,var(--foreground)_15%,transparent)] bg-[color-mix(in_srgb,var(--card)_91%,transparent)] px-2.5 py-1.5 backdrop-blur-[0.8125rem] max-md:hidden" data-testid="time-nav" aria-label="Time navigation">
-        <span className="grid size-7 place-items-center rounded-[0.3125rem] border border-border text-[#9dc7b0]"><Clock className="size-3.5" aria-hidden /></span>
+      <div className="flex w-full items-center gap-2.5 rounded-md border border-[color-mix(in_srgb,var(--foreground)_15%,transparent)] bg-[color-mix(in_srgb,var(--card)_91%,transparent)] px-2.5 py-1.5 backdrop-blur-[0.8125rem] max-md:hidden" data-testid="time-nav" aria-label="Time navigation">
+        <span className="grid size-7 place-items-center rounded-md border border-border text-brand-text"><Clock className="size-3.5" aria-hidden /></span>
         <span className="min-w-0 flex-1">
-          <strong className="block text-[0.8125rem] font-semibold text-foreground">Time navigation</strong>
-          <small className="mt-0.5 block font-mono text-xs text-muted-foreground">No temporal layer active</small>
+          <strong className="block text-body-strong text-foreground">Time navigation</strong>
+          <small className="mt-0.5 block text-data text-muted-foreground">No temporal layer active</small>
         </span>
         <input type="range" disabled min={0} max={100} value={100} readOnly aria-label="Temporal frame" className="w-[4rem] shrink-0 accent-[var(--teal)] opacity-60" />
-        <span className="font-mono text-xs text-muted-foreground" aria-hidden>—</span>
+        <span className="text-data text-muted-foreground" aria-hidden>—</span>
       </div>
     )
   }
@@ -139,17 +139,17 @@ export default function MapTimelineSlider() {
   ].filter(Boolean).join(' · ')
 
   return (
-    <div className="flex w-[min(35rem,100%)] items-center gap-2 rounded-[0.4375rem] border border-[color-mix(in_srgb,var(--foreground)_15%,transparent)] bg-[color-mix(in_srgb,var(--card)_91%,transparent)] px-2.5 py-1.5 backdrop-blur-[0.8125rem]" data-testid="time-nav" aria-label="Time navigation">
-      <span className="grid size-7 shrink-0 place-items-center rounded-[0.3125rem] border border-border text-[#9dc7b0] max-sm:hidden"><Clock className="size-3.5" aria-hidden /></span>
+    <div className="flex w-[min(35rem,100%)] items-center gap-2 rounded-md border border-[color-mix(in_srgb,var(--foreground)_15%,transparent)] bg-[color-mix(in_srgb,var(--card)_91%,transparent)] px-2.5 py-1.5 backdrop-blur-[0.8125rem]" data-testid="time-nav" aria-label="Time navigation">
+      <span className="grid size-7 shrink-0 place-items-center rounded-md border border-border text-brand-text max-sm:hidden"><Clock className="size-3.5" aria-hidden /></span>
       <span className="min-w-0 max-w-[11.875rem] shrink-0">
-        <strong className="block text-[0.8125rem] font-semibold text-foreground">Time navigation</strong>
-        <small className="mt-0.5 block truncate font-mono text-xs text-muted-foreground" title="Scene-wide cloud is the whole granule from STAC metadata; clear over the area is from the per-pixel mask inside your polygon" aria-live="polite">{caption}</small>
+        <strong className="block text-body-strong text-foreground">Time navigation</strong>
+        <small className="mt-0.5 block truncate text-data text-muted-foreground" title="Scene-wide cloud is the whole granule from STAC metadata; clear over the area is from the per-pixel mask inside your polygon" aria-live="polite">{caption}</small>
       </span>
-      <button onClick={stepBack} className="grid size-7 shrink-0 place-items-center rounded text-muted-foreground transition-colors hover:bg-hover hover:text-foreground" aria-label="Previous frame"><ChevronLeft className="size-4" aria-hidden /></button>
-      <button onClick={togglePlay} className={`grid size-7 shrink-0 place-items-center rounded transition-colors ${isPlaying ? 'bg-accent text-accent-foreground' : 'text-foreground hover:bg-hover'}`} aria-label={isPlaying ? 'Pause' : 'Play'} aria-pressed={isPlaying}>
+      <button onClick={stepBack} className="btn btn-ghost btn-icon-sm shrink-0" aria-label="Previous frame"><ChevronLeft aria-hidden /></button>
+      <button onClick={togglePlay} className={`grid size-7 shrink-0 place-items-center rounded-sm transition-colors ${isPlaying ? 'bg-accent text-accent-foreground' : 'text-foreground hover:bg-hover'}`} aria-label={isPlaying ? 'Pause' : 'Play'} aria-pressed={isPlaying}>
         {isPlaying ? <Pause className="size-4" aria-hidden /> : <Play className="size-4" aria-hidden />}
       </button>
-      <button onClick={stepForward} className="grid size-7 shrink-0 place-items-center rounded text-muted-foreground transition-colors hover:bg-hover hover:text-foreground" aria-label="Next frame"><ChevronRight className="size-4" aria-hidden /></button>
+      <button onClick={stepForward} className="btn btn-ghost btn-icon-sm shrink-0" aria-label="Next frame"><ChevronRight aria-hidden /></button>
       <Slider
         value={[currentIndex]}
         min={0}
@@ -159,15 +159,15 @@ export default function MapTimelineSlider() {
         aria-label="Temporal frame"
         className="min-w-[3.75rem] flex-1 [&_[data-slot=slider-track]]:h-1 [&_[data-slot=slider-range]]:bg-teal [&_[data-slot=slider-thumb]]:size-3.5 [&_[data-slot=slider-thumb]]:border-teal"
       />
-      <span className="shrink-0 font-mono text-xs text-muted-foreground">{currentIndex + 1}/{totalFrames}</span>
+      <span className="shrink-0 text-data text-muted-foreground">{currentIndex + 1}/{totalFrames}</span>
       <Select value={String(speed)} onValueChange={(v) => setSpeed(parseFloat(v))}>
-        <SelectTrigger size="sm" aria-label="Playback speed" className="h-7 w-[4.25rem] shrink-0 border-border bg-secondary text-xs text-muted-foreground max-sm:hidden">
+        <SelectTrigger size="sm" aria-label="Playback speed" className="h-7 w-[4.25rem] shrink-0 border-border bg-secondary text-caption text-muted-foreground max-sm:hidden">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="0.5" className="text-xs">0.5x</SelectItem>
-          <SelectItem value="1" className="text-xs">1x</SelectItem>
-          <SelectItem value="2" className="text-xs">2x</SelectItem>
+          <SelectItem value="0.5" className="text-caption">0.5x</SelectItem>
+          <SelectItem value="1" className="text-caption">1x</SelectItem>
+          <SelectItem value="2" className="text-caption">2x</SelectItem>
         </SelectContent>
       </Select>
     </div>

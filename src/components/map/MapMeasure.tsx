@@ -85,13 +85,13 @@ export default function MapMeasure({ map, className }: { map: maplibregl.Map | n
   if (!active) return null
 
   return (
-    <div className={cn('flex items-center gap-2 rounded-[0.5rem] px-2.5 py-1.5 text-[0.8125rem]', GLASS, className)} role="status" data-testid="measure-readout">
-      <span className="font-mono text-xs uppercase tracking-[0.08em] text-muted-foreground">Distance</span>
+    <div className={cn('flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-body', GLASS, className)} role="status" data-testid="measure-readout">
+      <span className="text-muted-foreground text-label">Distance</span>
       <strong className="min-w-[4rem] tabular-nums text-foreground">{points.length > 1 ? formatDistance(length, units) : 'Click 2+ points'}</strong>
-      {points.length > 1 && <span className="font-mono text-xs text-muted-foreground">{points.length} points</span>}
-      <button type="button" className="grid size-7 place-items-center rounded text-muted-foreground hover:bg-hover hover:text-foreground disabled:opacity-40" disabled={points.length === 0} onClick={() => setPoints((p) => p.slice(0, -1))} aria-label="Remove the last point" title="Undo a point"><Undo2 className="size-3.5" aria-hidden /></button>
-      <button type="button" className="grid size-7 place-items-center rounded text-muted-foreground hover:bg-hover hover:text-foreground disabled:opacity-40" disabled={points.length === 0} onClick={() => setPoints([])} aria-label="Clear the measurement" title="Clear"><Eraser className="size-3.5" aria-hidden /></button>
-      <button type="button" className="inline-flex h-7 items-center gap-1 rounded border border-input bg-secondary px-2 text-xs hover:bg-hover" onClick={() => setTool('select')}><Check className="size-3.5" aria-hidden />Finish</button>
+      {points.length > 1 && <span className="text-data text-muted-foreground">{points.length} points</span>}
+      <button type="button" className="btn btn-ghost btn-icon-sm" disabled={points.length === 0} onClick={() => setPoints((p) => p.slice(0, -1))} aria-label="Remove the last point" title="Undo a point"><Undo2 aria-hidden /></button>
+      <button type="button" className="btn btn-ghost btn-icon-sm" disabled={points.length === 0} onClick={() => setPoints([])} aria-label="Clear the measurement" title="Clear"><Eraser aria-hidden /></button>
+      <button type="button" className="btn btn-secondary btn-sm" onClick={() => setTool('select')}><Check aria-hidden />Finish</button>
     </div>
   )
 }

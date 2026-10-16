@@ -136,18 +136,17 @@ export default function VerifyClaimDialog() {
           <DialogDescription>Checks a statement about the drawn area against satellite evidence. The answer can be Supported, Contradicted or Cannot determine.</DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <div role="tablist" aria-label="Plots" className="grid grid-cols-2 gap-1 rounded-md bg-secondary p-1 text-sm">
+          <div role="tablist" aria-label="Plots" className="segmented grid grid-cols-2">
             {([['drawn', 'The drawn area'], ['file', 'Many plots: upload a file']] as const).map(([m, label]) => (
-              <button key={m} role="tab" aria-selected={mode === m} data-testid={`verify-mode-${m}`} onClick={() => { setMode(m); setError(null) }}
-                className={`rounded px-2 py-1.5 ${mode === m ? 'bg-background font-medium shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}>{label}</button>
+              <button key={m} role="tab" aria-selected={mode === m} data-testid={`verify-mode-${m}`} onClick={() => { setMode(m); setError(null) }}>{label}</button>
             ))}
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="claim-type">Claim</Label>
-            <select id="claim-type" value={typeId} onChange={(e) => setTypeId(e.target.value)} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+            <select id="claim-type" value={typeId} onChange={(e) => setTypeId(e.target.value)} className="field">
               {types.map((t) => <option key={t.id} value={t.id}>{t.title}</option>)}
             </select>
-            {type && <p className="text-xs text-muted-foreground">{type.description}</p>}
+            {type && <p className="text-caption text-muted-foreground">{type.description}</p>}
           </div>
           {type && Object.entries(type.params).map(([name, spec]) => {
             const key = `${type.id}.${name}`
@@ -162,24 +161,24 @@ export default function VerifyClaimDialog() {
                   value={values[key] ?? ''}
                   onChange={(e) => setValues((v) => ({ ...v, [key]: e.target.value }))}
                 />
-                {spec.description && <p className="text-xs text-muted-foreground">{spec.description}</p>}
+                {spec.description && <p className="text-caption text-muted-foreground">{spec.description}</p>}
               </div>
             )
           })}
           {mode === 'drawn' ? (
-            <p className={`text-xs ${plotOk ? 'text-muted-foreground' : 'text-destructive'}`}>
+            <p className={`text-caption ${plotOk ? 'text-muted-foreground' : 'text-danger'}`}>
               {plotOk ? 'The plot is the area you drew.' : 'Draw a single polygon, rectangle or circle first: it is the plot the claim is about.'}
             </p>
           ) : (
             <div className="space-y-2" data-testid="verify-file">
               <Label htmlFor="batch-file">Plots file</Label>
-              <label htmlFor="batch-file" className="flex cursor-pointer items-center gap-2 rounded-md border border-dashed border-input px-3 py-3 text-sm text-muted-foreground hover:bg-secondary">
+              <label htmlFor="batch-file" className="flex cursor-pointer items-center gap-2 rounded-md border border-dashed border-input px-3 py-3 text-body text-muted-foreground hover:bg-secondary">
                 <Upload className="h-4 w-4 shrink-0" aria-hidden />{file ? file.name : `GeoJSON, zipped Shapefile, KML, GPX or CSV (up to ${MAX_BATCH_PLOTS} plots)`}
               </label>
               <input id="batch-file" data-testid="batch-file" type="file" accept={IMPORT_ACCEPT} className="sr-only" onChange={(e) => readFile(e.target.files?.[0])} />
               {fromFile && (
-                <div className="space-y-1 text-xs text-muted-foreground" data-testid="batch-file-summary">
-                  <p className={fromFile.plots.length && !fromFile.tooMany ? 'text-foreground' : 'text-destructive'}>
+                <div className="space-y-1 text-caption text-muted-foreground" data-testid="batch-file-summary">
+                  <p className={fromFile.plots.length && !fromFile.tooMany ? 'text-foreground' : 'text-danger'}>
                     {fromFile.tooMany ? `${fromFile.plots.length} plots: the limit is ${MAX_BATCH_PLOTS} per batch.` : `${fromFile.plots.length} plot${fromFile.plots.length === 1 ? '' : 's'} read (${file?.crs}).`}
                   </p>
                   {fromFile.skipped.length + (file?.dropped ?? 0) > 0 && (
@@ -196,8 +195,8 @@ export default function VerifyClaimDialog() {
               )}
             </div>
           )}
-          {error && <p className="text-sm text-destructive" role="alert">{error}</p>}
-          {running && mode === 'drawn' && <p className="text-xs text-muted-foreground">Reading satellite scenes. This usually takes 15 to 90 seconds.</p>}
+          {error && <p className="text-body text-danger" role="alert">{error}</p>}
+          {running && mode === 'drawn' && <p className="text-caption text-muted-foreground">Reading satellite scenes. This usually takes 15 to 90 seconds.</p>}
         </div>
         <DialogFooter>
           {mode === 'drawn' ? (

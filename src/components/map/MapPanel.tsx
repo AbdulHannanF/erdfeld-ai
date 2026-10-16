@@ -444,8 +444,8 @@ export default function MapPanel() {
             }
 
             return `<div class="flex justify-between gap-4 py-0.5">
-              <span class="text-xs text-muted-foreground">${esc(displayKey)}</span>
-              <span class="text-xs font-medium ${valueColor}">${esc(displayValue)}</span>
+              <span class="text-caption text-muted-foreground">${esc(displayKey)}</span>
+              <span class="text-caption-strong ${valueColor}">${esc(displayValue)}</span>
             </div>`
           })
           .join('')
@@ -1141,10 +1141,10 @@ export default function MapPanel() {
         }`}
         aria-hidden={!isDragOver}
       >
-        <div className="flex flex-col items-center gap-3 rounded-2xl border-2 border-dashed border-brand-400 bg-popover px-12 py-10 text-center">
+        <div className="flex flex-col items-center gap-3 rounded-lg border-2 border-dashed border-brand-400 bg-popover px-12 py-10 text-center">
           <Upload className="size-10 text-brand-text" aria-hidden />
-          <span className="font-heading text-lg font-medium text-foreground">Drop a vector file to add it to the map</span>
-          <span className="text-sm text-muted-foreground">GeoJSON, zipped Shapefile, KML/KMZ, GPX, CSV</span>
+          <span className="font-heading text-section text-foreground">Drop a vector file to add it to the map</span>
+          <span className="text-body text-muted-foreground">GeoJSON, zipped Shapefile, KML/KMZ, GPX, CSV</span>
         </div>
       </div>
     </div>

@@ -64,7 +64,7 @@ export default function CrsDialog() {
         </>
       }
     >
-      <p className="text-[0.8125rem] leading-relaxed text-muted-foreground">
+      <p className="text-body leading-relaxed text-muted-foreground">
         The CRS vector layers are written in when you download them. The map itself always displays in Web Mercator and reprojects on the fly.
       </p>
       <div className="grid gap-1.5">

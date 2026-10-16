@@ -40,11 +40,11 @@ export const StepList = memo(function StepList() {
 
   return (
     <section aria-label="What was run">
-      <h3 className="mb-1.5 flex items-baseline justify-between text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+      <h3 className="mb-1.5 flex items-baseline justify-between text-muted-foreground text-label">
         <span>What was run</span>
-        {finished && total > 0 && <span className="font-medium normal-case tracking-normal tabular-nums">{toolCalls.length} {toolCalls.length === 1 ? 'step' : 'steps'} · {formatDuration(total)}</span>}
+        {finished && total > 0 && <span className="font-semibold normal-case tracking-normal tabular-nums">{toolCalls.length} {toolCalls.length === 1 ? 'step' : 'steps'} · {formatDuration(total)}</span>}
       </h3>
-      <ol className="grid gap-px text-[0.8125rem]">
+      <ol className="grid gap-px text-body">
         {toolCalls.map((tc, i) => {
           const outcome = stepOutcome(tc, toolResults, layers)
           const { icon: Icon, className, word } = OUTCOME[outcome]
@@ -56,15 +56,15 @@ export const StepList = memo(function StepList() {
               <span className="min-w-0">
                 <span className={cn('block leading-snug', outcome === 'running' ? 'text-foreground' : 'text-muted-foreground')}>
                   {tc.label || pretty(tc.toolName)}
-                  {outcome !== 'ok' && outcome !== 'running' && <span className="ml-1.5 text-xs font-medium text-foreground">({word})</span>}
+                  {outcome !== 'ok' && outcome !== 'running' && <span className="ml-1.5 text-caption-strong text-foreground">({word})</span>}
                 </span>
                 {detail ? (
-                  <span className="mt-0.5 block text-xs leading-snug text-muted-foreground">{detail}</span>
+                  <span className="mt-0.5 block text-caption leading-snug text-muted-foreground">{detail}</span>
                 ) : reason && outcome === 'running' ? (
-                  <span className="mt-0.5 block text-xs leading-snug text-muted-foreground">{reason}</span>
+                  <span className="mt-0.5 block text-caption leading-snug text-muted-foreground">{reason}</span>
                 ) : null}
               </span>
-              <span className="pt-px text-xs tabular-nums text-muted-foreground">
+              <span className="pt-px text-caption tabular-nums text-muted-foreground">
                 {tc.durationMs != null && tc.status !== 'running' ? formatDuration(tc.durationMs) : ''}
               </span>
             </li>
@@ -73,7 +73,7 @@ export const StepList = memo(function StepList() {
         {queued.map((s, i) => (
           <li key={`q-${i}`} className="grid grid-cols-[1rem_1fr] items-start gap-x-2.5 py-1 text-muted-foreground">
             <Circle className="mt-[0.1875rem] size-3.5" aria-hidden />
-            <span className="leading-snug">{pretty(s.tool)} <span className="text-xs">(queued)</span></span>
+            <span className="leading-snug">{pretty(s.tool)} <span className="text-caption">(queued)</span></span>
           </li>
         ))}
       </ol>

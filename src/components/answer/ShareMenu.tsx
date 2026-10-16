@@ -50,17 +50,17 @@ export default function ShareMenu({ children }: { children?: React.ReactNode }) 
     return lines.join('\n').trim()
   }
 
-  const item = 'flex w-full items-center gap-2.5 rounded-md px-2 py-2 text-left text-sm text-foreground transition-colors hover:bg-muted'
+  const item = 'menu-item'
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         {children ?? (
-          <Button variant="outline" size="sm"><Share2 aria-hidden />Share</Button>
+          <Button variant="secondary" size="sm"><Share2 aria-hidden />Share</Button>
         )}
       </PopoverTrigger>
       <PopoverContent align="start" className="w-72 p-1.5" data-testid="share-menu">
-        <p className="flex items-center gap-1.5 px-2 pb-1 pt-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+        <p className="flex items-center gap-1.5 px-2 pb-1 pt-1.5 text-muted-foreground text-label">
           <Users className="size-3.5" aria-hidden />Share and collaborate
         </p>
         <div className="px-1 pb-1"><ShareLink className="w-full justify-start" /></div>

@@ -38,7 +38,7 @@ export function HealthDot({ variant = 'dot', className }: { variant?: 'dot' | 'p
   }, [])
   return (
     <span
-      className={cn('inline-flex items-center gap-[0.3125rem]', variant === 'pill' ? 'font-mono text-xs tracking-[0.04em] text-muted-foreground' : 'size-8 justify-center', className)}
+      className={cn('inline-flex items-center gap-[0.3125rem]', variant === 'pill' ? 'text-label text-muted-foreground' : 'size-8 justify-center', className)}
       title={view.label}
       role="status"
       data-testid="health-dot"

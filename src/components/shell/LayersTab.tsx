@@ -20,9 +20,9 @@ export default function LayersTab() {
       <div className="flex items-center justify-between gap-2">
         <div>
           <p className={OVERLINE}>Map</p>
-          <h2 className="mt-1 font-heading text-[0.9375rem] font-semibold text-foreground">Layers</h2>
+          <h2 className="mt-1 font-heading text-panel text-foreground">Layers</h2>
         </div>
-        <span className="rounded border border-border bg-accent px-1.5 py-0.5 font-mono text-xs text-accent-foreground">{count}</span>
+        <span className="badge badge-accent">{count}</span>
       </div>
       <LayerPanel />
       {hasClasses && (

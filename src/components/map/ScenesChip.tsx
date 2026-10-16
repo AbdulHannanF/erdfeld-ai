@@ -24,14 +24,14 @@ export function ScenesChip() {
           type="button"
           data-testid="scenes-chip"
           aria-label={`${scenes.length} dated ${scenes.length === 1 ? 'scene' : 'scenes'}, latest ${shortDate(scenes[scenes.length - 1].date)}. Show the list`}
-          className="pointer-events-auto flex max-w-full items-center gap-4 overflow-x-auto rounded-[0.625rem] border border-border bg-card px-3 py-2 text-xs shadow-float transition-colors hover:bg-muted"
+          className="glass pointer-events-auto flex max-w-full items-center gap-4 overflow-x-auto rounded-lg px-3 py-2 text-caption transition-colors hover:bg-hover"
         >
-          <span className="text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">Scenes</span>
+          <span className="text-muted-foreground text-label">Scenes</span>
           <ol className="flex gap-3">
             {shown.map((s, i) => {
               const now = i === shown.length - 1
               return (
-                <li key={s.key} className={cn('flex items-center gap-1.5 whitespace-nowrap', now ? 'font-medium text-foreground' : 'text-muted-foreground')}>
+                <li key={s.key} className={cn('flex items-center gap-1.5 whitespace-nowrap', now ? 'font-semibold text-foreground' : 'text-muted-foreground')}>
                   <span className={cn('size-[0.4375rem] rounded-full bg-teal', now && 'shadow-[0_0_0_0.1875rem_var(--accent)]')} aria-hidden />
                   {shortDate(s.date)}
                 </li>
@@ -42,13 +42,13 @@ export function ScenesChip() {
         </button>
       </PopoverTrigger>
       <PopoverContent align="start" side="top" sideOffset={8} className="w-80 p-2">
-        <p className="px-1.5 pb-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-muted-foreground">Scenes used</p>
+        <p className="px-1.5 pb-1.5 text-muted-foreground text-label">Scenes used</p>
         <ul className="max-h-60 overflow-y-auto">
           {scenes.map((s) => (
-            <li key={s.key} className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-3 rounded px-1.5 py-1 text-[0.8125rem]">
-              <span className="font-medium tabular-nums text-foreground">{shortDate(s.date)}</span>
-              <span className="truncate text-xs text-muted-foreground" title={s.label}>{s.label}</span>
-              <span className="text-xs tabular-nums text-muted-foreground">
+            <li key={s.key} className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-3 rounded-sm px-1.5 py-1 text-body">
+              <span className="font-semibold tabular-nums text-foreground">{shortDate(s.date)}</span>
+              <span className="truncate text-caption text-muted-foreground" title={s.label}>{s.label}</span>
+              <span className="text-caption tabular-nums text-muted-foreground">
                 {s.clear != null ? `${Math.round(s.clear)}% clear` : s.cloud != null ? `${Math.round(s.cloud)}% cloud` : ''}
               </span>
             </li>

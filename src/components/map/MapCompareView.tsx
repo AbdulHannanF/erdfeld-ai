@@ -27,7 +27,7 @@ function StyleDropdown({
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-popover/90 border border-border text-xs text-foreground font-medium hover:bg-popover/90 hover:border-brand-500/30 transition-all"
+        className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-popover/90 border border-border text-caption-strong text-foreground hover:bg-popover/90 hover:border-brand-500/30 transition-all"
       >
         <span className="text-muted-foreground">{label}:</span>
         <span className="text-brand-text">
@@ -46,7 +46,7 @@ function StyleDropdown({
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute top-full mt-1 left-0 z-50 rounded-xl bg-popover/90 border border-border py-1 min-w-[7.5rem] shadow-xl">
+          <div className="absolute top-full mt-1 left-0 z-50 rounded-lg bg-popover/90 border border-border py-1 min-w-[7.5rem] shadow-xl">
             {MAP_STYLES.map((style) => (
               <button
                 key={style.id}
@@ -54,14 +54,14 @@ function StyleDropdown({
                   onStyleChange(style.id)
                   setOpen(false)
                 }}
-                className={`flex w-full items-center gap-2 px-3 py-1.5 text-xs transition-colors ${
+                className={`flex w-full items-center gap-2 px-3 py-1.5 text-caption transition-colors ${
                   currentStyle === style.id
                     ? 'text-brand-text bg-brand-500/10'
                     : 'text-muted-foreground hover:text-foreground hover:bg-foreground/[0.06]'
                 }`}
               >
                 <span
-                  className="inline-block h-3 w-3 rounded-[0.125rem] border border-border shrink-0"
+                  className="inline-block h-3 w-3 rounded-sm border border-border shrink-0"
                   style={{ backgroundColor: style.previewColor }}
                 />
                 {style.name}
@@ -275,7 +275,7 @@ export default function MapCompareView({ mainMap, isActive, onToggle }: MapCompa
 
         {/* "Before" label */}
         <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10">
-          <div className="px-3 py-1 rounded-lg bg-popover/90 border border-border text-xs font-semibold text-foreground shadow-lg">
+          <div className="px-3 py-1 rounded-lg bg-popover/90 border border-border text-caption-strong text-foreground shadow-lg">
             Before
           </div>
         </div>
@@ -319,7 +319,7 @@ export default function MapCompareView({ mainMap, isActive, onToggle }: MapCompa
 
         {/* "After" label */}
         <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10">
-          <div className="px-3 py-1 rounded-lg bg-popover/90 border border-border text-xs font-semibold text-foreground shadow-lg">
+          <div className="px-3 py-1 rounded-lg bg-popover/90 border border-border text-caption-strong text-foreground shadow-lg">
             After
           </div>
         </div>
@@ -337,16 +337,16 @@ export default function MapCompareView({ mainMap, isActive, onToggle }: MapCompa
       {/* Close button */}
       <button
         onClick={onToggle}
-        className="absolute top-3 right-3 z-50 flex items-center justify-center h-8 w-8 rounded-lg bg-popover/90 border border-border text-muted-foreground hover:text-danger hover:border-danger/30 hover:bg-popover/90 transition-all"
+        className="btn btn-ghost btn-icon-md absolute top-3 right-3 z-50"
         title="Close compare view"
       >
-        <X className="h-4 w-4" />
+        <X />
       </button>
 
       {/* First-use tooltip */}
       {showTooltip && (
         <div className="absolute top-14 left-1/2 -translate-x-1/2 z-50 animate-fade-in-up">
-          <div className="px-4 py-2.5 rounded-xl bg-brand-500/15 border border-brand-500/30 text-xs text-brand-text shadow-lg max-w-[17.5rem] text-center">
+          <div className="px-4 py-2.5 rounded-lg bg-brand-500/15 border border-brand-500/30 text-caption text-brand-text shadow-lg max-w-[17.5rem] text-center">
             Drag the center divider to adjust the split. Each side has its own style selector.
           </div>
         </div>
@@ -376,7 +376,7 @@ export function MapCompareButton({
       }`}
       title={isActive ? 'Close compare view' : 'Compare map views'}
     >
-      <Columns className="h-4 w-4" />
+      <Columns />
     </button>
   )
 }

@@ -21,8 +21,7 @@ const IDEAS = [
   ...SAMPLE_CASES.map((c) => c.question),
 ]
 
-const tool =
-  'inline-flex h-7 items-center gap-1.5 rounded px-1.5 text-[0.7813rem] text-muted-foreground transition-colors hover:bg-hover hover:text-foreground [&_svg]:size-3.5'
+const tool = 'btn btn-ghost btn-sm'
 
 /** The question box as the workbench draws it: which area it will ask about, the text, Add data and
  *  Prompt ideas, dictation, and Ask Erdfeld. The area itself is drawn on the map; this only states
@@ -66,19 +65,19 @@ export default function Composer({
   return (
     <div className="border-t border-border bg-card px-3.5 pb-3 pt-2.5 max-md:pb-[max(0.75rem,env(safe-area-inset-bottom))]" data-testid="composer">
       <p
-        className={cn('mx-0.5 mb-[0.4375rem] flex items-center gap-1.5 text-[0.8125rem]', aoi ? 'text-muted-foreground' : 'text-warning')}
+        className={cn('mx-0.5 mb-[0.4375rem] flex items-center gap-1.5 text-body', aoi ? 'text-muted-foreground' : 'text-warning')}
         data-testid="composer-aoi"
       >
-        {aoi ? <Check className="size-3.5 shrink-0 text-[#78c49a]" aria-hidden /> : <TriangleAlert className="size-3.5 shrink-0" aria-hidden />}
+        {aoi ? <Check className="size-3.5 shrink-0 text-success" aria-hidden /> : <TriangleAlert className="size-3.5 shrink-0" aria-hidden />}
         <span className="truncate" role="status">
           {aoi ? `${aoi.type} area${km2 != null ? ` · ${formatAreaKm2(km2)}` : ''} selected · ready to ask` : 'Draw an area before asking'}
         </span>
         <span className="ml-auto" />
         {pointFocus && (
-          <span className="inline-flex min-w-0 items-center gap-1 rounded bg-accent px-1.5 py-0.5 text-xs text-accent-foreground">
+          <span className="chip min-w-0 bg-accent text-accent-foreground">
             <span className="truncate tabular-nums">Point {pointFocus.lat.toFixed(3)}, {pointFocus.lng.toFixed(3)}</span>
-            <button type="button" onClick={() => setPointFocus(null)} aria-label="Clear the picked point" className="rounded hover:text-foreground">
-              <X className="size-3" aria-hidden />
+            <button type="button" onClick={() => setPointFocus(null)} aria-label="Clear the picked point" className="link-btn">
+              <X aria-hidden />
             </button>
           </span>
         )}
@@ -88,12 +87,12 @@ export default function Composer({
         aria-pressed={voice.recording}
         aria-label={voice.recording ? 'Stop voice input' : 'Dictate the question (Ctrl+M)'}
         title={voice.recording ? 'Stop voice input' : 'Dictate the question (Ctrl+M)'}
-        className={cn(tool, 'ml-1 shrink-0 px-1.5', voice.recording && 'bg-danger/10 text-danger')}
+        className={cn('btn btn-icon-sm ml-1', voice.recording ? 'btn-danger' : 'btn-ghost')}
       >
         <Mic aria-hidden />
       </button>
       </p>
-      <div className="grid gap-1.5 rounded-lg border border-[#38413f] bg-secondary p-2 transition-colors focus-within:border-[#57816b] focus-within:bg-secondary">
+      <div className="grid gap-1.5 rounded-lg border border-input bg-secondary p-2 transition-colors focus-within:border-ring">
         <label htmlFor="chat-composer" className="sr-only">Ask a spatial question</label>
         <textarea
           ref={ref}
@@ -109,9 +108,9 @@ export default function Composer({
             }
           }}
           placeholder={pointFocus ? 'Ask about the point you picked…' : 'Ask a spatial question…'}
-          className="block max-h-[7.5rem] min-h-10 w-full resize-none bg-transparent px-0.5 text-[0.875rem] leading-normal text-foreground outline-none placeholder:text-muted-foreground"
+          className="block max-h-[7.5rem] min-h-10 w-full resize-none bg-transparent px-0.5 text-body leading-normal text-foreground outline-none placeholder:text-muted-foreground"
         />
-        <div className="flex items-center justify-between gap-1.5">
+        <div className="flex flex-wrap items-center justify-between gap-x-1.5 gap-y-1">
           <div className="flex min-w-0 items-center gap-0.5">
             <button type="button" className={tool} onClick={() => openDialog('add-data')} data-testid="composer-add-data">
               <Paperclip aria-hidden /><span className="whitespace-nowrap max-[400px]:sr-only">Add data</span>
@@ -123,7 +122,7 @@ export default function Composer({
                 </button>
               </PopoverTrigger>
               <PopoverContent align="start" side="top" sideOffset={8} className="w-[min(21.25rem,calc(100vw-2rem))] p-1">
-                <p className="px-2 pb-1 pt-1.5 font-mono text-xs uppercase tracking-[0.09em] text-muted-foreground">Prompt ideas</p>
+                <p className="px-2 pb-1 pt-1.5 text-muted-foreground text-label">Prompt ideas</p>
                 <ul>
                   {IDEAS.map((q) => (
                     <li key={q}>
@@ -133,7 +132,7 @@ export default function Composer({
                           onChange(q)
                           window.setTimeout(() => ref.current?.focus(), 0)
                         }}
-                        className="block w-full rounded px-2 py-1.5 text-left text-[0.8125rem] leading-snug text-foreground hover:bg-hover"
+                        className="menu-item"
                       >
                         {q}
                       </button>
@@ -144,8 +143,8 @@ export default function Composer({
             </Popover>
           </div>
           {isLoading ? (
-            <button type="button" onClick={onCancel} aria-label="Stop" title="Stop" className="inline-flex h-8 items-center gap-1.5 rounded border border-input bg-secondary px-2.5 text-[0.8125rem] font-semibold text-foreground hover:bg-hover">
-              <Square className="size-3 fill-current" aria-hidden />Stop
+            <button type="button" onClick={onCancel} aria-label="Stop" title="Stop" className="btn btn-secondary btn-sm">
+              <Square className="fill-current" aria-hidden />Stop
             </button>
           ) : (
             <button
@@ -154,9 +153,9 @@ export default function Composer({
               disabled={!canSend}
               title={aoi ? 'Send (Enter)' : 'Draw an area first'}
               data-testid="send"
-              className="inline-flex h-8 items-center gap-1.5 whitespace-nowrap rounded border border-[#49966b] bg-[#267e58] px-2.5 text-[0.8125rem] font-semibold text-[#f2f7f3] transition-colors hover:bg-[#32966b] disabled:pointer-events-none disabled:opacity-45"
+              className="btn btn-primary btn-sm"
             >
-              Ask Erdfeld <Send className="size-3.5" aria-hidden />
+              Ask Erdfeld <Send aria-hidden />
             </button>
           )}
         </div>

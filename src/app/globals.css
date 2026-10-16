@@ -134,19 +134,48 @@
   --radius-md: 0.375rem;
   --radius-lg: 0.625rem;
   --radius-xl: 0.625rem;
-  /* the design's type scale; nothing below 12px (its 11px step is lifted to 12) */
-  --text-xs: 0.75rem;
-  --text-xs--line-height: 1.5;
-  --text-sm: 0.8125rem;
-  --text-sm--line-height: 1.5;
-  --text-base: 0.875rem;
-  --text-base--line-height: 1.5;
-  --text-lg: 1.0625rem;
-  --text-lg--line-height: 1.4;
-  --text-xl: 1.375rem;
-  --text-xl--line-height: 1.25;
-  --text-2xl: 1.75rem;
-  --text-2xl--line-height: 1.15;
+  /* THE type scale. Seven roles, every size rem so the fluid root scale (section 4) carries them.
+     Nothing is below 12px at 1x. `text-<role>` sets size, line-height, weight and tracking
+     together, so a role never needs a separate font-weight class. Defaults are cleared on purpose:
+     text-xs / text-sm / text-lg and arbitrary text-[..] sizes do not exist here (a test enforces it).
+       caption       12  secondary lines, meta, table cells, helper text
+       caption-strong 12 600: form labels, status pills
+       label        12  mono, uppercase eyebrows: see .text-label in section 5
+       body          13  default control and prose text
+       body-strong   13  600: item names, active tabs, button labels
+       title         15  600: dialog and card titles, list group headings
+       section       17  600: section headings in an answer or board
+       panel         20  600: the heading of a whole panel (Toolbox, Settings)
+       display       28  600: the welcome heading only */
+  --text-*: initial;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.5;
+  --text-caption-strong: 0.75rem;
+  --text-caption-strong--line-height: 1.5;
+  --text-caption-strong--font-weight: 600;
+  --text-body: 0.8125rem;
+  --text-body--line-height: 1.5;
+  --text-body-strong: 0.8125rem;
+  --text-body-strong--line-height: 1.5;
+  --text-body-strong--font-weight: 600;
+  --text-title: 0.9375rem;
+  --text-title--line-height: 1.4;
+  --text-title--font-weight: 600;
+  --text-section: 1.0625rem;
+  --text-section--line-height: 1.35;
+  --text-section--font-weight: 600;
+  --text-panel: 1.25rem;
+  --text-panel--line-height: 1.25;
+  --text-panel--font-weight: 600;
+  --text-panel--letter-spacing: -0.01em;
+  --text-display: 1.75rem;
+  --text-display--line-height: 1.15;
+  --text-display--font-weight: 600;
+  --text-display--letter-spacing: -0.02em;
+  /* text colour roles: primary text-foreground, secondary text-ink-2, muted text-muted-foreground,
+     accent text-brand-text, then text-success / text-warning / text-danger. On-fill pairs are
+     text-primary-foreground and text-accent-foreground. */
+  --color-ink-2: var(--ink-2);
   --color-teal: var(--teal);
   --color-on-teal: var(--on-teal);
   --color-sunk: var(--sunk);
@@ -178,6 +207,8 @@
   --muted: #edf1f0;
   /* the design's ink-3, darkened a step: its value is 4.1:1 on the sunk surface */
   --muted-foreground: #5f6768;
+  /* secondary text: between foreground and muted-foreground */
+  --ink-2: #3f4748;
   --accent: #ddf3eb;
   --accent-foreground: #186d58;
   --destructive: #b42318;
@@ -240,6 +271,7 @@
   --secondary-foreground: #d6ded9;
   --muted: #171b1c;
   --muted-foreground: #8b9892;
+  --ink-2: #b5bfba;
   --accent: #1c2a22;
   --accent-foreground: #c3e3ce;
   --destructive: #f2766b;
@@ -300,7 +332,8 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-size: 0.875rem;
+    /* unsized text is the body role (13px) */
+    font-size: 0.8125rem;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
@@ -329,6 +362,309 @@
   .animate-fade-in-up {
     animation: fade-in-up 0.25s ease-out both;
   }
+}
+
+/* The eyebrow: mono, uppercase, tracked. The one style for every overline, group label and
+   table head. Colour is the caller's (usually text-muted-foreground). */
+@utility text-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Data text: coordinates, ids, dates, table cells that are values. Mono, caption size, no case change. */
+@utility text-data {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 5b. Controls. ONE system for buttons, fields, chips and badges, from the design's metrics: radius
+   6px (--radius-md); heights 28 (sm) and 32 (md); icon buttons square at the same heights; chips 24;
+   badges 20. Components pass these class names (see ui/button.tsx, ui/badge.tsx, ui/input.tsx) and
+   raw <button>s use them directly. Layout (width, margin) stays with the caller's utilities. */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    flex-shrink: 0;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    font-size: 0.8125rem;
+    line-height: 1.25;
+    font-weight: 500;
+    white-space: nowrap;
+    user-select: none;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .btn:disabled, .btn[aria-disabled="true"] { opacity: 0.45; pointer-events: none; }
+  .btn svg { flex-shrink: 0; pointer-events: none; }
+  .btn-md { height: 2rem; padding: 0 0.75rem; }
+  .btn-md svg { width: 1rem; height: 1rem; }
+  .btn-sm { height: 1.75rem; padding: 0 0.625rem; font-size: 0.75rem; }
+  .btn-sm svg { width: 0.875rem; height: 0.875rem; }
+  .btn-icon-md { width: 2rem; height: 2rem; padding: 0; }
+  .btn-icon-md svg { width: 1rem; height: 1rem; }
+  .btn-icon-sm { width: 1.75rem; height: 1.75rem; padding: 0; }
+  .btn-icon-sm svg { width: 0.875rem; height: 0.875rem; }
+  .btn-primary {
+    background: var(--primary);
+    color: var(--primary-foreground);
+    border-color: color-mix(in srgb, var(--teal) 72%, var(--primary));
+    font-weight: 600;
+  }
+  .btn-primary:hover { background: color-mix(in srgb, var(--primary), var(--foreground) 12%); }
+  .btn-secondary {
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+    border-color: var(--input);
+  }
+  .btn-secondary:hover { background: var(--hover); }
+  .btn-ghost { background: transparent; color: var(--ink-2); }
+  .btn-ghost:hover { background: var(--hover); color: var(--foreground); }
+  .btn-ghost[aria-pressed="true"], .btn-ghost[aria-expanded="true"], .btn-ghost[data-active="true"] {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .btn-danger {
+    background: color-mix(in srgb, var(--danger) 10%, transparent);
+    color: var(--danger);
+    border-color: color-mix(in srgb, var(--danger) 40%, transparent);
+  }
+  .btn-danger:hover { background: color-mix(in srgb, var(--danger) 18%, transparent); }
+
+  /* a row in a menu or popover list: a full-width ghost button, left aligned */
+  .menu-item {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.375rem 0.5rem;
+    border-radius: var(--radius-md);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    text-align: left;
+    color: var(--foreground);
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .menu-item:hover:not(:disabled) { background: var(--hover); }
+  .menu-item:disabled { opacity: 0.45; }
+  .menu-item svg { width: 1rem; height: 1rem; flex-shrink: 0; color: var(--muted-foreground); }
+  .menu-item[aria-pressed="true"], .menu-item[aria-checked="true"] { color: var(--brand-text); }
+
+  /* a small exclusive choice (view mode, theme, chart tab): buttons with aria-pressed or role=tab in a
+     sunk track; the chosen one is raised. .segmented-sm is the 24px version; .segmented-card is the
+     one floating over the map. */
+  .segmented {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    padding: 0.1875rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--muted);
+  }
+  .segmented-card { background: var(--card); box-shadow: var(--shadow); }
+  .segmented > button {
+    display: inline-flex;
+    height: 1.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.8125rem;
+    line-height: 1.25;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--muted-foreground);
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .segmented-sm > button { height: 1.5rem; padding: 0 0.5rem; font-size: 0.75rem; }
+  .segmented > button:hover:not(:disabled) { color: var(--foreground); }
+  .segmented > button:disabled { opacity: 0.4; }
+  .segmented > button[aria-pressed="true"], .segmented > button[aria-selected="true"] {
+    background: var(--card);
+    color: var(--foreground);
+    box-shadow: 0 0 0 1px var(--border);
+  }
+  .segmented-card > button[aria-pressed="true"] { background: var(--muted); box-shadow: none; }
+  .segmented > button svg { width: 0.875rem; height: 0.875rem; flex-shrink: 0; }
+
+  /* a text action inside a line or a heading row: no box, accent colour, underlined on hover */
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--brand-text);
+    font-weight: 600;
+    text-underline-offset: 0.1875rem;
+    transition: color 0.15s;
+  }
+  .link-btn:hover:not(:disabled) { color: var(--foreground); text-decoration: underline; }
+  .link-btn:disabled { opacity: 0.45; }
+  .link-btn svg { width: 0.875rem; height: 0.875rem; flex-shrink: 0; }
+
+  /* a whole-row choice: a glyph, a title and a detail line (add-data sources, the workspace switch) */
+  .option-card {
+    display: flex;
+    width: 100%;
+    min-height: 2.875rem;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.625rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--sunk);
+    color: var(--foreground);
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    text-align: left;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .option-card:hover:not(:disabled) { background: var(--hover); border-color: var(--line-2); }
+  .option-card:disabled { opacity: 0.45; }
+  .option-card svg { width: 1rem; height: 1rem; flex-shrink: 0; color: var(--brand-text); }
+
+  /* floating chrome over the map: the card surface, translucent, with the float shadow */
+  .glass {
+    border: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+    background: color-mix(in srgb, var(--card) 92%, transparent);
+    backdrop-filter: blur(0.875rem);
+    box-shadow: var(--shadow);
+  }
+
+  /* the sidebar's navigation rows (design .nav-item): 36px, the current one on the accent wash */
+  .nav-item {
+    display: flex;
+    width: 100%;
+    min-height: 2.25rem;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0 0.5rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    font-size: 0.8125rem;
+    line-height: 1.25;
+    text-align: left;
+    color: var(--ink-2);
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .nav-item svg { width: 1rem; height: 1rem; flex-shrink: 0; color: var(--muted-foreground); }
+  .nav-item:hover { background: var(--hover); color: var(--foreground); }
+  .nav-item[aria-current="page"], .nav-item[aria-pressed="true"] {
+    border-color: color-mix(in srgb, var(--ring) 40%, transparent);
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .nav-item[aria-current="page"] svg, .nav-item[aria-pressed="true"] svg { color: var(--brand-text); }
+
+  /* a tab in the inspector or dock strip: label, optional count, a 2px rule under the selected one */
+  .tab {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0 0.5rem;
+    font-size: 0.8125rem;
+    line-height: 1.25;
+    white-space: nowrap;
+    color: var(--muted-foreground);
+    transition: color 0.15s;
+  }
+  .tab:hover { color: var(--foreground); }
+  .tab[aria-selected="true"] { color: var(--foreground); }
+  .tab[aria-selected="true"]::after {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0;
+    height: 0.125rem;
+    border-radius: 0.125rem;
+    background: var(--teal);
+  }
+
+  /* text input, select trigger, textarea */
+  .field {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    height: 2rem;
+    padding: 0 0.625rem;
+    align-items: center;
+    border: 1px solid var(--input);
+    border-radius: var(--radius-md);
+    background: var(--secondary);
+    color: var(--foreground);
+    font-size: 0.8125rem;
+    line-height: 1.25;
+    transition: border-color 0.15s, background-color 0.15s;
+  }
+  .field::placeholder { color: var(--muted-foreground); }
+  .field:hover:not(:disabled) { border-color: var(--line-2); }
+  .field:focus-visible, .field[data-state="open"] { border-color: var(--ring); outline: none; box-shadow: 0 0 0 1px var(--ring); }
+  .field:disabled { opacity: 0.5; cursor: not-allowed; }
+  .field[aria-invalid="true"] { border-color: var(--danger); }
+  .field-sm, .field[data-size="sm"] { height: 1.75rem; padding: 0 0.5rem; font-size: 0.75rem; }
+  textarea.field { height: auto; min-height: 4rem; padding: 0.5rem 0.625rem; line-height: 1.5; resize: vertical; align-items: flex-start; }
+
+  /* a small tag or filter: a <span>, or a <button> with aria-pressed when it selects */
+  .chip {
+    display: inline-flex;
+    height: 1.5rem;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--sunk);
+    color: var(--ink-2);
+    font-size: 0.75rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .chip svg { width: 0.75rem; height: 0.75rem; flex-shrink: 0; }
+  button.chip:hover { background: var(--hover); color: var(--foreground); }
+  .chip[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: color-mix(in srgb, var(--ring) 45%, transparent);
+    color: var(--accent-foreground);
+  }
+
+  /* a count or a status: mono, uppercase, never interactive */
+  .badge {
+    display: inline-flex;
+    height: 1.25rem;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0 0.375rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--sunk);
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge svg { width: 0.75rem; height: 0.75rem; flex-shrink: 0; }
+  .badge-accent { background: var(--accent); border-color: color-mix(in srgb, var(--ring) 35%, transparent); color: var(--accent-foreground); }
+  .badge-success { background: color-mix(in srgb, var(--success) 12%, transparent); border-color: color-mix(in srgb, var(--success) 35%, transparent); color: var(--success); }
+  .badge-warning { background: color-mix(in srgb, var(--warning) 12%, transparent); border-color: color-mix(in srgb, var(--warning) 35%, transparent); color: var(--warning); }
+  .badge-danger { background: color-mix(in srgb, var(--danger) 12%, transparent); border-color: color-mix(in srgb, var(--danger) 35%, transparent); color: var(--danger); }
+  .badge-info { background: color-mix(in srgb, var(--info) 12%, transparent); border-color: color-mix(in srgb, var(--info) 35%, transparent); color: var(--info); }
 }
 
 /* chat typing indicator, voice-recording waveform, analysis stat update */

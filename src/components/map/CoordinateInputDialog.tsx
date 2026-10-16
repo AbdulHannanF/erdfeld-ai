@@ -134,7 +134,7 @@ export default function CoordinateInputDialog({ coordinateInputRef }: { coordina
         <div className="grid gap-4 py-2">
           {/* Longitude */}
           <div className="grid gap-2">
-            <Label htmlFor="coord-lng" className="text-muted-foreground text-sm">
+            <Label htmlFor="coord-lng" className="text-muted-foreground text-body">
               Longitude (decimal degrees)
             </Label>
             <Input
@@ -150,13 +150,13 @@ export default function CoordinateInputDialog({ coordinateInputRef }: { coordina
               className="bg-muted/80 border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-brand-500/40 focus-visible:border-brand-500/40"
             />
             {errors.lng && (
-              <p className="text-xs text-danger">{errors.lng}</p>
+              <p className="text-caption text-danger">{errors.lng}</p>
             )}
           </div>
 
           {/* Latitude */}
           <div className="grid gap-2">
-            <Label htmlFor="coord-lat" className="text-muted-foreground text-sm">
+            <Label htmlFor="coord-lat" className="text-muted-foreground text-body">
               Latitude (decimal degrees)
             </Label>
             <Input
@@ -172,13 +172,13 @@ export default function CoordinateInputDialog({ coordinateInputRef }: { coordina
               className="bg-muted/80 border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-brand-500/40 focus-visible:border-brand-500/40"
             />
             {errors.lat && (
-              <p className="text-xs text-danger">{errors.lat}</p>
+              <p className="text-caption text-danger">{errors.lat}</p>
             )}
           </div>
 
           {/* Zoom */}
           <div className="grid gap-2">
-            <Label htmlFor="coord-zoom" className="text-muted-foreground text-sm">
+            <Label htmlFor="coord-zoom" className="text-muted-foreground text-body">
               Zoom level (1–20)
             </Label>
             <Input
@@ -195,21 +195,21 @@ export default function CoordinateInputDialog({ coordinateInputRef }: { coordina
               className="bg-muted/80 border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-brand-500/40 focus-visible:border-brand-500/40"
             />
             {errors.zoom && (
-              <p className="text-xs text-danger">{errors.zoom}</p>
+              <p className="text-caption text-danger">{errors.zoom}</p>
             )}
           </div>
 
           {/* Preset locations */}
           <div className="space-y-2">
-            <Label className="text-muted-foreground text-xs">Quick jump</Label>
+            <Label className="text-muted-foreground text-caption">Quick jump</Label>
             <div className="flex flex-wrap gap-2">
               {PRESET_LOCATIONS.map((preset) => (
                 <button
                   key={preset.name}
                   onClick={() => handlePresetClick(preset)}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-muted/60 border border-border text-xs text-muted-foreground hover:text-brand-text hover:border-brand-500/30 hover:bg-brand-500/10 transition-all duration-200"
+                  className="chip"
                 >
-                  <MapPin className="h-3 w-3" />
+                  <MapPin aria-hidden />
                   {preset.name}
                 </button>
               ))}
@@ -219,15 +219,15 @@ export default function CoordinateInputDialog({ coordinateInputRef }: { coordina
 
         <DialogFooter>
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={() => setOpen(false)}
-            className="bg-muted border-border text-muted-foreground hover:bg-secondary hover:text-foreground"
+           
           >
             Cancel
           </Button>
           <Button
             onClick={handleGo}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+           
           >
             <Navigation className="h-4 w-4 mr-1.5" />
             Go

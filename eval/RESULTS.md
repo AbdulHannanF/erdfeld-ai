@@ -398,24 +398,30 @@ confidence 0.70** (the recipe's cap: radar can miss flooding under vegetation or
 are two cases chosen with knowledge of the answer; they show the recipe runs end to end, not how often it
 is right. There is no labelled flood set yet.
 
-### Same AOI, live `map_flood` run (2026-10-16): the figure to quote
+### Same AOI on the live app (2026-10-16): two scene pairings, two answers
 
-Result `r_36e6ecc2acef03c8`, one `map_flood` job through the live deployment's job API (`POST /api/jobs`, no
-LLM), AOI 74.40-74.56 E, 30.95-31.08 N (220.4 km2), `before` 2025-08-05, `after` 2025-09-04. Pair chosen:
-Sentinel-1A 2025-07-30 and 2025-09-04, both relative orbit 34 descending, VV, read at 16.5 m; 219.4 km2
-observed (99.5% valid pixels).
+**The figure to quote is the in-app run**, because it is what the Sutlej sample case shows: an Ask in the live
+UI, result `r_feaf4dd55c03b80a`, ledger run `cmvb6z12s000ks601t8jsyoie`. The tool took the peak-water scene of
+the window as "after" (Sentinel-1A 2025-09-04, 17.5% water, highest of 20 scenes) and the latest dry-season
+scene on the same relative orbit 34 as "before" (Sentinel-1C 2025-08-05). It observed 180.9 km2 of the 220.4 km2
+AOI (82.1% valid pixels), the same coverage and pairing as the 13 Oct figure above.
 
-| threshold | newly flooded |
-|---|---:|
-| −15.0 dB (used: Otsu −11.75 dB, clamped) | 34.5 km2 (15.7% of observed) |
-| −16.5 dB | 28.8 km2 |
-| −18.0 dB | 18.1 km2 |
+For comparison, one `map_flood` job through the job API (`POST /api/jobs`, no LLM), result `r_36e6ecc2acef03c8`,
+with `before` 2025-08-05 and `after` 2025-09-04, picked Sentinel-1A 2025-07-30 as "before" (same orbit 34) and
+observed 219.4 km2 (99.5%).
 
-At −15.0 dB: 238 Overture buildings (release 2026-09-23.1, 32,655 scanned) and 19.0 km of road in 60 segments
-are in the flood polygons; 3.6 km2 was water on both dates. Radar misses flooding under vegetation and among
-buildings, so each figure is a lower bound for its threshold. **Quote the range, 18.1-34.5 km2.** The 13 Oct
-figure above (18.0 km2) observed only 180.9 km2 of the same AOI and does not record its threshold or scene
-pair, so the two are not directly comparable.
+| newly flooded | in-app run (before 2025-08-05) | job-API run (before 2025-07-30) |
+|---|---:|---:|
+| −15.0 dB (the threshold used, Otsu clamped) | **18.0 km2** (10.0% of observed) | 34.5 km2 (15.7%) |
+| −16.5 dB | 14.2 km2 | 28.8 km2 |
+| −18.0 dB | 8.6 km2 | 18.1 km2 |
+| Overture buildings hit at −15.0 dB (release 2026-09-23.1) | 124 | 238 |
+| road in the flood polygons at −15.0 dB | 15.3 km (52 segments) | 19.0 km (60 segments) |
+
+Both use the same "after" scene and the same AOI. The before-scene and the share of the AOI observed change the
+answer by about a factor of two, which is why flood areas are reported as ranges and with the scenes used.
+Radar misses flooding under vegetation and among buildings, so each figure is a lower bound for its threshold
+and pairing.
 
 ## Live agent run: time budget, thinking level, grounding (2026-10-14)
 

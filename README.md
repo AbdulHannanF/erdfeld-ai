@@ -64,13 +64,13 @@ Every figure here has a method and raw data in [`eval/RESULTS.md`](eval/RESULTS.
 | | Result |
 |---|---|
 | Deforestation claims (`not_cleared_since`), 250 Hansen-labelled plots across 5 biomes | **81% accuracy on answered plots** (95% CI 74–86%), 73% coverage, calibration error (ECE) **0.094**. It abstains rather than guesses on the rest |
-| 2025 Sutlej flood, Sentinel-1 radar | **18.1–34.5 km² newly flooded** across the −18 to −15 dB thresholds (219.4 km² observed, scenes 30 Jul and 4 Sep 2025), with 238 buildings and 19.0 km of road hit at −15 dB. One live run, result `r_36e6ecc2acef03c8` (16 Oct 2026). Radar misses flooding under vegetation, so these are lower bounds |
+| 2025 Sutlej flood, Sentinel-1 radar | **18.0 km² newly flooded** (range 8.6–18.0 km² across radar thresholds), 124 buildings and 15.3 km of road, from the sample case in the live app (result `r_feaf4dd55c03b80a`, scenes 5 Aug and 4 Sep 2025). A different before-scene (30 Jul, more of the box observed) gives 18.1–34.5 km²: the pairing changes the answer, which is why we report ranges |
 | Dataset search | **hit@5 0.961** on held-out questions over 15,653 datasets |
 | Anomaly detection | Expected-range coverage **83%** (p10–p90) on a 6-site, 9-year backtest. Google's TimesFM was benchmarked head-to-head and is off by default because it didn't beat the baseline here. We publish the losses too |
-| Live operations check | **43 pass, 3 partial, 0 fail** over 46 cases on the live app (16 Oct 2026): every one of the 31 registered operations plus 3 quick layers, with map tiles fetched and decoded. The partials are honest: no FIRMS key, no vision model configured, one coverage hole |
+| Live operations check | **44 pass, 2 partial, 0 fail** over 46 cases on the live app (16 Oct 2026): every one of the 31 registered operations plus 3 quick layers, with map tiles fetched and decoded and imagery read by Gemini vision. The partials are honest: no FIRMS key for active fires, and one DEM coverage hole |
 | Repeat run | An identical repeat returns from the app cache in **0.03–0.07 s** with no upstream requests; every result is content-addressed |
 | Job queue | Postgres leases with fencing: concurrent claimers never share a job, a lost worker's job is retried and completes, and a batch settles exactly once (database tests in `src/lib/jobs/__tests__`) |
-| Test suite | **2,681 unit, integration and database tests** and **42 Playwright end-to-end tests**, plus typecheck, lint and build, all green on `889ea56` (16 Oct 2026) |
+| Test suite | **2,682 unit, integration and database tests** and **42 Playwright end-to-end tests**, plus typecheck, lint and build, all green on `ce45150` (16 Oct 2026) |
 
 ## How it works
 

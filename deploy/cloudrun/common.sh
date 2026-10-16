@@ -40,6 +40,9 @@ GEO_INGRESS="${GEO_INGRESS:-all}"
 GEO_CACHE_BUCKET="${GEO_CACHE_BUCKET:-}"
 # Optional: model override for the Gemini provider, e.g. gemma-4-31b-it (open model, near-zero cost).
 GEOAGENT_MODEL_GEMINI="${GEOAGENT_MODEL_GEMINI:-}"
+# The model inspect_imagery looks through, on Gemini's OpenAI-compatible endpoint with the same key.
+# Empty = no vision model (the operation then refuses and says why).
+VLM_MODEL="${VLM_MODEL-gemini-3.8-flash}"
 
 # Database. DB_MODE=vm (free default): PostgreSQL 16 in a container on an always-free e2-micro VM, fully
 # scripted, no external IP, reached from Cloud Run by Direct VPC egress. DB_MODE=cloudsql-trial: a Cloud

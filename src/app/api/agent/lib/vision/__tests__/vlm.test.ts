@@ -93,6 +93,24 @@ describe('resolveVlm', () => {
     expect(r.config.origin).toBe('VLM_ENDPOINT')
   })
 
+  it('reaches Gemini vision with the Cloud Run configuration (deploy/cloudrun/deploy.sh), even for a job with no AI settings', async () => {
+    const r = await resolveVlm(undefined, {
+      VLM_ENDPOINT: 'https://generativelanguage.googleapis.com/v1beta/openai',
+      VLM_WIRE: 'openai',
+      VLM_MODEL: 'gemini-3.8-flash',
+      VLM_API_KEY: 'gemini-key',
+    })
+    expect(r.ok).toBe(true)
+    if (!r.ok) return
+    const req = buildVlmBody({ config: r.config, images: [PNG_B64], prompt: 'p' })
+    expect(req.url).toBe('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions')
+    expect(req.headers.Authorization).toBe('Bearer gemini-key')
+    expect((req.body as { model: string }).model).toBe('gemini-3.8-flash')
+    // without VLM_WIRE the URL (no /v1 suffix) would be read as an Ollama server
+    const inferred = await resolveVlm(undefined, { VLM_ENDPOINT: 'https://generativelanguage.googleapis.com/v1beta/openai', VLM_MODEL: 'm' })
+    expect(inferred.ok && inferred.config.wire).toBe('ollama')
+  })
+
   it('refuses when VLM_ENDPOINT is set without a model rather than guessing one', async () => {
     const r = await resolveVlm(undefined, { VLM_ENDPOINT: 'http://box:8000' })
     expect(r.ok).toBe(false)

@@ -92,12 +92,19 @@ deploy_web() {
   # NODE_OPTIONS contains no commas, so it is safe in the comma-separated --set-env-vars list.
   env+=",NODE_OPTIONS=${WEB_NODE_OPTIONS}"
   [ -z "$GEOAGENT_MODEL_GEMINI" ] || env+=",GEOAGENT_MODEL_GEMINI=${GEOAGENT_MODEL_GEMINI}"
+  secrets="$(secrets_flag "${WEB_SECRETS[@]}")"
+  # inspect_imagery: Gemini vision. The endpoint does not end in /v1, so the wire is named; the key is
+  # the GEMINI_API_KEY secret under a second name (no new secret).
+  if [ -n "$VLM_MODEL" ]; then
+    env+=",VLM_ENDPOINT=https://generativelanguage.googleapis.com/v1beta/openai,VLM_WIRE=openai,VLM_MODEL=${VLM_MODEL}"
+    secrets+=",VLM_API_KEY=GEMINI_API_KEY:latest"
+  fi
   gcloud_ run deploy "$WEB_SERVICE" --image "$WEB_IMAGE" --region "$REGION" --port 3000 \
     --allow-unauthenticated --service-account "$WEB_SA" \
     "${WEB_FLAGS[@]}" \
     "${DB_RUN_FLAGS[@]}" \
     --set-env-vars "$env" \
-    --set-secrets "$(secrets_flag "${WEB_SECRETS[@]}")"
+    --set-secrets "$secrets"
   url="$(service_url "$WEB_SERVICE")"
   log "deployed: ${url}"
   log "check:    curl -s ${url}/api/health   (expect status ok)"

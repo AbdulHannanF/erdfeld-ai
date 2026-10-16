@@ -42,6 +42,8 @@ interface SensorInfo {
   hasCloud: boolean
   /** STAC asset keys the tile builders and the list need; everything else is dropped from the cache. */
   keepAssets: string[]
+  /** STAC `fields` to ask for: the catalogue then sends a few hundred bytes per item, not the whole item. */
+  fields: string[]
 }
 
 export const SCENE_SENSOR_INFO: Record<SceneSensor, SensorInfo> = {
@@ -55,6 +57,7 @@ export const SCENE_SENSOR_INFO: Record<SceneSensor, SensorInfo> = {
     from: '2015-06-23',
     hasCloud: true,
     keepAssets: ['red', 'green', 'blue', 'nir', 'B02', 'B03', 'B04', 'B08', 'thumbnail', 'scl'],
+    fields: ['id', 'bbox', 'collection', 'links', 'properties.datetime', 'properties.platform', 'properties.eo:cloud_cover', 'properties.s2:processing_baseline', 'assets.red', 'assets.green', 'assets.blue', 'assets.nir', 'assets.thumbnail', 'assets.scl'],
   },
   landsat: {
     label: 'Landsat Collection 2 Level-2',
@@ -66,6 +69,7 @@ export const SCENE_SENSOR_INFO: Record<SceneSensor, SensorInfo> = {
     from: '1982-08-22',
     hasCloud: true,
     keepAssets: ['red', 'green', 'blue', 'nir08', 'rendered_preview', 'qa_pixel'],
+    fields: ['id', 'bbox', 'collection', 'links', 'properties.datetime', 'properties.platform', 'properties.eo:cloud_cover', 'assets.red', 'assets.green', 'assets.blue', 'assets.nir08', 'assets.rendered_preview'],
   },
   'sentinel-1': {
     label: 'Sentinel-1 RTC',
@@ -77,6 +81,7 @@ export const SCENE_SENSOR_INFO: Record<SceneSensor, SensorInfo> = {
     from: '2014-01-01',
     hasCloud: false,
     keepAssets: ['vv', 'vh', 'rendered_preview'],
+    fields: ['id', 'bbox', 'collection', 'links', 'properties.datetime', 'properties.platform', 'properties.sat:orbit_state', 'properties.sat:relative_orbit', 'assets.vv', 'assets.vh', 'assets.rendered_preview'],
   },
 }
 
@@ -150,12 +155,14 @@ export interface SceneSearchResult {
   truncated: boolean
   /** Items read before grouping. */
   itemsRead: number
+  /** The cut-down STAC item behind each scene id, for the operations that read its pixels. Not sent to clients. */
+  itemsById: Map<string, any>
 }
 export type SceneSearchOutcome = SceneSearchResult | { ok: false; message: string }
 
 /** At most this many STAC items are read for one search (6 pages of 250). */
 const PAGE_SIZE = 250
-const MAX_PAGES = 6
+const MAX_PAGES = 4
 export const MAX_ITEMS = PAGE_SIZE * MAX_PAGES
 
 const day = (t: number) => new Date(t).toISOString().slice(0, 10)
@@ -200,6 +207,34 @@ async function collectItems(info: SensorInfo, body: Record<string, unknown>, max
     else next = null
   }
   return { items, truncated }
+}
+
+/** One search per calendar year, a few at a time: a long archive of a busy tile is thousands of items, and
+ *  one serial page chain would take minutes. Years are independent, so the whole archive is read, oldest to
+ *  newest, and a year that is itself too large is the only thing ever reported truncated. */
+async function collectByYear(info: SensorInfo, base: Record<string, unknown>, from: string, to: string): Promise<{ items: any[]; truncated: boolean }> {
+  const windows: string[] = []
+  const y0 = Number(from.slice(0, 4))
+  const y1 = Number(to.slice(0, 4))
+  for (let y = y0; y <= y1; y++) {
+    const a = y === y0 ? from : `${y}-01-01`
+    const b = y === y1 ? to : `${y}-12-31`
+    windows.push(toRfc3339Interval(`${a}/${b}`))
+  }
+  const parts: { items: any[]; truncated: boolean }[] = new Array(windows.length)
+  let nextWindow = 0
+  const worker = async () => {
+    for (;;) {
+      const i = nextWindow++
+      if (i >= windows.length) return
+      parts[i] = await collectItems(info, { ...base, datetime: windows[i] }, 1000)
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(4, windows.length) }, worker))
+  const seen = new Set<string>()
+  const items: any[] = []
+  for (const part of parts) for (const it of part.items) if (!seen.has(it.id)) { seen.add(it.id); items.push(it) }
+  return { items, truncated: parts.some((p) => p.truncated) }
 }
 
 /** Overlap of the item's footprint box with the area's box, as a share of the area's box. */
@@ -302,15 +337,15 @@ export async function searchSceneCatalogue(p: SceneSearch, now = Date.now()): Pr
   const body: Record<string, unknown> = {
     collections: [info.collection],
     bbox: p.bbox,
-    datetime: toRfc3339Interval(`${from}/${to}`),
     sortby: [{ field: 'properties.datetime', direction: 'asc' }],
     limit: PAGE_SIZE,
+    fields: { include: info.fields },
     ...(maxCloud < 100 ? { query: { 'eo:cloud_cover': { lte: maxCloud } } } : {}),
   }
   const settled = Date.parse(`${to}T00:00:00Z`) <= now - SETTLED_AGE_DAYS * DAY_MS
   let read: { items: any[]; truncated: boolean }
   try {
-    read = await cachedFetchJson(`scenes:${p.sensor}:${JSON.stringify(body)}`, settled ? 24 * 3_600_000 : 15 * 60_000, () => collectItems(info, body))
+    read = await cachedFetchJson(`scenes:${p.sensor}:${from}:${to}:${JSON.stringify(body)}`, settled ? 24 * 3_600_000 : 15 * 60_000, () => collectByYear(info, body, from, to))
   } catch (err: any) {
     log.warn({ sensor: p.sensor, err: err?.message }, 'scene catalogue search failed')
     return { ok: false, message: fetchFailureNote(`the ${info.label} catalogue (${info.provider})`, err) }
@@ -340,6 +375,7 @@ export async function searchSceneCatalogue(p: SceneSearch, now = Date.now()): Pr
     scenes,
     truncated: read.truncated,
     itemsRead: read.items.length,
+    itemsById: new Map(read.items.map((i) => [String(i.id), i])),
   }
 }
 

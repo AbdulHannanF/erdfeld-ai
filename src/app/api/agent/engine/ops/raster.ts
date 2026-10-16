@@ -6,6 +6,7 @@ import { renderRaster } from '../../tools/raster'
 import { analyzeArgErrors, analyzeRaster } from '../../tools/analysis'
 import { inspectImagery } from '../../tools/vision'
 import { COLORMAP_CHOICES, normalizeColormap, parseRescale } from '../../lib/raster-render'
+import { SCENE_ID_PATTERN } from '../../lib/scenes'
 import { checkRasterBands, fail } from '../validate'
 import { HOUR, DAY, defineOperation, type AnyOperation } from '../operation'
 
@@ -23,6 +24,7 @@ export const rasterOps: AnyOperation[] = [
       bands: z.array(z.string()).optional().describe('1 band or 3 bands in R,G,B order, e.g. ["B08","B04","B03"] for false colour.'),
       expression: z.string().optional().describe('Band math over band names with + - * / and parentheses, e.g. "(B11-B08)/(B11+B08)". Evaluated on surface reflectance.'),
       date: z.string().optional().describe('YYYY-MM-DD; the clearest scene within +-3 days is used.'),
+      scene_id: z.string().optional().describe('Exact STAC item id of one scene of `sensor` (as listed by GET /api/scenes); that scene is rendered, never another. Refused when it does not exist or does not cover the area.'),
       start: z.string().optional().describe('YYYY-MM-DD window start (default: 90 days before end).'),
       end: z.string().optional().describe('YYYY-MM-DD window end (default: today).'),
       colormap: z.string().optional().describe('Single band / expression only: viridis (default), magma, inferno, plasma, cividis, greys, rdylgn, rdbu, spectral, terrain, blues, ylgn (append _r to reverse).'),
@@ -44,6 +46,7 @@ export const rasterOps: AnyOperation[] = [
     staticChecks: (_ctx, args) => {
       const sensor = (args.sensor ?? 'sentinel-2-l2a') as 'sentinel-2-l2a' | 'landsat-c2-l2'
       const checks = [checkRasterBands(sensor, args)]
+      if (args.scene_id !== undefined && !SCENE_ID_PATTERN.test(args.scene_id)) checks.push(fail('static', 'scene_id', `\`scene_id\` "${String(args.scene_id).slice(0, 60)}" is not a scene identifier.`))
       const bandCount = Array.isArray(args.bands) && args.bands.length === 3 ? 3 : 1
       if (args.colormap && bandCount === 3) checks.push(fail('static', 'colormap', 'A colormap does not apply to a 3-band RGB composite. Omit `colormap`, or pass one band / an expression.'))
       else if (args.colormap && !normalizeColormap(args.colormap)) checks.push(fail('static', 'colormap', `Unknown colormap "${args.colormap}". Choose one of: ${COLORMAP_CHOICES.join(', ')} (append _r to reverse).`))

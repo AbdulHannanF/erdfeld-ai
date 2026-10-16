@@ -38,7 +38,7 @@ export interface Domain {
 }
 
 export const DOMAINS: Domain[] = [
-  { id: 'optical', label: 'Optical imagery and indices', ops: ['fetch_ndvi', 'compute_spectral_index', 'fetch_temporal_stack', 'render_raster', 'composite', 'inspect_imagery', 'analyze_raster', 'fetch_thermal'] },
+  { id: 'optical', label: 'Optical imagery and indices', ops: ['fetch_ndvi', 'compute_spectral_index', 'fetch_temporal_stack', 'scene_series', 'render_raster', 'composite', 'inspect_imagery', 'analyze_raster', 'fetch_thermal'] },
   { id: 'radar', label: 'Radar, water and floods', ops: ['fetch_sar', 'fetch_surface_water', 'map_flood'] },
   { id: 'terrain', label: 'Terrain and elevation', ops: ['fetch_dem', 'fetch_elevation_derivatives'] },
   { id: 'change', label: 'Land cover and change', ops: ['classify_land_cover', 'classify_vegetation', 'detect_change', 'detect_deforestation', 'detect_anomaly', 'forecast_index'] },

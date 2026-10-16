@@ -2,8 +2,23 @@
 
 import { z } from 'zod'
 
+import { sceneSeries } from '../../tools/series'
 import { computeSpectralIndex, fetchActiveFires, fetchBuiltSurface, fetchSar, fetchSurfaceWater, fetchTemporalStack, fetchThermal, ndviOrImagery } from '../../tools/satellite'
+import { SCENE_ID_PATTERN } from '../../lib/scenes'
+import { fail, pass } from '../validate'
 import { MINUTE, HOUR, DAY, defineOperation, type AnyOperation } from '../operation'
+
+/** The arguments that pin a run to one acquisition (the timeline passes these for a chosen scene). */
+const SCENE_PIN = {
+  date: z.string().optional().describe('YYYY-MM-DD; use the clearest scene within +-3 days of this date instead of the latest imagery.'),
+  scene_id: z.string().optional().describe('Exact STAC item id of one scene (as listed by GET /api/scenes); that scene is used, never another. Refused when it does not exist or does not cover the area.'),
+}
+const sceneIdCheck = (args: { scene_id?: string }) =>
+  args.scene_id === undefined
+    ? []
+    : [SCENE_ID_PATTERN.test(args.scene_id)
+        ? pass('static', 'scene_id', `scene_id ${args.scene_id} is a scene identifier.`)
+        : fail('static', 'scene_id', `\`scene_id\` "${args.scene_id.slice(0, 60)}" is not a scene identifier (letters, digits, dot, dash and underscore, 6 to 100 characters).`)]
 
 export const opticalOps: AnyOperation[] = [
   defineOperation({
@@ -13,21 +28,23 @@ export const opticalOps: AnyOperation[] = [
     description: 'Sentinel-2 for the AOI. `product: "ndvi"` (default) returns cloud-masked NDVI vegetation statistics plus a red→yellow→green NDVI raster layer — use it for NDVI stats AND for any "show/colorize/map NDVI" visualization request. `product: "imagery"` returns the 10 m true-colour RGB scene instead.',
     params: z.object({
       product: z.enum(['ndvi', 'imagery']).optional().describe('ndvi (default) = NDVI statistics + colormap raster; imagery = true-colour RGB.'),
+      ...SCENE_PIN,
     }),
     output: 'raster',
     sensors: ['sentinel-2-l2a'],
     resolution_m: 10,
     limits: { earliest: '2015-06-23' },
     cost: { typicalSeconds: 10 },
-    cacheTtl: { liveMs: 6 * HOUR },
+    cacheTtl: { liveMs: 6 * HOUR, settledMs: 30 * DAY },
+    staticChecks: (_ctx, args) => sceneIdCheck(args),
     limitations: [
-      'Uses the clearest recent Sentinel-2 L2A scene over the AOI, not a composite; Sentinel-2 data begins 2015-06-23.',
+      'Uses the clearest recent Sentinel-2 L2A scene over the AOI (or the one named by `scene_id` / the clearest within 3 days of `date`), not a composite; Sentinel-2 data begins 2015-06-23.',
       'Cloud, shadow and cirrus are masked with the scene classification (SCL) layer; masked pixels are excluded from the statistics, not filled.',
       'The mean is read from a grid capped at 256 px, so over a large AOI its effective ground sample distance is coarser than 10 m (the output states it).',
       'If tiles cannot be rendered the map shows a flat fill derived from the real mean, labelled illustrative, or nothing when no mean exists.',
     ],
     confidence: 'high: a clear scene (at least 40% of AOI pixels clear) with rendered per-pixel tiles; medium or low when cloud, a flat fallback fill or a composite limits it.',
-    run: (ctx, args) => ndviOrImagery(ctx, args.product === 'imagery' ? 'fetch_high_res_imagery' : 'fetch_ndvi'),
+    run: (ctx, args) => ndviOrImagery(ctx, args.product === 'imagery' ? 'fetch_high_res_imagery' : 'fetch_ndvi', args),
   }),
   defineOperation({
     name: 'compute_spectral_index',
@@ -36,12 +53,14 @@ export const opticalOps: AnyOperation[] = [
     description: 'Compute a spectral index from Sentinel-2 bands with its default styling. Supports NDVI, NDWI, NDBI, EVI, NBR, SAVI. For a custom colormap, stretch, sensor or date window, use render_raster with the index formula as `expression`.',
     params: z.object({
       index: z.enum(['NDVI', 'NDWI', 'NDBI', 'EVI', 'NBR', 'SAVI']),
+      ...SCENE_PIN,
     }),
     output: 'raster',
     sensors: ['sentinel-2-l2a'],
     resolution_m: 10,
     cost: { typicalSeconds: 10 },
-    cacheTtl: { liveMs: 6 * HOUR },
+    cacheTtl: { liveMs: 6 * HOUR, settledMs: 30 * DAY },
+    staticChecks: (_ctx, args) => sceneIdCheck(args),
     limitations: [
       'Sentinel-2 L2A only; fixed default colormap and a stretch fitted to the AOI\'s own p2-p98 (use render_raster for anything custom).',
       'Cloud, shadow and cirrus are masked with the SCL layer before the mean is computed.',
@@ -70,6 +89,43 @@ export const opticalOps: AnyOperation[] = [
     ],
     confidence: 'medium: depends on how many clear acquisitions exist in the window; fewer than three points is a weak trend.',
     run: (ctx, args) => fetchTemporalStack(ctx, args),
+  }),
+  defineOperation({
+    name: 'scene_series',
+    label: 'Charting an index over the archive...',
+    version: '1.0.0',
+    description: 'One cloud-masked index value per acquisition over the WHOLE archive (Sentinel-2 from 2015, Landsat from 1982), as a chart you can click through to each scene. Use for "how has NDVI changed since 2017" where fetch_temporal_stack (12 months at most) is too short. Pass `sensor`, `index`, a window (`start`/`end`, default the whole archive) and `max_cloud`; or `scene_ids` for exactly the scenes chosen on the timeline.',
+    params: z.object({
+      sensor: z.enum(['sentinel-2', 'landsat']).optional().describe('Default sentinel-2. One sensor per series: Sentinel-2 and Landsat NDVI disagree by 0.02 to 0.11 on the same ground.'),
+      index: z.enum(['NDVI', 'NDWI', 'NDBI', 'EVI', 'NBR', 'SAVI']).optional().describe('Default NDVI.'),
+      start: z.string().optional().describe('YYYY-MM-DD first day (default: the sensor archive start).'),
+      end: z.string().optional().describe('YYYY-MM-DD last day (default: today).'),
+      max_cloud: z.number().optional().describe('Scene-wide cloud ceiling in % for the scenes to read (default 60). Cloud over the polygon itself is masked per pixel regardless.'),
+      max_scenes: z.number().optional().describe('At most this many scenes are read, evenly thinned from the oldest to the newest (default 60, at most 150).'),
+      scene_ids: z.array(z.string()).optional().describe('Read exactly these scenes (STAC item ids from GET /api/scenes) instead of searching a window.'),
+    }),
+    output: 'chart',
+    sensors: ['sentinel-2-l2a', 'landsat-c2-l2'],
+    resolution_m: 10,
+    limits: { earliest: '1982-08-22', needsDates: true },
+    cost: { typicalSeconds: 90 },
+    timeoutMs: 10 * MINUTE,
+    cacheTtl: { liveMs: 6 * HOUR, settledMs: 30 * DAY },
+    staticChecks: (_ctx, args) => {
+      const bad = (args.scene_ids ?? []).filter((id) => !SCENE_ID_PATTERN.test(id))
+      const checks = bad.length ? [fail('static', 'scene_id', `\`scene_ids\` holds ${bad.length} value(s) that are not scene identifiers (first: "${String(bad[0]).slice(0, 60)}").`)] : []
+      if ((args.scene_ids ?? []).length > 150) checks.push(fail('static', 'scene_ids_count', 'At most 150 scenes can be read in one series.'))
+      if (args.sensor === 'sentinel-2' && args.start && args.start < '2015-06-23') checks.push(fail('static', 'dates_after_earliest', '`start` is before Sentinel-2 data begins (2015-06-23); use sensor landsat for earlier dates.'))
+      return checks
+    },
+    limitations: [
+      'One value per acquisition day: the mean of the clear pixels inside the drawn polygon, from one scene. A day under cloud is a gap, never interpolated.',
+      'Scenes covering under 90% of the area are left out, and a long archive is evenly thinned to at most max_scenes (the first and last are kept); the answer says how many.',
+      'One sensor per series. Sentinel-2 values are not comparable with Landsat values.',
+      'Reads each scene at a coarse grid (about 96 px along the longer side), so over a large area the mean is an effective-resolution statistic, not a 10 m one.',
+    ],
+    confidence: 'medium: depends on how many clear acquisitions the archive holds over the area; fewer than three points is not a trend.',
+    run: (ctx, args) => sceneSeries(ctx, args),
   }),
   defineOperation({
     name: 'fetch_thermal',

@@ -53,6 +53,7 @@ import {
 import { resolveBandSetReflectance, type ReflectanceTransform } from '../lib/reflectance'
 import { STAC_SEARCH_URL, getStacItemHref, signPCAsset, toRfc3339Interval } from '../lib/stac'
 import { TITILER_BASE } from '../lib/titiler'
+import { resolveSceneById } from '../lib/scenes'
 import type { Confidence, SummaryDatum, ToolCtx, ToolOutput } from '../lib/types'
 import type { RasterDescriptor } from '@/lib/raster-style'
 
@@ -282,7 +283,15 @@ export async function renderRaster(ctx: ToolCtx, args: Record<string, any>): Pro
   emit?.('token', { type: 'token', content: `Searching ${sensor.label} scenes for ${window.label}...\n` })
   let items: any[]
   try {
-    items = await searchScenes(sensor, bbox, window.datetime, !window.explicit)
+    if (typeof args.scene_id === 'string' && args.scene_id) {
+      // One named scene: used as given, or refused. Never swapped for a neighbour.
+      const pinned = await resolveSceneById(sensor.id === 'sentinel-2-l2a' ? 'sentinel-2' : 'landsat', args.scene_id, bbox, typeof args.date === 'string' ? args.date : undefined)
+      if (!pinned.ok) return { summary: pinned.message, ...(pinned.failed ? { failed: true } : {}) }
+      items = [pinned.item]
+      window.label = `scene ${args.scene_id}`
+    } else {
+      items = await searchScenes(sensor, bbox, window.datetime, !window.explicit)
+    }
   } catch (err: any) {
     log.warn({ sensor: sensor.id, err: err?.message }, 'scene search failed')
     return { summary: `**Could not search ${sensor.label} scenes** (${err?.message ?? 'unknown error'}). This is a catalogue/network failure, not an absence of data — retry shortly.`, failed: true }

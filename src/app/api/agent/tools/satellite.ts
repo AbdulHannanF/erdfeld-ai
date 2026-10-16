@@ -48,6 +48,7 @@ import { maskedIndexStats, STAT_GRID_MAX_SIZE, effectiveGsdMeters, type MaskedIn
 import { buildIndexPreviewLayer, buildIndexRasterLayer, buildTrueColorRasterLayer } from '../lib/raster-render'
 import { emitPreviewLayer } from '../lib/layer-preview'
 import { span } from '../lib/timings'
+import { resolveSceneById } from '../lib/scenes'
 
 const log = getLogger('tools/satellite')
 import {
@@ -180,7 +181,47 @@ function ndviMeanColor(v: number): string {
     : '#ef4444'
 }
 
-export async function ndviOrImagery(ctx: ToolCtx, toolName: string): Promise<ToolOutput> {
+/** The Sentinel-2 scenes a run may use: the one named by `scene_id`, else the scenes within 3 days of
+ *  `date`, else the recent default. A named scene that does not exist, is the wrong sensor, or does not
+ *  cover the area is refused (never replaced by another); an unreachable catalogue is a failure. */
+async function s2Candidates(
+  bbox: number[],
+  args: Record<string, any>,
+  o: { days: number; limit: number; cloud: number },
+): Promise<{ items: any[]; label: string; pinned: boolean; refusal?: ToolOutput }> {
+  if (typeof args.scene_id === 'string' && args.scene_id) {
+    const r = await resolveSceneById('sentinel-2', args.scene_id, bbox, typeof args.date === 'string' ? args.date : undefined)
+    if (!r.ok) return { items: [], label: '', pinned: true, refusal: { summary: r.message, ...(r.failed ? { failed: true } : {}) } }
+    return { items: [r.item], label: `scene ${args.scene_id}`, pinned: true }
+  }
+  const DAY = 86_400_000
+  const iso = (t: number) => new Date(t).toISOString().slice(0, 10)
+  if (typeof args.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(args.date)) {
+    const t = Date.parse(`${args.date}T00:00:00Z`)
+    const data = await cachedStacSearch({
+      collections: ['sentinel-2-l2a'],
+      bbox,
+      datetime: `${iso(t - 3 * DAY)}/${iso(t + 3 * DAY)}`,
+      sortby: [{ field: 'properties.datetime', direction: 'desc' }],
+      limit: o.limit,
+    })
+    return { items: data.features || [], label: `${args.date} (+-3 days)`, pinned: true }
+  }
+  const end = new Date()
+  const start = new Date()
+  start.setDate(start.getDate() - o.days)
+  const data = await cachedStacSearch({
+    collections: ['sentinel-2-l2a'],
+    bbox,
+    datetime: `${start.toISOString().slice(0, 10)}/${end.toISOString().slice(0, 10)}`,
+    query: { 'eo:cloud_cover': { lt: o.cloud } },
+    sortby: [{ field: 'properties.datetime', direction: 'desc' }],
+    limit: o.limit,
+  })
+  return { items: data.features || [], label: `last ${o.days} days`, pinned: false }
+}
+
+export async function ndviOrImagery(ctx: ToolCtx, toolName: string, args: Record<string, any> = {}): Promise<ToolOutput> {
   const { aoi, bbox, areaKm2, emit } = ctx
   const [minLng, minLat, maxLng, maxLat] = bbox
   const isNdvi = toolName === 'fetch_ndvi' || toolName === 'render_ndvi_colormap'
@@ -241,24 +282,17 @@ export async function ndviOrImagery(ctx: ToolCtx, toolName: string): Promise<Too
     // below to stop saying "10 m" next to a statistic that wasn't computed at 10 m.
     let ndviClearPx = 0
     let ndviSearchError: string | null = null
+    let ndviWindow = 'last 90 days'
     let ndviClearPct: number | null = null
     let ndviGsdM: number | null = null
     // Clear-pixel statistics (p2/p98) that set the data-driven display stretch.
     let ndviStretchStats: MaskedIndexStats | null = null
 
     try {
-      const stacEnd = new Date()
-      const stacStart = new Date()
-      stacStart.setDate(stacStart.getDate() - 90)
-      const stacData = await cachedStacSearch({
-        collections: ['sentinel-2-l2a'],
-        bbox: aoiBounds,
-        datetime: `${stacStart.toISOString().slice(0, 10)}/${stacEnd.toISOString().slice(0, 10)}`,
-        query: { 'eo:cloud_cover': { lt: 60 } },
-        sortby: [{ field: 'properties.datetime', direction: 'desc' }],
-        limit: 6,
-      })
-      const items: any[] = stacData.features || []
+      const cand = await s2Candidates(aoiBounds, args, { days: 90, limit: 6, cloud: 60 })
+      if (cand.refusal) return cand.refusal
+      ndviWindow = cand.label
+      const items: any[] = cand.items
       if (items.length > 0) {
         emit?.('token', { type: 'token', content: `Scoring ${items.length} candidate scene(s) on cloud over your AOI (Sentinel-2 SCL)...\n` })
         // ISS-129: the statistics must NOT reuse the picker's `choice.clarity` as their mask —
@@ -300,7 +334,7 @@ export async function ndviOrImagery(ctx: ToolCtx, toolName: string): Promise<Too
           // Every candidate was clouded over the AOI. Keep the newest scene so imagery
           // still renders, but report no index value — a mean here would be cloud tops.
           item = items[0]
-          cloudRefusal = noClearSceneMessage(await examinedScenes(items, aoi), 'last 90 days')
+          cloudRefusal = noClearSceneMessage(await examinedScenes(items, aoi), ndviWindow)
         }
         sceneDate = (item.properties?.datetime as string || '').slice(0, 10)
         const cc = item.properties?.['eo:cloud_cover']
@@ -467,26 +501,16 @@ ${stretchNote}
   // The clearest recent scene over the polygon (SCL cloud over the AOI, not scene-wide metadata),
   // drawn as native-resolution tiles that the map hides outside the polygon. The STAC item's own
   // preview.jpg is a whole-scene picture (about 190x a small AOI) and is not used.
-  const stacEnd = new Date()
-  const stacStart = new Date()
-  stacStart.setDate(stacStart.getDate() - 90)
-
-  let stacData: any
+  let cand: Awaited<ReturnType<typeof s2Candidates>>
   try {
-    stacData = await cachedStacSearch({
-      collections: ['sentinel-2-l2a'],
-      bbox: aoiBounds,
-      datetime: `${stacStart.toISOString().slice(0, 10)}T00:00:00Z/${stacEnd.toISOString().slice(0, 10)}T23:59:59Z`,
-      query: { 'eo:cloud_cover': { lt: 60 } },
-      sortby: [{ field: 'properties.datetime', direction: 'desc' }],
-      limit: 12,
-    })
+    cand = await s2Candidates(aoiBounds, args, { days: 90, limit: 12, cloud: 60 })
   } catch (err: any) {
     return { summary: `Sentinel-2 STAC search failed: ${err.message}. AWS Earth Search may be temporarily unavailable.`, failed: true }
   }
-  const items: any[] = stacData.features || []
+  if (cand.refusal) return cand.refusal
+  const items: any[] = cand.items
   if (items.length === 0) {
-    return { summary: `No Sentinel-2 imagery found with cloud cover <60% for this area in the past 90 days.` }
+    return { summary: cand.pinned ? `No Sentinel-2 scene covers this area for ${cand.label}.` : `No Sentinel-2 imagery found with cloud cover <60% for this area in the past 90 days.` }
   }
   const imageryGeom = toGeometry(aoi)
   const choice = imageryGeom ? await pickClearestScene(items, imageryGeom).catch(() => null) : null
@@ -823,9 +847,7 @@ export async function computeSpectralIndex(ctx: ToolCtx, args: Record<string, an
 
   emit?.('token', { type: 'token', content: `Computing real ${index} via AWS Earth Search + titiler.xyz...\n` })
 
-  const siEnd = new Date()
-  const siStart = new Date()
-  siStart.setDate(siStart.getDate() - 90)
+  let siWindow = 'last 90 days'
 
   let siItem: any = null
   let siSearchError: string | null = null
@@ -847,15 +869,10 @@ export async function computeSpectralIndex(ctx: ToolCtx, args: Record<string, an
   let stretchStats: MaskedIndexStats | null = null
 
   try {
-    const siData = await cachedStacSearch({
-      collections: ['sentinel-2-l2a'],
-      bbox: [minLng, minLat, maxLng, maxLat],
-      datetime: `${siStart.toISOString().slice(0, 10)}/${siEnd.toISOString().slice(0, 10)}`,
-      query: { 'eo:cloud_cover': { lt: 60 } },
-      sortby: [{ field: 'properties.datetime', direction: 'desc' }],
-      limit: 6,
-    })
-    const items: any[] = siData.features || []
+    const cand = await s2Candidates([minLng, minLat, maxLng, maxLat], args, { days: 90, limit: 6, cloud: 60 })
+    if (cand.refusal) return cand.refusal
+    siWindow = cand.label
+    const items: any[] = cand.items
     if (items.length > 0) {
       emit?.('token', { type: 'token', content: `Scoring ${items.length} candidate scene(s) on cloud over your AOI (Sentinel-2 SCL)...\n` })
       // ISS-129: do NOT reuse `choice.clarity` — scored at cloud.ts's cheap 96px ranking
@@ -893,7 +910,7 @@ export async function computeSpectralIndex(ctx: ToolCtx, args: Record<string, an
         // Every candidate was clouded over the AOI. Keep the newest scene so the
         // imagery still renders, but report no value — it would be cloud tops.
         siItem = items[0]
-        cloudRefusal = noClearSceneMessage(await examinedScenes(items, aoi), 'last 90 days')
+        cloudRefusal = noClearSceneMessage(await examinedScenes(items, aoi), siWindow)
       }
       siSceneDate = (siItem.properties?.datetime as string || '').slice(0, 10)
       siCloud = siItem.properties?.['eo:cloud_cover'] ?? null

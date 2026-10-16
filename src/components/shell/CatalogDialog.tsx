@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Database, Loader2, Play, Search, Sparkles, TriangleAlert } from 'lucide-react'
 import { Callout, WbDialog } from '@/components/shell/WbDialog'
-import { BTN, BTN_PRIMARY, FIELD, OVERLINE, PILL } from '@/components/shell/ui'
+import { BTN, BTN_PRIMARY, FIELD, PILL } from '@/components/shell/ui'
 import { useAgentWS } from '@/hooks/useAgentWS'
 import { useRunOperation } from '@/hooks/useRunOperation'
 import { catalogSize, searchCatalog, type CatalogAnswer, type CatalogRow } from '@/lib/catalog-actions'
@@ -125,7 +125,7 @@ export default function CatalogDialog() {
         </select>
       </div>
 
-      <p className={cn(OVERLINE, 'flex items-center gap-1.5')} aria-live="polite">
+      <p className="flex items-center gap-1.5 text-data text-muted-foreground" aria-live="polite">
         <Database className="size-3.5" aria-hidden />
         {size ? `${size.total.toLocaleString('en-US')} datasets · offline snapshot ${size.generatedAt.slice(0, 10)}` : 'Reading the registry'}
         {answerShown && ` · ${answerShown.afterFilters.toLocaleString('en-US')} match${answerShown.afterFilters === 1 ? '' : 'es'}${aoi ? ', coverage stated against your area' : ''}`}

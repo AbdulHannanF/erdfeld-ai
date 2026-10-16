@@ -209,6 +209,12 @@ test.describe('imagery archive layout', () => {
             if (top && top !== el && !el.contains(top) && !top.contains(el)) out.push(`${root}: ${(el.getAttribute('aria-label') || el.textContent || el.tagName).trim().slice(0, 30)} is covered by ${top.tagName.toLowerCase()}`)
           }
         }
+        // the bar leaves the map's scale and attribution at the bottom right in view
+        const bar = document.querySelector('[data-testid="time-nav"]')!.getBoundingClientRect()
+        for (const sel of ['.maplibregl-ctrl-scale', '.maplibregl-ctrl-attrib']) {
+          const c = document.querySelector(sel)?.getBoundingClientRect()
+          if (c && c.left < bar.right && c.right > bar.left && c.top < bar.bottom && c.bottom > bar.top) out.push(`time-nav covers ${sel}`)
+        }
         return out
       })
       expect(bad).toEqual([])

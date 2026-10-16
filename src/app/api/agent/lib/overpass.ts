@@ -253,25 +253,30 @@ export async function callOverpass(ql: string, timeoutMs: number = 30000): Promi
   return cachedFetchJson(`overpass:${ql}`, { source: 'overpass' }, () => callOverpassRaw(ql, timeoutMs))
 }
 
-async function callOverpassRaw(ql: string, timeoutMs: number): Promise<any> {
-  // Audit 2026-06-10: OVERPASS_ENDPOINT (documented in .env.example and wired in
-  // docker-compose for self-hosting) was probed by /api/health but ignored here —
-  // a self-hosted Overpass never received tool traffic. It now leads the mirror
-  // list; the public mirrors remain as fallbacks.
-  const endpoints = [
+/** Sent with every Overpass request (and the health probe): some mirrors answer 403 without one. */
+export const OVERPASS_USER_AGENT = 'GeoAgent/1.0 (geospatial AI analysis)'
+
+/** The Overpass interpreters `callOverpass` tries, in order; /api/health probes the same list.
+ *  OVERPASS_ENDPOINT (a self-hosted Overpass, see .env.example and docker-compose) leads it and
+ *  the public mirrors are the fallbacks. */
+export function overpassEndpoints(): string[] {
+  return [
     ...(process.env.OVERPASS_ENDPOINT ? [process.env.OVERPASS_ENDPOINT] : []),
     'https://overpass-api.de/api/interpreter',
     'https://overpass.kumi.systems/api/interpreter',
     'https://overpass.openstreetmap.fr/api/interpreter',
   ]
+}
+
+async function callOverpassRaw(ql: string, timeoutMs: number): Promise<any> {
   let lastError = ''
-  for (const endpoint of endpoints) {
+  for (const endpoint of overpassEndpoints()) {
     try {
       const resp = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': 'GeoAgent/1.0 (geospatial AI analysis)',
+          'User-Agent': OVERPASS_USER_AGENT,
           Accept: 'application/json',
         },
         body: `data=${encodeURIComponent(ql)}`,

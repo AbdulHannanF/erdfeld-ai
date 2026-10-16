@@ -146,6 +146,7 @@ export default function AppShell() {
   const setFocus = useStore((s) => s.setMapFullscreen)
   const setMapStyle = useStore((s) => s.setMapStyle)
   const basemap = useUi((s) => s.basemap)
+  const uiHydrated = useUi((s) => s.hydrated)
   const sheetSnap = useUi((s) => s.sheetSnap)
   const dockExpanded = useUi((s) => s.dockExpanded)
   const dockCollapsed = useUi((s) => s.dockCollapsed)
@@ -159,10 +160,11 @@ export default function AppShell() {
     hydrateStore()
   }, [hydrateUi, hydrateStore])
 
-  // The basemap in effect follows the theme unless one was chosen.
+  // The basemap in effect follows the theme unless one was chosen. Only once the saved choice is
+  // read: the map opens on it, and the default before then would swap the style mid-load and back.
   useEffect(() => {
-    if (resolvedTheme) setMapStyle(basemapStyleId(basemap, resolvedTheme))
-  }, [resolvedTheme, basemap, setMapStyle])
+    if (uiHydrated && resolvedTheme) setMapStyle(basemapStyleId(basemap, resolvedTheme))
+  }, [uiHydrated, resolvedTheme, basemap, setMapStyle])
 
   // The map's own overlays clear the bottom sheet by this much.
   useEffect(() => {

@@ -54,6 +54,8 @@ test('upload a file of plots in Verify a claim, then follow the batch to its ver
 
   await page.goto('/')
   await page.waitForSelector('.maplibregl-canvas', { timeout: 30_000 })
+  // Verify a claim is in the toolbox; the inspector opens on Erdfeld
+  await page.getByRole('tab', { name: /^Tools/ }).click()
   await page.getByTestId('verify-claim').click()
   const dialog = page.getByTestId('verify-claim-dialog')
   await expect(dialog).toBeVisible()

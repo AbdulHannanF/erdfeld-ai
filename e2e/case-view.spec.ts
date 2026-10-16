@@ -104,6 +104,8 @@ test('Verify a claim posts the claim type, its parameters and the drawn plot, th
   await page.goto('/')
   await page.waitForSelector('.maplibregl-canvas', { timeout: 30_000 })
 
+  // Verify a claim is in the toolbox; the inspector opens on Erdfeld
+  await page.getByRole('tab', { name: /^Tools/ }).click()
   await page.getByTestId('verify-claim').click()
   await expect(page.getByTestId('verify-claim-dialog')).toBeVisible()
   await page.getByTestId('verify-claim-dialog').getByLabel(/date/i).first().fill('2025-09-04')

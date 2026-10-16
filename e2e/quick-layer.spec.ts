@@ -38,6 +38,8 @@ async function prepare(page: Page) {
   await page.setViewportSize({ width: 1600, height: 1000 })
   await page.goto('/')
   await page.waitForSelector('.maplibregl-canvas', { timeout: 30_000 })
+  // the quick layers are in the toolbox; the inspector opens on Erdfeld
+  await page.getByRole('tab', { name: /^Tools/ }).click()
 }
 
 test('a quick layer posts the drawn AOI, needs no model, and shows the GeoResult layer', async ({ page }) => {

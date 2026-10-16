@@ -36,6 +36,15 @@ export const BASEMAP_CHOICES = ['auto', 'dark', 'light', 'voyager', 'satellite']
 export type BasemapChoice = (typeof BASEMAP_CHOICES)[number]
 export type BasemapStyleId = 'dark' | 'light' | 'voyager' | 'satellite'
 
+/** The basemap until one is chosen: imagery reads as the Earth at every zoom, where the dark
+ *  vector style is a near-black field at world zoom. */
+export const DEFAULT_BASEMAP: BasemapChoice = 'satellite'
+
+/** The saved choice if it is a valid one, else the default. */
+export function basemapChoice(saved: string | null | undefined): BasemapChoice {
+  return (BASEMAP_CHOICES as readonly string[]).includes(saved ?? '') ? (saved as BasemapChoice) : DEFAULT_BASEMAP
+}
+
 /** The style id to show: the one chosen, or (auto) the vector map for the resolved theme. */
 export function basemapStyleId(choice: BasemapChoice, resolvedTheme: string | undefined): BasemapStyleId {
   if (choice !== 'auto') return choice
@@ -80,15 +89,14 @@ export function getStyleValue(styleId: string): string | object {
  *  next-themes sets before hydration, and the saved basemap choice) so that the first style is the
  *  right one and the map does not load one style and swap it a moment later. */
 export function initialBasemapStyleId(): BasemapStyleId {
-  if (typeof document === 'undefined') return 'dark'
-  let choice: BasemapChoice = 'auto'
+  if (typeof document === 'undefined') return basemapStyleId(DEFAULT_BASEMAP, 'dark')
+  let saved: string | null = null
   try {
-    const saved = window.localStorage.getItem('erdfeld-basemap')
-    if ((BASEMAP_CHOICES as readonly string[]).includes(saved ?? '')) choice = saved as BasemapChoice
+    saved = window.localStorage.getItem('erdfeld-basemap')
   } catch {
-    // storage blocked: follow the theme
+    // storage blocked: the default
   }
-  return basemapStyleId(choice, document.documentElement.classList.contains('dark') ? 'dark' : 'light')
+  return basemapStyleId(basemapChoice(saved), document.documentElement.classList.contains('dark') ? 'dark' : 'light')
 }
 
 /** The plain colour behind each basemap before its tiles arrive: the land colour of the CARTO

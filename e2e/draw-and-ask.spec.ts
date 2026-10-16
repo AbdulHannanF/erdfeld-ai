@@ -99,6 +99,8 @@ for (const viewport of [
 
 test('drawing still works when the CARTO basemap style is blocked (Q-10)', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 })
+  // the CARTO vector basemap, chosen: the default is imagery
+  await page.addInitScript(() => localStorage.setItem('erdfeld-basemap', 'dark'))
   await prepare(page)
   await page.route(/basemaps\.cartocdn\.com/, (route) => route.abort())
   await drawRectangleAndAsk(page)

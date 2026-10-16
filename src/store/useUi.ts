@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { STORAGE_KEYS, readStorage, writeStorage } from '@/lib/storage'
-import { BASEMAP_CHOICES, type BasemapChoice } from '@/components/map/basemaps'
+import { DEFAULT_BASEMAP, basemapChoice, type BasemapChoice } from '@/components/map/basemaps'
 import type { PinScene } from '@/lib/scene-pins'
 
 /**
@@ -38,6 +38,8 @@ export interface EvidenceFocus {
 interface UiState {
   /** Read the persisted choices. Called once after mount, so the server render and the first client render agree. */
   hydrate: () => void
+  /** The persisted choices are read; until then the basemap and the rest are the defaults. */
+  hydrated: boolean
 
   inspectorTab: InspectorTab
   setInspectorTab: (tab: InspectorTab) => void
@@ -106,8 +108,7 @@ interface UiState {
 }
 
 function initialBasemap(): BasemapChoice {
-  const v = readStorage(STORAGE_KEYS.basemap)
-  return (BASEMAP_CHOICES as readonly string[]).includes(v ?? '') ? (v as BasemapChoice) : 'auto'
+  return basemapChoice(readStorage(STORAGE_KEYS.basemap))
 }
 
 function initialSidebar(): boolean | null {
@@ -123,14 +124,17 @@ let focusNonce = 0
 export const useUi = create<UiState>((set) => ({
   hydrate: () =>
     set({
+      hydrated: true,
       basemap: initialBasemap(),
       sidebarCollapsed: initialSidebar(),
       relief: readStorage(STORAGE_KEYS.relief) !== 'off',
       exportCrs: readStorage(STORAGE_KEYS.exportCrs) || 'EPSG:4326',
       dockCollapsed: typeof window !== 'undefined' && window.innerHeight < SHORT_WINDOW_PX,
     }),
+  hydrated: false,
 
-  inspectorTab: 'tools',
+  // Erdfeld (the assistant, with the sample cases) is what a first visit meets, not the toolbox
+  inspectorTab: 'assistant',
   setInspectorTab: (inspectorTab) => set({ inspectorTab }),
   showResults: () =>
     set((s) => ({
@@ -165,7 +169,7 @@ export const useUi = create<UiState>((set) => ({
   mapTool: 'select',
   setMapTool: (mapTool) => set({ mapTool }),
 
-  basemap: 'auto',
+  basemap: DEFAULT_BASEMAP,
   setBasemap: (basemap) => {
     writeStorage(STORAGE_KEYS.basemap, basemap)
     set({ basemap })

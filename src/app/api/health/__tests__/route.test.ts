@@ -4,6 +4,7 @@ const dbQuery = vi.fn()
 vi.mock('@/lib/db', () => ({ db: { $queryRaw: (...args: unknown[]) => dbQuery(...args) } }))
 
 import { GET } from '../route'
+import { OVERPASS_USER_AGENT } from '@/app/api/agent/lib/overpass'
 
 const fetchMock = vi.fn()
 const ok = () => new Response('{}', { status: 200 })
@@ -20,9 +21,15 @@ function route(answers: Record<string, () => Promise<Response> | Response>) {
   })
 }
 
+const OVERPASS = 'https://overpass-api.de/api/interpreter'
+const KUMI = 'https://overpass.kumi.systems/api/interpreter'
+const OSM_FR = 'https://overpass.openstreetmap.fr/api/interpreter'
+
 const healthy = {
   'https://earth-search.aws.element84.com/v1': ok,
-  'https://overpass-api.de/api/interpreter': ok,
+  [OVERPASS]: ok,
+  [KUMI]: ok,
+  [OSM_FR]: ok,
   'https://titiler.xyz/healthz': ok,
 }
 
@@ -36,6 +43,7 @@ beforeEach(() => {
   vi.stubEnv('GEO_SERVICE_URL', '')
   vi.stubEnv('TITILER_ENDPOINT', '')
   vi.stubEnv('OLLAMA_BASE_URL', '')
+  vi.stubEnv('OVERPASS_ENDPOINT', '')
   dbQuery.mockReset().mockResolvedValue([{ '?column?': 1 }])
   fetchMock.mockReset()
 })
@@ -135,11 +143,40 @@ describe('GET /api/health', () => {
   })
 
   it('is degraded (200) when an upstream data source is down, even if the others are', async () => {
-    route({ ...healthy, 'https://earth-search.aws.element84.com/v1': refused, 'https://overpass-api.de/api/interpreter': refused })
+    route({ ...healthy, 'https://earth-search.aws.element84.com/v1': refused })
     const { res, json } = await body()
     expect(res.status).toBe(200)
     expect(json.status).toBe('degraded')
-    expect(json.checks).toMatchObject({ stac: 'down: fetch failed', overpass: 'down: fetch failed', database: 'ok' })
+    expect(json.checks).toMatchObject({ stac: 'down: fetch failed', overpass: 'ok', database: 'ok' })
+  })
+
+  it('probes every Overpass mirror that query_osm fails over to, and is ok while any one answers', async () => {
+    route({ ...healthy, [OVERPASS]: timedOut, [KUMI]: () => Promise.resolve(status(500)) })
+    const { res, json } = await body()
+    expect(res.status).toBe(200)
+    expect(json.status).toBe('ok')
+    expect(json.checks.overpass).toBe('ok')
+    for (const mirror of [OVERPASS, KUMI, OSM_FR]) {
+      const call = fetchMock.mock.calls.find((c) => String(c[0]).startsWith(`${mirror}?data=`))
+      // the User-Agent query_osm sends: one public mirror answers 403 without it
+      expect(call?.[1].headers).toEqual({ 'User-Agent': OVERPASS_USER_AGENT })
+    }
+  })
+
+  it('is degraded when no Overpass mirror answers with a 2xx, with each mirror and its reason', async () => {
+    route({ ...healthy, [OVERPASS]: timedOut, [KUMI]: () => Promise.resolve(status(500)), [OSM_FR]: () => Promise.resolve(status(403)) })
+    const { json } = await body()
+    expect(json.status).toBe('degraded')
+    expect(json.checks.overpass).toBe(
+      'degraded: no mirror answered (overpass-api.de timeout; overpass.kumi.systems HTTP 500; overpass.openstreetmap.fr HTTP 403)',
+    )
+  })
+
+  it('is down when every Overpass mirror is unreachable, and probes OVERPASS_ENDPOINT first', async () => {
+    vi.stubEnv('OVERPASS_ENDPOINT', 'http://overpass.local/api/interpreter')
+    route({ ...healthy, 'http://overpass.local/api/interpreter': refused, [OVERPASS]: refused, [KUMI]: refused, [OSM_FR]: timedOut })
+    const { json } = await body()
+    expect(json.checks.overpass).toMatch(/^down: no mirror answered \(overpass\.local fetch failed; overpass-api\.de fetch failed; /)
   })
 
   it('reports a dependency that is not configured as not configured, without degrading the status', async () => {

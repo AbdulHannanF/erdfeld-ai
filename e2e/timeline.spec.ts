@@ -173,3 +173,32 @@ test.describe('imagery archive timeline', () => {
     await expect(page.getByTestId('scene-badge')).toContainText('9 Sep 2022')
   })
 })
+
+test.describe('imagery archive layout', () => {
+  for (const size of [{ width: 1280, height: 720 }, { width: 1440, height: 900 }, { width: 2560, height: 1440 }]) {
+    test(`the panel and the bar are fully reachable at ${size.width}x${size.height}`, async ({ page }) => {
+      await page.setViewportSize(size)
+      await setup(page)
+      await openArchive(page)
+      const bad = await page.evaluate(() => {
+        const out: string[] = []
+        const dock = document.querySelector('[data-testid="data-dock"]')!.getBoundingClientRect()
+        for (const root of ['archive-panel', 'time-nav']) {
+          const host = document.querySelector(`[data-testid="${root}"]`)!
+          const hr = host.getBoundingClientRect()
+          if (hr.bottom > dock.top + 1) out.push(`${root} runs into the dock`)
+          if (hr.right > innerWidth || hr.left < 0) out.push(`${root} is off screen`)
+          for (const el of Array.from(host.querySelectorAll('button, input, select, [role=slider]'))) {
+            el.scrollIntoView({ block: 'nearest' })
+            const r = el.getBoundingClientRect()
+            if (r.width < 4 || r.height < 4) continue
+            const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)
+            if (top && top !== el && !el.contains(top) && !top.contains(el)) out.push(`${root}: ${(el.getAttribute('aria-label') || el.textContent || el.tagName).trim().slice(0, 30)} is covered by ${top.tagName.toLowerCase()}`)
+          }
+        }
+        return out
+      })
+      expect(bad).toEqual([])
+    })
+  }
+})

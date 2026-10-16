@@ -63,7 +63,7 @@ export const RATE_POLICIES = {
   upload: { max: 10, windowS: 600 },
   jobs: { max: 30, windowS: 600 },
   /** The scene catalogue over an area: one cached STAC search per query, paged from memory. */
-  scenes: { max: 120, windowS: 600 },
+  scenes: { max: 300, windowS: 600 },
   /** Listing a caller's own runs / batches (read-only, one indexed query). */
   lists: { max: 240, windowS: 600 },
   /** A case runs a recipe (seconds to a minute of upstream reads). */

@@ -335,7 +335,7 @@ function ArchivePanel({ onClose }: { onClose: () => void }) {
   const isRadar = choice.sensor === 'sentinel-1'
 
   return (
-    <section aria-label="Imagery archive" className="glass flex max-h-full min-h-0 w-[min(25rem,100%)] flex-col gap-2.5 overflow-hidden rounded-lg p-3" data-testid="archive-panel">
+    <section aria-label="Imagery archive" className="glass flex max-h-full min-h-0 w-[min(25rem,100%)] flex-col gap-2.5 overflow-y-auto rounded-lg p-3" data-testid="archive-panel">
       <header className="flex items-center justify-between gap-2">
         <div>
           <span className={OVERLINE}>Imagery archive</span>
@@ -382,7 +382,7 @@ function ArchivePanel({ onClose }: { onClose: () => void }) {
 
       {list && list.total > 0 && (
         <>
-          <ul className="min-h-[6rem] flex-1 overflow-y-auto rounded-md border border-border bg-sunk p-1" aria-label="Scenes, oldest first" data-testid="scene-list">
+          <ul className="max-h-[min(17rem,45vh)] min-h-[7rem] shrink-0 overflow-y-auto rounded-md border border-border bg-sunk p-1" aria-label="Scenes, oldest first" data-testid="scene-list">
             {list.scenes.map((s, i) => (
               <SceneRow key={s.id} scene={s} active={i === index} checked={selected.includes(s.id)} onJump={() => { useTimeline.getState().setPlaying(false); setIndex(i) }} onToggle={() => toggleSelected(s.id)} />
             ))}
@@ -493,11 +493,11 @@ export default function SceneTimeline({ map }: { map: maplibregl.Map | null }) {
   return (
     <>
       {panelOpen && (
-        <div className="absolute bottom-[5.25rem] left-[4.5rem] top-[4.75rem] z-20 flex w-[min(25rem,calc(100%-6rem))] items-start">
+        <div className="absolute bottom-[8rem] left-[4.5rem] top-[4.75rem] z-20 flex w-[min(25rem,calc(100%-6rem))] items-start">
           <ArchivePanel onClose={() => setPanelOpen(false)} />
         </div>
       )}
-      <div className="absolute bottom-[1.75rem] left-[18.5rem] right-5 z-10 grid justify-items-end gap-2 max-md:hidden">
+      <div className="absolute bottom-[1.75rem] left-[18.5rem] right-5 z-10 grid justify-items-start gap-2 max-md:hidden">
         <div className="pointer-events-none"><SceneBadge /></div>
         <div className="w-full">
           {showBar ? <ArchiveBar onOpenPanel={() => setPanelOpen(!panelOpen)} /> : <MapTimelineSlider onBrowse={() => setPanelOpen(true)} />}

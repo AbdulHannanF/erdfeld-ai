@@ -181,6 +181,13 @@ function ndviMeanColor(v: number): string {
     : '#ef4444'
 }
 
+/** A run pinned to a scene or a date draws a layer of its own, so two dates can be on the map at once;
+ *  an unpinned run keeps the one `<index>-active` layer that the next run replaces. */
+function activeLayerId(index: string, args: Record<string, any>, datetime?: unknown): string {
+  const day = typeof datetime === 'string' ? datetime.slice(0, 10) : ''
+  return (args.scene_id || args.date) && day ? `${index.toLowerCase()}-${day}` : `${index.toLowerCase()}-active`
+}
+
 /** The Sentinel-2 scenes a run may use: the one named by `scene_id`, else the scenes within 3 days of
  *  `date`, else the recent default. A named scene that does not exist, is the wrong sensor, or does not
  *  cover the area is refused (never replaced by another); an unreachable catalogue is a failure. */
@@ -308,7 +315,7 @@ export async function ndviOrImagery(ctx: ToolCtx, toolName: string, args: Record
           item = choice.item
           // The scene passed every gate: draw its tiles now, statistics follow.
           emitPreviewLayer(emit, buildIndexPreviewLayer({
-            id: 'ndvi-active',
+            id: activeLayerId('NDVI', args, item.properties?.datetime),
             name: `NDVI ${(item.properties?.datetime as string || '').slice(0, 10)}`,
             item,
             index: 'NDVI',
@@ -378,7 +385,7 @@ export async function ndviOrImagery(ctx: ToolCtx, toolName: string, args: Record
     }
     const ndviLayer = item
       ? buildIndexRasterLayer({
-          id: 'ndvi-active',
+          id: activeLayerId('NDVI', args, sceneDate),
           name: `NDVI ${sceneDate}`,
           item,
           index: 'NDVI',
@@ -463,7 +470,7 @@ ${stretchNote}
       summary: `NDVI computed for ${areaKm2.toFixed(1)} km² (drawn polygon, ${sceneDate}, ${cloudStr} scene-wide cloud).\n\n**NDVI mean (drawn polygon, cloud-masked):** ${meanLabel}${maskedNote}\n**Per-pixel raster:** unavailable (titiler tile failed to verify) — the map shows the AOI polygon filled with a flat color derived from the real mean. No synthetic per-pixel texture is fabricated.\n**Source:** Real per-pixel NDVI from titiler /stac/feature.npy, clipped to the drawn polygon and SCL cloud-masked. No bbox or scene-wide fallback exists.`,
       summary_data: ndviFbSd,
       layer: {
-        id: 'ndvi-active',
+        id: activeLayerId('NDVI', args, sceneDate),
         name: `NDVI illustrative — real mean ${meanLabel}`,
         type: 'geojson' as const,
         geojson: {
@@ -884,7 +891,7 @@ export async function computeSpectralIndex(ctx: ToolCtx, args: Record<string, an
       if (choice) {
         siItem = choice.item
         emitPreviewLayer(emit, buildIndexPreviewLayer({
-          id: `${index.toLowerCase()}-active`,
+          id: activeLayerId(index, args, siItem.properties?.datetime),
           name: `${index} (Sentinel-2) ${(siItem.properties?.datetime as string || '').slice(0, 10)}`,
           item: siItem,
           index,
@@ -963,7 +970,7 @@ export async function computeSpectralIndex(ctx: ToolCtx, args: Record<string, an
   // Q-14a / Q-16: native-resolution XYZ tiles stretched to the AOI's own p2-p98 and masked
   // to the polygon on the client, replacing the fixed -1..1 1024 px PNG.
   const indexLayer = buildIndexRasterLayer({
-    id: `${index.toLowerCase()}-active`,
+    id: activeLayerId(index, args, siSceneDate),
     name: `${index} (Sentinel-2) ${siSceneDate}`,
     item: siItem,
     index,

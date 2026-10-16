@@ -1,0 +1,10 @@
+{
+  "_note": "Fixed AOIs for the planner evaluation: WGS84 rectangles.",
+  "aois": {
+    "sylhet": { "label": "Sylhet, Bangladesh (the smoke test's flood area)", "geometry": { "type": "Polygon", "coordinates": [[[91.84, 24.88], [91.90, 24.88], [91.90, 24.93], [91.84, 24.93], [91.84, 24.88]]] } },
+    "nairobi": { "label": "Nairobi edge, Kenya", "geometry": { "type": "Polygon", "coordinates": [[[36.80, -1.30], [36.83, -1.30], [36.83, -1.27], [36.80, -1.27], [36.80, -1.30]]] } },
+    "rondonia": { "label": "Rondonia forest frontier, Brazil", "geometry": { "type": "Polygon", "coordinates": [[[-62.40, -9.60], [-62.35, -9.60], [-62.35, -9.55], [-62.40, -9.55], [-62.40, -9.60]]] } },
+    "iowa": { "label": "Central Iowa farmland, US", "geometry": { "type": "Polygon", "coordinates": [[[-93.62, 42.02], [-93.58, 42.02], [-93.58, 42.05], [-93.62, 42.05], [-93.62, 42.02]]] } },
+    "kasur": { "label": "Kasur farmland, Punjab, Pakistan", "geometry": { "type": "Polygon", "coordinates": [[[74.40, 31.08], [74.46, 31.08], [74.46, 31.13], [74.40, 31.13], [74.40, 31.08]]] } }
+  }
+}

@@ -1,0 +1,28 @@
+# GeoAgent — gitleaks config (P7.1)
+# Extends the built-in ruleset; the allowlist covers files that legitimately
+# contain key-like *names* (env var names, doc references) but no real secrets.
+title = "GeoAgent gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Paths and tokens that look key-ish but carry no real secret"
+paths = [
+  '''\.env\.example$''',
+  '''package-lock\.json$''',
+  '''(^|/)README\.md$''',
+  '''(^|/)ccdoc/''',
+  '''(^|/)\.gitleaks\.toml$''',
+  '''(^|/)scripts/check-secrets\.mjs$''',
+  '''(^|/)\.github/workflows/''',
+]
+# Env-var NAMES (not values) that appear in docs/templates throughout the repo.
+regexes = [
+  '''ROBOFLOW_API_KEY''',
+  '''NEXTAUTH_SECRET''',
+  '''FIRMS_MAP_KEY''',
+  '''OPENAQ_API_KEY''',
+  '''HF_API_TOKEN''',
+  '''GITHUB_SECRET''',
+]

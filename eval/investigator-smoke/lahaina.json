@@ -1,0 +1,971 @@
+{
+ "case": {
+  "id": "lahaina",
+  "title": "Lahaina, Maui (Aug 2023)",
+  "window": {
+   "start": "2023-08-01",
+   "end": "2023-08-31"
+  },
+  "question": "What happened in Lahaina in August 2023?",
+  "expected": "fire",
+  "family": "fire",
+  "source": "The Lahaina wildfire of 8 August 2023 (Maui County, Hawaii), documented by Maui Fire Department, NIST and the press.",
+  "bbox": [
+   [
+    -156.69,
+    20.86
+   ],
+   [
+    -156.66,
+    20.86
+   ],
+   [
+    -156.66,
+    20.89
+   ],
+   [
+    -156.69,
+    20.89
+   ],
+   [
+    -156.69,
+    20.86
+   ]
+  ]
+ },
+ "budget_ms": 180000,
+ "row": {
+  "case": "lahaina",
+  "expected": "fire",
+  "family": "fire",
+  "verdict": "Cannot determine",
+  "verdict_id": null,
+  "posterior": 0.4192,
+  "stop_reason": "no_informative_evidence",
+  "ops": 3,
+  "steps": 4,
+  "total_s": 60,
+  "corroboration": "grounded",
+  "model": "gemini-3.8-flash"
+ },
+ "events": [
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     -156.69,
+     20.86,
+     -156.66,
+     20.89
+    ]
+   },
+   "t": 3
+  },
+  {
+   "event": "hypotheses",
+   "data": {
+    "type": "hypotheses",
+    "family": "fire",
+    "family_title": "Fire: wildfire, agricultural burning or not fire at all",
+    "window": {
+     "start": "2023-08-01",
+     "end": "2023-08-31"
+    },
+    "window_source": "request",
+    "items": [
+     {
+      "id": "fire_wildfire",
+      "label": "Wildfire or burn scar",
+      "family": "Fire: wildfire, agricultural burning or not fire at all",
+      "prior": 0.7499999999999999
+     },
+     {
+      "id": "fire_non_fire_change",
+      "label": "Change that is not fire",
+      "family": "Fire: wildfire, agricultural burning or not fire at all",
+      "prior": 0.125
+     },
+     {
+      "id": "fire_agricultural_burning",
+      "label": "Agricultural burning",
+      "family": "Fire: wildfire, agricultural burning or not fire at all",
+      "prior": 0.0625
+     },
+     {
+      "id": "fire_artefact",
+      "label": "Artefact",
+      "family": "Fire: wildfire, agricultural burning or not fire at all",
+      "prior": 0.0625
+     }
+    ],
+    "rejected_ids": [],
+    "clamped_ids": [
+     "fire_wildfire",
+     "fire_agricultural_burning",
+     "fire_artefact"
+    ],
+    "used_default_priors": false,
+    "calibration_note": "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+   },
+   "t": 4355
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 1,
+    "item_id": "fire_dnbr",
+    "title": "Burn severity index (dNBR) between the two dates",
+    "op": "analyze_raster",
+    "args": {
+     "operation": "change",
+     "index": "NBR",
+     "date": "2023-08-01",
+     "date2": "2023-08-31",
+     "threshold": 0.1
+    },
+    "why": "Gathering the burn severity index removes the most uncertainty (0.25 bits) while settling whether the ground carries a burn signature and its severity.",
+    "why_source": "model",
+    "voi": 0.2521,
+    "cost_s": 15,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "fire_dnbr",
+      "voi": 0.2521,
+      "cost_s": 15
+     },
+     {
+      "item_id": "fire_extent",
+      "voi": 0.2031,
+      "cost_s": 15
+     },
+     {
+      "item_id": "fire_vision",
+      "voi": 0.1388,
+      "cost_s": 20
+     },
+     {
+      "item_id": "fire_landcover",
+      "voi": 0.0545,
+      "cost_s": 6
+     }
+    ],
+    "skipped": [
+     {
+      "item_id": "fire_hotspots",
+      "reason": "fetch_active_fires is a near-real-time source covering only the last 10 days, and the window ended 1140 days ago"
+     }
+    ]
+   },
+   "t": 6841
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "analyze_raster",
+    "status": "running"
+   },
+   "t": 6841
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "analyze_raster",
+    "status": "completed",
+    "result_id": "r_70456ab5ec98df5d",
+    "result_status": "ok"
+   },
+   "t": 23121
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "change-dg23upwe",
+    "name": "ΔNBR 2023-08-28 → 2023-09-17",
+    "result_id": "r_70456ab5ec98df5d"
+   },
+   "t": 23121
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     -156.69,
+     20.86,
+     -156.66,
+     20.89
+    ]
+   },
+   "t": 23121
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 1,
+    "item_id": "fire_dnbr",
+    "op": "analyze_raster",
+    "resultId": "r_70456ab5ec98df5d",
+    "status": "ok",
+    "summary": "NBR barely moved between 2023-08-28 and 2023-09-17 — mean change -0.039 NBR units. 19% of clear pixels fell by more than 0.1, 3% rose, 78% held steady (σ 0.118, range -1.186 to 1.05). Computed on the 65,491 pixels that w",
+    "measured": true,
+    "features": {
+     "dnbr": 0.0394
+    },
+    "feature": {
+     "name": "dnbr",
+     "value": 0.0394,
+     "unit": "dNBR",
+     "field": "mean_delta",
+     "derivation": "-mean_delta (pre-fire NBR minus post-fire NBR)",
+     "bin": "< 0.1 dNBR"
+    },
+    "likelihood_ratios": {
+     "fire_wildfire": 0.077,
+     "fire_agricultural_burning": 1.754,
+     "fire_non_fire_change": 5.045,
+     "fire_artefact": 6.066
+    },
+    "capped": false,
+    "caveat": "Averaged over the drawn area; the sign convention is pre minus post."
+   },
+   "t": 23122
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 1,
+    "updated": true,
+    "posteriors": {
+     "fire_wildfire": 0.18848167539267013,
+     "fire_non_fire_change": 0.41884816753926696,
+     "fire_agricultural_burning": 0.10471204188481674,
+     "fire_artefact": 0.2879581151832461
+    },
+    "posterior": [
+     {
+      "id": "fire_non_fire_change",
+      "label": "Change that is not fire",
+      "p": 0.41884816753926696,
+      "delta": 0.29384816753926696
+     },
+     {
+      "id": "fire_artefact",
+      "label": "Artefact",
+      "p": 0.2879581151832461,
+      "delta": 0.2254581151832461
+     },
+     {
+      "id": "fire_wildfire",
+      "label": "Wildfire or burn scar",
+      "p": 0.18848167539267013,
+      "delta": -0.5615183246073298
+     },
+     {
+      "id": "fire_agricultural_burning",
+      "label": "Agricultural burning",
+      "p": 0.10471204188481674,
+      "delta": 0.04221204188481674
+     }
+    ],
+    "leading": "fire_non_fire_change",
+    "entropy_bits": 1.8377
+   },
+   "t": 23122
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 2,
+    "item_id": "fire_extent",
+    "title": "Share of the area where NBR fell",
+    "op": "analyze_raster",
+    "args": {
+     "operation": "change",
+     "index": "NBR",
+     "date": "2023-08-01",
+     "date2": "2023-08-31",
+     "threshold": 0.1
+    },
+    "why": "The share of the area where NBR fell is the next evidence to gather because it is expected to remove the most uncertainty, at 0.18 bits.",
+    "why_source": "model",
+    "voi": 0.181,
+    "cost_s": 0,
+    "reused": true,
+    "considered": [
+     {
+      "item_id": "fire_extent",
+      "voi": 0.181,
+      "cost_s": 0
+     },
+     {
+      "item_id": "fire_vision",
+      "voi": 0.1446,
+      "cost_s": 20
+     },
+     {
+      "item_id": "fire_landcover",
+      "voi": 0.0544,
+      "cost_s": 6
+     }
+    ],
+    "skipped": [
+     {
+      "item_id": "fire_hotspots",
+      "reason": "fetch_active_fires is a near-real-time source covering only the last 10 days, and the window ended 1140 days ago"
+     }
+    ]
+   },
+   "t": 25136
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 2,
+    "item_id": "fire_extent",
+    "op": "analyze_raster",
+    "resultId": "r_70456ab5ec98df5d",
+    "status": "ok",
+    "summary": "NBR barely moved between 2023-08-28 and 2023-09-17 — mean change -0.039 NBR units. 19% of clear pixels fell by more than 0.1, 3% rose, 78% held steady (σ 0.118, range -1.186 to 1.05). Computed on the 65,491 pixels that w",
+    "measured": true,
+    "features": {
+     "nbr_loss_fraction": 0.187
+    },
+    "feature": {
+     "name": "nbr_loss_fraction",
+     "value": 0.187,
+     "unit": "of clear pixels",
+     "field": "decreased_pct",
+     "derivation": "decreased_pct / 100 (pixels whose NBR fell by more than the threshold)",
+     "bin": "0.05 to 0.2 of clear pixels"
+    },
+    "likelihood_ratios": {
+     "fire_wildfire": 0.451,
+     "fire_agricultural_burning": 1.199,
+     "fire_non_fire_change": 1.344,
+     "fire_artefact": 1.01
+    },
+    "capped": false
+   },
+   "t": 25136
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 2,
+    "updated": true,
+    "posteriors": {
+     "fire_wildfire": 0.09490333919156414,
+     "fire_non_fire_change": 0.49209138840070293,
+     "fire_agricultural_burning": 0.12302284710017575,
+     "fire_artefact": 0.2899824253075572
+    },
+    "posterior": [
+     {
+      "id": "fire_non_fire_change",
+      "label": "Change that is not fire",
+      "p": 0.49209138840070293,
+      "delta": 0.07324322086143598
+     },
+     {
+      "id": "fire_artefact",
+      "label": "Artefact",
+      "p": 0.2899824253075572,
+      "delta": 0.0020243101243110906
+     },
+     {
+      "id": "fire_agricultural_burning",
+      "label": "Agricultural burning",
+      "p": 0.12302284710017575,
+      "delta": 0.018310805215359008
+     },
+     {
+      "id": "fire_wildfire",
+      "label": "Wildfire or burn scar",
+      "p": 0.09490333919156414,
+      "delta": -0.09357833620110599
+     }
+    ],
+    "leading": "fire_non_fire_change",
+    "entropy_bits": 1.7156
+   },
+   "t": 25136
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 3,
+    "item_id": "fire_vision",
+    "title": "A vision model looks at the true-colour scene",
+    "op": "inspect_imagery",
+    "args": {
+     "date": "2023-08-31",
+     "question": "Is there a smoke plume, a dark burn scar, dark burnt field patches, intact vegetation, bare cleared ground, or is cloud covering the ground?"
+    },
+    "why": "Having a vision model inspect the true-colour scene settles what it visually shows and removes 0.15 bits of uncertainty, more than the alternative land cover candidate.",
+    "why_source": "model",
+    "voi": 0.1546,
+    "cost_s": 20,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "fire_vision",
+      "voi": 0.1546,
+      "cost_s": 20
+     },
+     {
+      "item_id": "fire_landcover",
+      "voi": 0.0506,
+      "cost_s": 6
+     }
+    ],
+    "skipped": [
+     {
+      "item_id": "fire_hotspots",
+      "reason": "fetch_active_fires is a near-real-time source covering only the last 10 days, and the window ended 1140 days ago"
+     }
+    ]
+   },
+   "t": 26852
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "inspect_imagery",
+    "status": "running"
+   },
+   "t": 26852
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "inspect_imagery",
+    "status": "completed",
+    "result_id": "r_6efbfe3715872926",
+    "result_status": "ok"
+   },
+   "t": 38093
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "inspect-ahpyf1jj",
+    "name": "True colour — 2023-09-17",
+    "result_id": "r_6efbfe3715872926"
+   },
+   "t": 38093
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     -156.69,
+     20.86,
+     -156.66,
+     20.89
+    ]
+   },
+   "t": 38093
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 3,
+    "item_id": "fire_vision",
+    "op": "inspect_imagery",
+    "resultId": "r_6efbfe3715872926",
+    "status": "ok",
+    "summary": "gemini-3.8-flash looking at Sentinel-2 L2A true-colour (red/green/blue) composite, 2023-09-17, clipped to the drawn AOI polygon: 1. Cloud cover: The scene is completely clear of clouds, cloud shadows, haze, or snow, with",
+    "measured": true,
+    "features": {},
+    "feature": {
+     "name": "vision",
+     "value": "burn_scar_or_smoke_plume",
+     "unit": "category",
+     "field": "scene_date",
+     "derivation": "a vision model chose this category from the catalogue list",
+     "bin": "burn_scar_or_smoke_plume"
+    },
+    "likelihood_ratios": {
+     "fire_wildfire": 2,
+     "fire_agricultural_burning": 0.573,
+     "fire_non_fire_change": 0.5,
+     "fire_artefact": 0.521
+    },
+    "capped": true,
+    "vision_category": "burn_scar_or_smoke_plume",
+    "caveat": "A vision reading is an interpretation of a picture; its weight is capped."
+   },
+   "t": 41875
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 3,
+    "updated": true,
+    "posteriors": {
+     "fire_wildfire": 0.2313156359143275,
+     "fire_non_fire_change": 0.4354517345343962,
+     "fire_agricultural_burning": 0.09926078327059298,
+     "fire_artefact": 0.2339718462806835
+    },
+    "posterior": [
+     {
+      "id": "fire_non_fire_change",
+      "label": "Change that is not fire",
+      "p": 0.4354517345343962,
+      "delta": -0.05663965386630676
+     },
+     {
+      "id": "fire_artefact",
+      "label": "Artefact",
+      "p": 0.2339718462806835,
+      "delta": -0.0560105790268737
+     },
+     {
+      "id": "fire_wildfire",
+      "label": "Wildfire or burn scar",
+      "p": 0.2313156359143275,
+      "delta": 0.13641229672276334
+     },
+     {
+      "id": "fire_agricultural_burning",
+      "label": "Agricultural burning",
+      "p": 0.09926078327059298,
+      "delta": -0.023762063829582764
+     }
+    ],
+    "leading": "fire_non_fire_change",
+    "entropy_bits": 1.832
+   },
+   "t": 41875
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 4,
+    "item_id": "fire_landcover",
+    "title": "Land cover of the area (ESA WorldCover 2021)",
+    "op": "fetch_built_surface",
+    "args": {},
+    "why": "ESA WorldCover 2021 land cover should be gathered next because it will settle whether the burnt land is farmed and is expected to remove 0.06 bits of uncertainty.",
+    "why_source": "model",
+    "voi": 0.0562,
+    "cost_s": 6,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "fire_landcover",
+      "voi": 0.0562,
+      "cost_s": 6
+     }
+    ],
+    "skipped": [
+     {
+      "item_id": "fire_hotspots",
+      "reason": "fetch_active_fires is a near-real-time source covering only the last 10 days, and the window ended 1140 days ago"
+     }
+    ]
+   },
+   "t": 44584
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "fetch_built_surface",
+    "status": "running"
+   },
+   "t": 44584
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "fetch_built_surface",
+    "status": "completed",
+    "result_id": "r_ca788d725c5b1da0",
+    "result_status": "ok"
+   },
+   "t": 47265
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "built-surface-g6q92kte",
+    "name": "Built-up Surface — ESA WorldCover 2021",
+    "result_id": "r_ca788d725c5b1da0"
+   },
+   "t": 47265
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     -156.69,
+     20.86,
+     -156.66,
+     20.89
+    ]
+   },
+   "t": 47265
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 4,
+    "item_id": "fire_landcover",
+    "op": "fetch_built_surface",
+    "resultId": "r_ca788d725c5b1da0",
+    "status": "ok",
+    "summary": "Built-up Surface — ESA WorldCover 2021 · 10.4 km² · 20.8750°N, -156.6750°E Urbanization class: Peri-urban / mixed (10–25% built-up) Built-up area: 23.9% of the drawn polygon ≈ 2.48 km² Dominant land class: Grassland Land",
+    "measured": true,
+    "features": {
+     "cropland_pct": 0
+    },
+    "feature": {
+     "name": "cropland_pct",
+     "value": 0,
+     "unit": "% cropland",
+     "field": "cropland_pct",
+     "derivation": "as reported",
+     "bin": "< 10 % cropland"
+    },
+    "likelihood_ratios": {
+     "fire_wildfire": 1.618,
+     "fire_agricultural_burning": 0.262,
+     "fire_non_fire_change": 0.936,
+     "fire_artefact": 0.952
+    },
+    "capped": false,
+    "caveat": "WorldCover is a single-year (2021) classification, about 75% accurate globally."
+   },
+   "t": 47265
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 4,
+    "updated": true,
+    "posteriors": {
+     "fire_wildfire": 0.32746822145027865,
+     "fire_non_fire_change": 0.41919211833996917,
+     "fire_agricultural_burning": 0.028104241227706238,
+     "fire_artefact": 0.22523541898204588
+    },
+    "posterior": [
+     {
+      "id": "fire_non_fire_change",
+      "label": "Change that is not fire",
+      "p": 0.41919211833996917,
+      "delta": -0.016259616194427007
+     },
+     {
+      "id": "fire_wildfire",
+      "label": "Wildfire or burn scar",
+      "p": 0.32746822145027865,
+      "delta": 0.09615258553595116
+     },
+     {
+      "id": "fire_artefact",
+      "label": "Artefact",
+      "p": 0.22523541898204588,
+      "delta": -0.008736427298637606
+     },
+     {
+      "id": "fire_agricultural_burning",
+      "label": "Agricultural burning",
+      "p": 0.028104241227706238,
+      "delta": -0.07115654204288674
+     }
+    ],
+    "leading": "fire_non_fire_change",
+    "entropy_bits": 1.6824
+   },
+   "t": 47265
+  },
+  {
+   "event": "verdict",
+   "data": {
+    "type": "verdict",
+    "kind": "cannot_determine",
+    "id": null,
+    "decidingEvidence": [],
+    "label": "Cannot determine",
+    "posterior": 0.4192,
+    "runner_up": {
+     "id": "fire_wildfire",
+     "label": "Wildfire or burn scar",
+     "p": 0.3275
+    },
+    "stop_reason": "no_informative_evidence",
+    "evidence_ops_run": 3,
+    "items_measured": 4,
+    "items_unmeasured": 0,
+    "evidence_that_would_decide": [
+     {
+      "item_id": "fire_hotspots",
+      "title": "Active fire detections (near real time)",
+      "decides": "whether something was burning in the last days",
+      "voi": 0.3258,
+      "why_not": "fetch_active_fires is a near-real-time source covering only the last 10 days, and the window ended 1140 days ago"
+     }
+    ],
+    "calibration_note": "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+   },
+   "t": 47265
+  },
+  {
+   "event": "corroboration",
+   "data": {
+    "type": "corroboration",
+    "role": "context",
+    "query": "any of: Change that is not fire; Wildfire or burn scar | Lahaina, Hawaii | 2023-08-01 to 2023-08-31",
+    "status": "grounded",
+    "sources": [
+     {
+      "title": "Devastation in Maui",
+      "url": "https://science.nasa.gov/earth/earth-observatory/devastation-in-maui-151688/",
+      "publisher": "NASA Earth Observatory / NASA Science",
+      "date": "2023-08-11",
+      "inWindow": true,
+      "days_from_window": 0
+     },
+     {
+      "title": "Shocking before-and-after images show utter devastation of Maui wildfire",
+      "url": "https://www.latimes.com/california/story/2023-08-10/smoking-devastation-of-maui-wildfires-is-clear-in-before-and-after-satellite-images",
+      "publisher": "Los Angeles Times",
+      "date": "2023-08-10",
+      "inWindow": true,
+      "days_from_window": 0
+     },
+     {
+      "title": "Maui Wildfires",
+      "url": "https://satlib.cira.colostate.edu/event/maui-wildfires/",
+      "publisher": "CIRA Satellite Library - Colorado State University",
+      "date": "2023-08-09",
+      "inWindow": true,
+      "days_from_window": 0
+     },
+     {
+      "title": "Maui satellite photo shows full scale of deadliest US fire in more than a century",
+      "url": "https://www.space.com/earth-satellite-images-maui-wildfires",
+      "publisher": "Space.com",
+      "date": "2023-08-17",
+      "inWindow": true,
+      "days_from_window": 0
+     },
+     {
+      "title": "Incident Page - Hawaii Wildfires, August 2023",
+      "url": "https://gis-fema.hub.arcgis.com/pages/hawaii-wildfires-august-2023",
+      "publisher": "FEMA Geospatial Resource Center",
+      "date": "2023-08-09",
+      "inWindow": true,
+      "days_from_window": 0
+     },
+     {
+      "title": "The Devastating August 8th, 2023 Lahaina, Hawai'i Wildfire",
+      "url": "https://www.earthdata.nasa.gov/dashboard/stories/lahaina-fire",
+      "publisher": "NASA Earthdata",
+      "date": "2023-12-01",
+      "inWindow": false,
+      "days_from_window": 92
+     }
+    ],
+    "note": "Context only: these reports do not change the finding. Publication dates are the search model's reading of each page (6 of 6 carried one) and are not verified."
+   },
+   "t": 59949
+  },
+  {
+   "event": "dossier",
+   "data": {
+    "type": "dossier",
+    "summary": "Verdict: Cannot determine.\n\nThe investigation assessed conditions in Lahaina, Hawaii. Between the dates of 2023-08-28 and 2023-09-17, the mean delta for the burn severity index was -0.0394 [[r_70456ab5ec98df5d#date_before]] [[r_70456ab5ec98df5d#date_after]] [[r_70456ab5ec98df5d#mean_delta]]. In this comparison, the share of the area where normalized burn ratio fell was 18.7 percent of clear pixels [[r_70456ab5ec98df5d#decreased_pct]]. A vision model inspecting a true-colour scene on 2023-09-17 observed a burn scar or smoke plume [[r_6efbfe3715872926#scene_date]]. Baseline land cover classifications indicate cropland comprised 0 percent of the area [[r_ca788d725c5b1da0#cropland_pct]].\n\nActive-fire detections could not measure an event because they are near real time and cannot confirm a fire in an older window. Recorded limits note that burn severity compares two single scenes and averages over the drawn area, diluting fires smaller than the boundary. Furthermore, burn scars separate wildfire from agricultural burning only by extent and land cover, which are indirect.",
+    "summary_source": "model",
+    "sentences_dropped": 0,
+    "family": "fire",
+    "window": {
+     "start": "2023-08-01",
+     "end": "2023-08-31"
+    },
+    "bbox": [
+     -156.69,
+     20.86,
+     -156.66,
+     20.89
+    ],
+    "final_posterior": [
+     {
+      "id": "fire_non_fire_change",
+      "label": "Change that is not fire",
+      "p": 0.41919211833996917,
+      "delta": 0
+     },
+     {
+      "id": "fire_wildfire",
+      "label": "Wildfire or burn scar",
+      "p": 0.32746822145027865,
+      "delta": 0
+     },
+     {
+      "id": "fire_artefact",
+      "label": "Artefact",
+      "p": 0.22523541898204588,
+      "delta": 0
+     },
+     {
+      "id": "fire_agricultural_burning",
+      "label": "Agricultural burning",
+      "p": 0.028104241227706238,
+      "delta": 0
+     }
+    ],
+    "evidence": [
+     {
+      "item_id": "fire_dnbr",
+      "title": "Burn severity index (dNBR) between the two dates",
+      "op": "analyze_raster",
+      "result_id": "r_70456ab5ec98df5d",
+      "measured": true,
+      "value": 0.0394,
+      "field": "mean_delta",
+      "unit": "dNBR",
+      "bin": "< 0.1 dNBR",
+      "reason": null
+     },
+     {
+      "item_id": "fire_extent",
+      "title": "Share of the area where NBR fell",
+      "op": "analyze_raster",
+      "result_id": "r_70456ab5ec98df5d",
+      "measured": true,
+      "value": 0.187,
+      "field": "decreased_pct",
+      "unit": "of clear pixels",
+      "bin": "0.05 to 0.2 of clear pixels",
+      "reason": null
+     },
+     {
+      "item_id": "fire_vision",
+      "title": "A vision model looks at the true-colour scene",
+      "op": "inspect_imagery",
+      "result_id": "r_6efbfe3715872926",
+      "measured": true,
+      "value": "burn_scar_or_smoke_plume",
+      "field": "scene_date",
+      "unit": "category",
+      "bin": "burn_scar_or_smoke_plume",
+      "reason": null
+     },
+     {
+      "item_id": "fire_landcover",
+      "title": "Land cover of the area (ESA WorldCover 2021)",
+      "op": "fetch_built_surface",
+      "result_id": "r_ca788d725c5b1da0",
+      "measured": true,
+      "value": 0,
+      "field": "cropland_pct",
+      "unit": "% cropland",
+      "bin": "< 10 % cropland",
+      "reason": null
+     }
+    ],
+    "skipped": [
+     {
+      "item_id": "fire_hotspots",
+      "reason": "fetch_active_fires is a near-real-time source covering only the last 10 days, and the window ended 1140 days ago"
+     }
+    ],
+    "limits": [
+     "Active-fire detections are near real time (the last days); they cannot confirm a fire in an older window.",
+     "dNBR compares two single Sentinel-2 scenes and is averaged over the drawn area; a fire smaller than the area is diluted.",
+     "Burn scars separate wildfire from agricultural burning only by extent and land cover, which are indirect.",
+     "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+    ],
+    "corroboration": {
+     "role": "context",
+     "status": "grounded",
+     "query": "any of: Change that is not fire; Wildfire or burn scar | Lahaina, Hawaii | 2023-08-01 to 2023-08-31",
+     "sources": [
+      {
+       "title": "Devastation in Maui",
+       "url": "https://science.nasa.gov/earth/earth-observatory/devastation-in-maui-151688/",
+       "publisher": "NASA Earth Observatory / NASA Science",
+       "date": "2023-08-11",
+       "inWindow": true,
+       "days_from_window": 0
+      },
+      {
+       "title": "Shocking before-and-after images show utter devastation of Maui wildfire",
+       "url": "https://www.latimes.com/california/story/2023-08-10/smoking-devastation-of-maui-wildfires-is-clear-in-before-and-after-satellite-images",
+       "publisher": "Los Angeles Times",
+       "date": "2023-08-10",
+       "inWindow": true,
+       "days_from_window": 0
+      },
+      {
+       "title": "Maui Wildfires",
+       "url": "https://satlib.cira.colostate.edu/event/maui-wildfires/",
+       "publisher": "CIRA Satellite Library - Colorado State University",
+       "date": "2023-08-09",
+       "inWindow": true,
+       "days_from_window": 0
+      },
+      {
+       "title": "Maui satellite photo shows full scale of deadliest US fire in more than a century",
+       "url": "https://www.space.com/earth-satellite-images-maui-wildfires",
+       "publisher": "Space.com",
+       "date": "2023-08-17",
+       "inWindow": true,
+       "days_from_window": 0
+      },
+      {
+       "title": "Incident Page - Hawaii Wildfires, August 2023",
+       "url": "https://gis-fema.hub.arcgis.com/pages/hawaii-wildfires-august-2023",
+       "publisher": "FEMA Geospatial Resource Center",
+       "date": "2023-08-09",
+       "inWindow": true,
+       "days_from_window": 0
+      },
+      {
+       "title": "The Devastating August 8th, 2023 Lahaina, Hawai'i Wildfire",
+       "url": "https://www.earthdata.nasa.gov/dashboard/stories/lahaina-fire",
+       "publisher": "NASA Earthdata",
+       "date": "2023-12-01",
+       "inWindow": false,
+       "days_from_window": 92
+      }
+     ],
+     "note": "Context only: these reports do not change the finding. Publication dates are the search model's reading of each page (6 of 6 carried one) and are not verified."
+    },
+    "timings_ms": {
+     "total": 59948,
+     "investigation": 42910,
+     "corroboration": 12684
+    },
+    "runId": ""
+   },
+   "t": 59950
+  },
+  {
+   "event": "done",
+   "data": {
+    "type": "done"
+   },
+   "t": 59950
+  }
+ ]
+}

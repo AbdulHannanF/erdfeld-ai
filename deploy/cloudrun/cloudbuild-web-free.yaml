@@ -1,0 +1,20 @@
+# Free-profile web build: Cloud Build's default pool (no machineType), inside the free 120 build-minutes/day.
+# Used by deploy.sh when PROFILE=free:
+#   gcloud builds submit . --config deploy/cloudrun/cloudbuild-web-free.yaml \
+#     --substitutions _IMAGE=...,_TITILER_ENDPOINT=https://...,_GIT_SHA=...
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --tag=${_IMAGE}
+      - --build-arg=TITILER_ENDPOINT=${_TITILER_ENDPOINT}
+      - --build-arg=GIT_SHA=${_GIT_SHA}
+      - .
+images:
+  - ${_IMAGE}
+substitutions:
+  _TITILER_ENDPOINT: ""
+  _GIT_SHA: ""
+timeout: 1800s
+options:
+  logging: CLOUD_LOGGING_ONLY

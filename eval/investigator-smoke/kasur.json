@@ -1,0 +1,851 @@
+{
+ "case": {
+  "id": "kasur",
+  "title": "Sutlej near Kasur, Pakistan (Aug-Sep 2025)",
+  "window": {
+   "start": "2025-08-01",
+   "end": "2025-09-30"
+  },
+  "question": "What happened along the Sutlej here in August and September 2025?",
+  "expected": "flood",
+  "family": "water",
+  "source": "Punjab (Pakistan) river floods of Aug-Sep 2025 on the Sutlej, Ravi and Chenab, widely reported by Pakistan's NDMA and the press.",
+  "bbox": [
+   [
+    74.4,
+    30.95
+   ],
+   [
+    74.56,
+    30.95
+   ],
+   [
+    74.56,
+    31.08
+   ],
+   [
+    74.4,
+    31.08
+   ],
+   [
+    74.4,
+    30.95
+   ]
+  ]
+ },
+ "budget_ms": 180000,
+ "row": {
+  "case": "kasur",
+  "expected": "flood",
+  "family": "water",
+  "verdict": "Flood event",
+  "verdict_id": "water_flood_event",
+  "posterior": 0.8931,
+  "stop_reason": "confident",
+  "ops": 3,
+  "steps": 3,
+  "total_s": 65.7,
+  "corroboration": "grounded",
+  "model": "gemini-3.8-flash"
+ },
+ "events": [
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     74.4,
+     30.95,
+     74.56,
+     31.08
+    ]
+   },
+   "t": 2
+  },
+  {
+   "event": "hypotheses",
+   "data": {
+    "type": "hypotheses",
+    "family": "water",
+    "family_title": "Water: flood, inundation or something else",
+    "window": {
+     "start": "2025-08-01",
+     "end": "2025-09-30"
+    },
+    "window_source": "request",
+    "items": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "family": "Water: flood, inundation or something else",
+      "prior": 0.631578947368421
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "family": "Water: flood, inundation or something else",
+      "prior": 0.2631578947368421
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "family": "Water: flood, inundation or something else",
+      "prior": 0.05263157894736842
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "family": "Water: flood, inundation or something else",
+      "prior": 0.05263157894736842
+     }
+    ],
+    "rejected_ids": [],
+    "clamped_ids": [
+     "water_flood_event"
+    ],
+    "used_default_priors": false,
+    "calibration_note": "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+   },
+   "t": 4112
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 1,
+    "item_id": "jrc_history",
+    "title": "Long-term water occurrence (JRC, 1984-2021)",
+    "op": "fetch_surface_water",
+    "args": {},
+    "why": "Long-term water occurrence",
+    "why_source": "model",
+    "voi": 0.1184,
+    "cost_s": 8,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "jrc_history",
+      "voi": 0.1184,
+      "cost_s": 8
+     },
+     {
+      "item_id": "optical_ndwi_change",
+      "voi": 0.1276,
+      "cost_s": 15
+     },
+     {
+      "item_id": "water_vision",
+      "voi": 0.1219,
+      "cost_s": 20
+     },
+     {
+      "item_id": "sar_new_water",
+      "voi": 0.2332,
+      "cost_s": 150
+     }
+    ],
+    "skipped": []
+   },
+   "t": 7772
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "fetch_surface_water",
+    "status": "running"
+   },
+   "t": 7772
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "fetch_surface_water",
+    "status": "completed",
+    "result_id": "r_cec679efe929dc36",
+    "result_status": "ok"
+   },
+   "t": 13629
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "surface-water-occurrence",
+    "name": "JRC Surface Water Occurrence (1984–2021)",
+    "result_id": "r_cec679efe929dc36"
+   },
+   "t": 13629
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     74.4,
+     30.95,
+     74.56,
+     31.08
+    ]
+   },
+   "t": 13629
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 1,
+    "item_id": "jrc_history",
+    "op": "fetch_surface_water",
+    "resultId": "r_cec679efe929dc36",
+    "status": "ok",
+    "summary": "Surface Water History — JRC Global Surface Water v1.4 · 220.4 km² (drawn polygon) Dataset: JRC Global Surface Water Mapping Layers v1.4 · 1984–2021 (37 years of Landsat) Resolution: 30 m · Metric: water occurrence = % of",
+    "measured": true,
+    "features": {
+     "water_occurrence_pct": 0.9
+    },
+    "feature": {
+     "name": "water_occurrence_pct",
+     "value": 0.9,
+     "unit": "% of years",
+     "field": "occurrence_mean_pct",
+     "derivation": "as reported",
+     "bin": "< 5 % of years"
+    },
+    "likelihood_ratios": {
+     "water_flood_event": 2.059,
+     "water_seasonal_inundation": 0.472,
+     "water_permanent": 0.078,
+     "water_radar_artefact": 1.4
+    },
+    "capped": false,
+    "caveat": "Ends in 2021; it is a baseline, not an observation of the window."
+   },
+   "t": 13629
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 1,
+    "updated": true,
+    "posteriors": {
+     "water_flood_event": 0.7792207792207794,
+     "water_seasonal_inundation": 0.14430014430014432,
+     "water_permanent": 0.004329004329004329,
+     "water_radar_artefact": 0.07215007215007214
+    },
+    "posterior": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "p": 0.7792207792207794,
+      "delta": 0.14764183185235835
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "p": 0.14430014430014432,
+      "delta": -0.11885775043669777
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "p": 0.07215007215007214,
+      "delta": 0.019518493202703727
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "p": 0.004329004329004329,
+      "delta": -0.04830257461836409
+     }
+    ],
+    "leading": "water_flood_event",
+    "entropy_bits": 0.9911
+   },
+   "t": 13629
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 2,
+    "item_id": "water_vision",
+    "title": "A vision model looks at the true-colour scene",
+    "op": "inspect_imagery",
+    "args": {
+     "date": "2025-09-30",
+     "question": "Is there standing water over fields, roads or buildings, only water inside a channel or lake, or irrigated fields? Is cloud covering the ground?"
+    },
+    "why": "Having the vision model look",
+    "why_source": "model",
+    "voi": 0.1089,
+    "cost_s": 20,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "water_vision",
+      "voi": 0.1089,
+      "cost_s": 20
+     },
+     {
+      "item_id": "optical_ndwi_change",
+      "voi": 0.0814,
+      "cost_s": 15
+     },
+     {
+      "item_id": "sar_new_water",
+      "voi": 0.1362,
+      "cost_s": 150
+     },
+     {
+      "item_id": "sar_orbit_geometry",
+      "voi": 0.0544,
+      "cost_s": 150
+     }
+    ],
+    "skipped": []
+   },
+   "t": 17351
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "inspect_imagery",
+    "status": "running"
+   },
+   "t": 17351
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "inspect_imagery",
+    "status": "completed",
+    "result_id": "r_2b9473e81e226bd1",
+    "result_status": "ok"
+   },
+   "t": 34130
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "inspect-lk2co9qt",
+    "name": "True colour — 2025-10-28",
+    "result_id": "r_2b9473e81e226bd1"
+   },
+   "t": 34130
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     74.4,
+     30.95,
+     74.56,
+     31.08
+    ]
+   },
+   "t": 34130
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 2,
+    "item_id": "water_vision",
+    "op": "inspect_imagery",
+    "resultId": "r_2b9473e81e226bd1",
+    "status": "ok",
+    "summary": "gemini-3.8-flash looking at Sentinel-2 L2A true-colour (red/green/blue) composite, 2025-10-28, clipped to the drawn AOI polygon: 1. Atmospheric conditions: No thick clouds, cloud shadow, or snow. Very light diffuse haze ",
+    "measured": true,
+    "features": {},
+    "feature": {
+     "name": "vision",
+     "value": "water_in_channel_or_lake_only",
+     "unit": "category",
+     "field": "scene_date",
+     "derivation": "a vision model chose this category from the catalogue list",
+     "bin": "water_in_channel_or_lake_only"
+    },
+    "likelihood_ratios": {
+     "water_flood_event": 0.911,
+     "water_seasonal_inundation": 0.975,
+     "water_permanent": 2,
+     "water_radar_artefact": 0.977
+    },
+    "capped": true,
+    "vision_category": "water_in_channel_or_lake_only",
+    "caveat": "A vision reading is an interpretation of a picture; its weight is capped."
+   },
+   "t": 37175
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 2,
+    "updated": true,
+    "posteriors": {
+     "water_flood_event": 0.7757467677218013,
+     "water_seasonal_inundation": 0.1436568088373706,
+     "water_permanent": 0.008768019022142963,
+     "water_radar_artefact": 0.0718284044186853
+    },
+    "posterior": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "p": 0.7757467677218013,
+      "delta": -0.00347401149897808
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "p": 0.1436568088373706,
+      "delta": -0.0006433354627737309
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "p": 0.0718284044186853,
+      "delta": -0.00032166773138685156
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "p": 0.008768019022142963,
+      "delta": 0.004439014693138634
+     }
+    ],
+    "leading": "water_flood_event",
+    "entropy_bits": 1.0191
+   },
+   "t": 37175
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 3,
+    "item_id": "optical_ndwi_change",
+    "title": "Optical water-index change (Sentinel-2 NDWI)",
+    "op": "analyze_raster",
+    "args": {
+     "operation": "change",
+     "index": "NDWI",
+     "date": "2025-08-01",
+     "date2": "2025-09-30"
+    },
+    "why": "Optical water-index change should be gathered next because it would settle an independent optical sign of new water and is expected to remove 0.09 bits of uncertainty.",
+    "why_source": "model",
+    "voi": 0.0869,
+    "cost_s": 15,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "optical_ndwi_change",
+      "voi": 0.0869,
+      "cost_s": 15
+     },
+     {
+      "item_id": "sar_new_water",
+      "voi": 0.1464,
+      "cost_s": 150
+     },
+     {
+      "item_id": "sar_orbit_geometry",
+      "voi": 0.0542,
+      "cost_s": 150
+     },
+     {
+      "item_id": "sar_prior_water",
+      "voi": 0.0432,
+      "cost_s": 150
+     }
+    ],
+    "skipped": []
+   },
+   "t": 39437
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "analyze_raster",
+    "status": "running"
+   },
+   "t": 39437
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "analyze_raster",
+    "status": "completed",
+    "result_id": "r_fcdc93d6818c18de",
+    "result_status": "ok"
+   },
+   "t": 50646
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "change-cy89dgwm",
+    "name": "ΔNDWI 2025-08-21 → 2025-10-28",
+    "result_id": "r_fcdc93d6818c18de"
+   },
+   "t": 50646
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     74.4,
+     30.95,
+     74.56,
+     31.08
+    ]
+   },
+   "t": 50646
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 3,
+    "item_id": "optical_ndwi_change",
+    "op": "analyze_raster",
+    "resultId": "r_fcdc93d6818c18de",
+    "status": "ok",
+    "summary": "NDWI increased between 2025-08-21 and 2025-10-28 — mean change +0.19 NDWI units. 13% of clear pixels fell by more than 0.05, 70% rose, 18% held steady (σ 0.241, range -0.923 to 1.196). Computed on the 49,936 pixels that ",
+    "measured": true,
+    "features": {
+     "ndwi_rise": 0.1905
+    },
+    "feature": {
+     "name": "ndwi_rise",
+     "value": 0.1905,
+     "unit": "NDWI",
+     "field": "mean_delta",
+     "derivation": "mean_delta (after minus before)",
+     "bin": ">= 0.15 NDWI"
+    },
+    "likelihood_ratios": {
+     "water_flood_event": 2.415,
+     "water_seasonal_inundation": 0.622,
+     "water_permanent": 0.065,
+     "water_radar_artefact": 0.154
+    },
+    "capped": false,
+    "caveat": "Cloud and shadow on either date remove pixels; wet soil also raises NDWI."
+   },
+   "t": 50646
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 3,
+    "updated": true,
+    "posteriors": {
+     "water_flood_event": 0.8931015603613468,
+     "water_seasonal_inundation": 0.09450810162553933,
+     "water_permanent": 0.0005768253099213954,
+     "water_radar_artefact": 0.011813512703192417
+    },
+    "posterior": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "p": 0.8931015603613468,
+      "delta": 0.11735479263954551
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "p": 0.09450810162553933,
+      "delta": -0.04914870721183126
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "p": 0.011813512703192417,
+      "delta": -0.060014891715492874
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "p": 0.0005768253099213954,
+      "delta": -0.008191193712221568
+     }
+    ],
+    "leading": "water_flood_event",
+    "entropy_bits": 0.5492
+   },
+   "t": 50646
+  },
+  {
+   "event": "verdict",
+   "data": {
+    "type": "verdict",
+    "kind": "hypothesis",
+    "id": "water_flood_event",
+    "decidingEvidence": [
+     1,
+     2,
+     3
+    ],
+    "label": "Flood event",
+    "posterior": 0.8931,
+    "runner_up": {
+     "id": "water_seasonal_inundation",
+     "label": "Seasonal or irrigation inundation",
+     "p": 0.0945
+    },
+    "stop_reason": "confident",
+    "evidence_ops_run": 3,
+    "items_measured": 3,
+    "items_unmeasured": 0,
+    "evidence_that_would_decide": [
+     {
+      "item_id": "sar_new_water",
+      "title": "New water between a dry and a wet Sentinel-1 pass",
+      "decides": "whether water appeared that was not there on a dry reference pass",
+      "voi": 0.0475,
+      "why_not": "not run"
+     },
+     {
+      "item_id": "sar_prior_water",
+      "title": "Water already present on the dry reference pass",
+      "decides": "whether the water is new or was already there",
+      "voi": 0.0134,
+      "why_not": "not run"
+     }
+    ],
+    "calibration_note": "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+   },
+   "t": 50647
+  },
+  {
+   "event": "corroboration",
+   "data": {
+    "type": "corroboration",
+    "role": "context",
+    "query": "Flood event: Water spread over land that was dry, from river overflow or heavy rain. | Sutlej River, Punjab | 2025-08-01 to 2025-09-30",
+    "status": "grounded",
+    "sources": [
+     {
+      "title": "High-level flood in Sutlej River forces mass evacuations in Kasur",
+      "url": "https://www.nation.com.pk/24-Aug-2025/high-level-flood-in-sutlej-river-forces-mass-evacuations-in-kasur",
+      "publisher": "The Nation",
+      "date": "2025-08-24",
+      "inWindow": true,
+      "days_from_window": 0
+     },
+     {
+      "title": "Pakistan: Monsoon Floods 2025 Flash Update #4 (As of 30 August 2025)",
+      "url": "https://www.unocha.org/publications/report/pakistan/pakistan-monsoon-floods-2025-flash-update-4-30-august-2025",
+      "publisher": "OCHA",
+      "date": "2025-08-30",
+      "inWindow": true,
+      "days_from_window": 0
+     },
+     {
+      "title": "Kasur villagers relocate fearing more destruction",
+      "url": "https://www.dawn.com/news/1938599",
+      "publisher": "DAWN.COM",
+      "date": "2025-08-31",
+      "inWindow": true,
+      "days_from_window": 0
+     },
+     {
+      "title": "'Hope to survive': As floods ravage Kasur, villagers refuse to abandon their homes",
+      "url": "https://www.arabnews.pk/pakistan/hope-to-survive-as-floods-ravage-kasur-villagers-refuse-to-abandon-their-homes-2614159",
+      "publisher": "Arab News",
+      "date": "2025-09-04",
+      "inWindow": true,
+      "days_from_window": 0
+     },
+     {
+      "title": "Monsoon Floods 2025 Flash Update #6 (As of 04 September 2025)",
+      "url": "https://reliefweb.int/report/pakistan/pakistan-monsoon-floods-2025-flash-update-6-04-september-2025",
+      "publisher": "ReliefWeb",
+      "date": "2025-09-05",
+      "inWindow": true,
+      "days_from_window": 0
+     },
+     {
+      "title": "Pakistan: Flash Floods - 2025",
+      "url": "https://www.sheltercluster.org/pakistan-floods/pages/pakistan-flash-floods-2025",
+      "publisher": "Shelter Cluster",
+      "date": "",
+      "inWindow": false,
+      "days_from_window": null
+     }
+    ],
+    "note": "Context only: these reports do not change the finding. Publication dates are the search model's reading of each page (5 of 6 carried one) and are not verified."
+   },
+   "t": 65744
+  },
+  {
+   "event": "dossier",
+   "data": {
+    "type": "dossier",
+    "summary": "Verdict: Most likely explanation: Flood event.\n\nRegarding the Sutlej River in Punjab, the long-term surface-water measurement over an area of 220.4 square kilometers recorded water occurrence of 0.9 percent of years [[r_cec679efe929dc36#area_km2]] [[r_cec679efe929dc36#occurrence_mean_pct]]. Optical water-index change between 2025-08-21 and 2025-10-28 revealed a mean rise of 0.1905 NDWI across 49936 clear pixels [[r_fcdc93d6818c18de#date_before]] [[r_fcdc93d6818c18de#date_after]] [[r_fcdc93d6818c18de#mean_delta]] [[r_fcdc93d6818c18de#pixels_clear_both]]. For a true-colour scene on 2025-10-28 with zero cloud percentage, a vision model interpreted water in channel or lake only [[r_2b9473e81e226bd1#scene_date]] [[r_2b9473e81e226bd1#cloud_pct]].\n\nWhat could not be measured were conditions during the window via the long-term surface-water record, because that dataset ends earlier and serves solely as a baseline. Furthermore, pixels obscured by cloud and shadow on either optical date could not be measured and were removed.",
+    "summary_source": "model",
+    "sentences_dropped": 1,
+    "family": "water",
+    "window": {
+     "start": "2025-08-01",
+     "end": "2025-09-30"
+    },
+    "bbox": [
+     74.4,
+     30.95,
+     74.56,
+     31.08
+    ],
+    "final_posterior": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "p": 0.8931015603613468,
+      "delta": 0
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "p": 0.09450810162553933,
+      "delta": 0
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "p": 0.011813512703192417,
+      "delta": 0
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "p": 0.0005768253099213954,
+      "delta": 0
+     }
+    ],
+    "evidence": [
+     {
+      "item_id": "jrc_history",
+      "title": "Long-term water occurrence (JRC, 1984-2021)",
+      "op": "fetch_surface_water",
+      "result_id": "r_cec679efe929dc36",
+      "measured": true,
+      "value": 0.9,
+      "field": "occurrence_mean_pct",
+      "unit": "% of years",
+      "bin": "< 5 % of years",
+      "reason": null
+     },
+     {
+      "item_id": "water_vision",
+      "title": "A vision model looks at the true-colour scene",
+      "op": "inspect_imagery",
+      "result_id": "r_2b9473e81e226bd1",
+      "measured": true,
+      "value": "water_in_channel_or_lake_only",
+      "field": "scene_date",
+      "unit": "category",
+      "bin": "water_in_channel_or_lake_only",
+      "reason": null
+     },
+     {
+      "item_id": "optical_ndwi_change",
+      "title": "Optical water-index change (Sentinel-2 NDWI)",
+      "op": "analyze_raster",
+      "result_id": "r_fcdc93d6818c18de",
+      "measured": true,
+      "value": 0.1905,
+      "field": "mean_delta",
+      "unit": "NDWI",
+      "bin": ">= 0.15 NDWI",
+      "reason": null
+     }
+    ],
+    "skipped": [],
+    "limits": [
+     "Sentinel-1 radar misses water under vegetation and among dense buildings, so flooded area is a lower bound there.",
+     "The JRC surface-water history ends in 2021; it says what was usual, not what happened in the window.",
+     "Optical change compares two single scenes (the dates actually used are reported); cloud on either date removes pixels.",
+     "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+    ],
+    "corroboration": {
+     "role": "context",
+     "status": "grounded",
+     "query": "Flood event: Water spread over land that was dry, from river overflow or heavy rain. | Sutlej River, Punjab | 2025-08-01 to 2025-09-30",
+     "sources": [
+      {
+       "title": "High-level flood in Sutlej River forces mass evacuations in Kasur",
+       "url": "https://www.nation.com.pk/24-Aug-2025/high-level-flood-in-sutlej-river-forces-mass-evacuations-in-kasur",
+       "publisher": "The Nation",
+       "date": "2025-08-24",
+       "inWindow": true,
+       "days_from_window": 0
+      },
+      {
+       "title": "Pakistan: Monsoon Floods 2025 Flash Update #4 (As of 30 August 2025)",
+       "url": "https://www.unocha.org/publications/report/pakistan/pakistan-monsoon-floods-2025-flash-update-4-30-august-2025",
+       "publisher": "OCHA",
+       "date": "2025-08-30",
+       "inWindow": true,
+       "days_from_window": 0
+      },
+      {
+       "title": "Kasur villagers relocate fearing more destruction",
+       "url": "https://www.dawn.com/news/1938599",
+       "publisher": "DAWN.COM",
+       "date": "2025-08-31",
+       "inWindow": true,
+       "days_from_window": 0
+      },
+      {
+       "title": "'Hope to survive': As floods ravage Kasur, villagers refuse to abandon their homes",
+       "url": "https://www.arabnews.pk/pakistan/hope-to-survive-as-floods-ravage-kasur-villagers-refuse-to-abandon-their-homes-2614159",
+       "publisher": "Arab News",
+       "date": "2025-09-04",
+       "inWindow": true,
+       "days_from_window": 0
+      },
+      {
+       "title": "Monsoon Floods 2025 Flash Update #6 (As of 04 September 2025)",
+       "url": "https://reliefweb.int/report/pakistan/pakistan-monsoon-floods-2025-flash-update-6-04-september-2025",
+       "publisher": "ReliefWeb",
+       "date": "2025-09-05",
+       "inWindow": true,
+       "days_from_window": 0
+      },
+      {
+       "title": "Pakistan: Flash Floods - 2025",
+       "url": "https://www.sheltercluster.org/pakistan-floods/pages/pakistan-flash-floods-2025",
+       "publisher": "Shelter Cluster",
+       "date": "",
+       "inWindow": false,
+       "days_from_window": null
+      }
+     ],
+     "note": "Context only: these reports do not change the finding. Publication dates are the search model's reading of each page (5 of 6 carried one) and are not verified."
+    },
+    "timings_ms": {
+     "total": 65744,
+     "investigation": 46534,
+     "corroboration": 15097
+    },
+    "runId": ""
+   },
+   "t": 65745
+  },
+  {
+   "event": "done",
+   "data": {
+    "type": "done"
+   },
+   "t": 65745
+  }
+ ]
+}

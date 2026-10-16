@@ -1,0 +1,1183 @@
+{
+ "case": {
+  "id": "development",
+  "title": "Western Sydney International Airport terminal precinct (2023-2025)",
+  "window": {
+   "start": "2023-06-01",
+   "end": "2025-06-01"
+  },
+  "question": "Are there new buildings or structures in this area between mid 2023 and mid 2025?",
+  "expected": "new structures (construction)",
+  "family": "structures",
+  "source": "Western Sydney International (Nancy-Bird Walton) Airport, Badgerys Creek NSW: coordinates from Wikipedia (\"Western Sydney Airport\", -33.888, 150.715); the passenger terminal, apron and landside works were built through 2023-2025 ahead of the planned 2026 opening, per the airport company's published construction updates.",
+  "bbox": [
+   [
+    150.7,
+    -33.9
+   ],
+   [
+    150.73,
+    -33.9
+   ],
+   [
+    150.73,
+    -33.876
+   ],
+   [
+    150.7,
+    -33.876
+   ],
+   [
+    150.7,
+    -33.9
+   ]
+  ]
+ },
+ "budget_ms": 180000,
+ "row": {
+  "case": "development",
+  "expected": "new structures (construction)",
+  "family": "structures",
+  "verdict": "Cannot determine",
+  "verdict_id": null,
+  "posterior": 0.4292,
+  "stop_reason": "no_informative_evidence",
+  "ops": 5,
+  "steps": 6,
+  "total_s": 78.2,
+  "corroboration": "grounded",
+  "model": "gemini-3.8-flash"
+ },
+ "events": [
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     150.7,
+     -33.9,
+     150.73,
+     -33.876
+    ]
+   },
+   "t": 2
+  },
+  {
+   "event": "hypotheses",
+   "data": {
+    "type": "hypotheses",
+    "family": "structures",
+    "family_title": "New structures and development: construction, demolition, temporary surfaces or a data artefact",
+    "window": {
+     "start": "2023-06-01",
+     "end": "2025-06-01"
+    },
+    "window_source": "request",
+    "items": [
+     {
+      "id": "struct_construction",
+      "label": "New construction",
+      "family": "New structures and development: construction, demolition, temporary surfaces or a data artefact",
+      "prior": 0.6
+     },
+     {
+      "id": "struct_demolition",
+      "label": "Demolition",
+      "family": "New structures and development: construction, demolition, temporary surfaces or a data artefact",
+      "prior": 0.15
+     },
+     {
+      "id": "struct_temporary_surfaces",
+      "label": "Temporary surfaces",
+      "family": "New structures and development: construction, demolition, temporary surfaces or a data artefact",
+      "prior": 0.15
+     },
+     {
+      "id": "struct_imagery_mismatch",
+      "label": "Image registration or date mismatch",
+      "family": "New structures and development: construction, demolition, temporary surfaces or a data artefact",
+      "prior": 0.1
+     }
+    ],
+    "rejected_ids": [],
+    "clamped_ids": [],
+    "used_default_priors": false,
+    "calibration_note": "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+   },
+   "t": 4372
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 1,
+    "item_id": "struct_ndvi_change",
+    "title": "NDVI change between the two dates",
+    "op": "analyze_raster",
+    "args": {
+     "operation": "change",
+     "index": "NDVI",
+     "date": "2023-06-01",
+     "date2": "2025-06-01"
+    },
+    "why": "NDVI change should be gathered next because it settles whether vegetation was replaced by something else and removes the most uncertainty at an expected 0.18 bits.",
+    "why_source": "model",
+    "voi": 0.1757,
+    "cost_s": 15,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "struct_ndvi_change",
+      "voi": 0.1757,
+      "cost_s": 15
+     },
+     {
+      "item_id": "struct_baseline_builtup",
+      "voi": 0.1078,
+      "cost_s": 6
+     },
+     {
+      "item_id": "struct_season_alignment",
+      "voi": 0.1305,
+      "cost_s": 15
+     },
+     {
+      "item_id": "struct_vision",
+      "voi": 0.1565,
+      "cost_s": 20
+     }
+    ],
+    "skipped": []
+   },
+   "t": 6427
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "analyze_raster",
+    "status": "running"
+   },
+   "t": 6428
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "analyze_raster",
+    "status": "completed",
+    "result_id": "r_ecf7e2e4402cb40f",
+    "result_status": "ok"
+   },
+   "t": 22840
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "change-j3xi43dc",
+    "name": "ΔNDVI 2023-06-23 → 2025-06-22",
+    "result_id": "r_ecf7e2e4402cb40f"
+   },
+   "t": 22840
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     150.7,
+     -33.9,
+     150.73,
+     -33.876
+    ]
+   },
+   "t": 22840
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 1,
+    "item_id": "struct_ndvi_change",
+    "op": "analyze_raster",
+    "resultId": "r_ecf7e2e4402cb40f",
+    "status": "ok",
+    "summary": "NDVI increased between 2023-06-23 and 2025-06-22 — mean change +0.119 NDVI units. 19% of clear pixels fell by more than 0.05, 60% rose, 21% held steady (σ 0.225, range -0.949 to 1.564). Computed on the 52,456 pixels that",
+    "measured": true,
+    "features": {
+     "ndvi_drop": -0.1188
+    },
+    "feature": {
+     "name": "ndvi_drop",
+     "value": -0.1188,
+     "unit": "NDVI",
+     "field": "mean_delta",
+     "derivation": "-mean_delta (before minus after)",
+     "bin": "< 0.03 NDVI"
+    },
+    "likelihood_ratios": {
+     "struct_construction": 0.217,
+     "struct_demolition": 3.527,
+     "struct_temporary_surfaces": 1.345,
+     "struct_imagery_mismatch": 1.963
+    },
+    "capped": false
+   },
+   "t": 22841
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 1,
+    "updated": true,
+    "posteriors": {
+     "struct_construction": 0.2455242966751918,
+     "struct_demolition": 0.38363171355498726,
+     "struct_temporary_surfaces": 0.19181585677749358,
+     "struct_imagery_mismatch": 0.17902813299232737
+    },
+    "posterior": [
+     {
+      "id": "struct_demolition",
+      "label": "Demolition",
+      "p": 0.38363171355498726,
+      "delta": 0.23363171355498727
+     },
+     {
+      "id": "struct_construction",
+      "label": "New construction",
+      "p": 0.2455242966751918,
+      "delta": -0.35447570332480816
+     },
+     {
+      "id": "struct_temporary_surfaces",
+      "label": "Temporary surfaces",
+      "p": 0.19181585677749358,
+      "delta": 0.04181585677749358
+     },
+     {
+      "id": "struct_imagery_mismatch",
+      "label": "Image registration or date mismatch",
+      "p": 0.17902813299232737,
+      "delta": 0.07902813299232736
+     }
+    ],
+    "leading": "struct_demolition",
+    "entropy_bits": 1.929
+   },
+   "t": 22841
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 2,
+    "item_id": "struct_baseline_builtup",
+    "title": "Built-up share in 2021 (ESA WorldCover)",
+    "op": "fetch_built_surface",
+    "args": {},
+    "why": "The 2021 built",
+    "why_source": "model",
+    "voi": 0.1436,
+    "cost_s": 6,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "struct_baseline_builtup",
+      "voi": 0.1436,
+      "cost_s": 6
+     },
+     {
+      "item_id": "struct_season_alignment",
+      "voi": 0.2022,
+      "cost_s": 15
+     },
+     {
+      "item_id": "struct_vision",
+      "voi": 0.132,
+      "cost_s": 20
+     },
+     {
+      "item_id": "struct_ndbi_change",
+      "voi": 0.0835,
+      "cost_s": 15
+     }
+    ],
+    "skipped": []
+   },
+   "t": 26061
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "fetch_built_surface",
+    "status": "running"
+   },
+   "t": 26061
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "fetch_built_surface",
+    "status": "completed",
+    "result_id": "r_afe78a253f094d02",
+    "result_status": "ok"
+   },
+   "t": 29191
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "built-surface-by9r3fci",
+    "name": "Built-up Surface — ESA WorldCover 2021",
+    "result_id": "r_afe78a253f094d02"
+   },
+   "t": 29191
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     150.7,
+     -33.9,
+     150.73,
+     -33.876
+    ]
+   },
+   "t": 29191
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 2,
+    "item_id": "struct_baseline_builtup",
+    "op": "fetch_built_surface",
+    "resultId": "r_afe78a253f094d02",
+    "status": "ok",
+    "summary": "Built-up Surface — ESA WorldCover 2021 · 7.4 km² · -33.8880°N, 150.7150°E Urbanization class: Minimal human development (<3% built-up) Built-up area: 0.9% of the drawn polygon ≈ 0.07 km² Dominant land class: Bare / Spars",
+    "measured": true,
+    "features": {
+     "built_up_pct": 0.9
+    },
+    "feature": {
+     "name": "built_up_pct",
+     "value": 0.9,
+     "unit": "% built-up",
+     "field": "built_up_pct",
+     "derivation": "as reported",
+     "bin": "< 5 % built-up"
+    },
+    "likelihood_ratios": {
+     "struct_construction": 2.267,
+     "struct_demolition": 0.246,
+     "struct_temporary_surfaces": 1.274,
+     "struct_imagery_mismatch": 1.223
+    },
+    "capped": false,
+    "caveat": "A 2021 baseline only; it cannot show change by itself."
+   },
+   "t": 29191
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 2,
+    "updated": true,
+    "posteriors": {
+     "struct_construction": 0.4245908889871738,
+     "struct_demolition": 0.13268465280849187,
+     "struct_temporary_surfaces": 0.2321981424148606,
+     "struct_imagery_mismatch": 0.21052631578947373
+    },
+    "posterior": [
+     {
+      "id": "struct_construction",
+      "label": "New construction",
+      "p": 0.4245908889871738,
+      "delta": 0.179066592311982
+     },
+     {
+      "id": "struct_temporary_surfaces",
+      "label": "Temporary surfaces",
+      "p": 0.2321981424148606,
+      "delta": 0.04038228563736701
+     },
+     {
+      "id": "struct_imagery_mismatch",
+      "label": "Image registration or date mismatch",
+      "p": 0.21052631578947373,
+      "delta": 0.03149818279714636
+     },
+     {
+      "id": "struct_demolition",
+      "label": "Demolition",
+      "p": 0.13268465280849187,
+      "delta": -0.2509470607464954
+     }
+    ],
+    "leading": "struct_construction",
+    "entropy_bits": 1.8738
+   },
+   "t": 29191
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 3,
+    "item_id": "struct_season_alignment",
+    "title": "Are the two scenes the same time of year",
+    "op": "analyze_raster",
+    "args": {
+     "operation": "change",
+     "index": "NDBI",
+     "date": "2023-06-01",
+     "date2": "2025-06-01"
+    },
+    "why": "Checking if the scenes share the same season removes the most uncertainty (0.22 bits) and settles whether the apparent change is just seasonal variation.",
+    "why_source": "model",
+    "voi": 0.2231,
+    "cost_s": 15,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "struct_season_alignment",
+      "voi": 0.2231,
+      "cost_s": 15
+     },
+     {
+      "item_id": "struct_vision",
+      "voi": 0.142,
+      "cost_s": 20
+     },
+     {
+      "item_id": "struct_ndbi_change",
+      "voi": 0.1058,
+      "cost_s": 15
+     },
+     {
+      "item_id": "struct_osm_density",
+      "voi": 0.0173,
+      "cost_s": 8
+     }
+    ],
+    "skipped": []
+   },
+   "t": 31899
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "analyze_raster",
+    "status": "running"
+   },
+   "t": 31899
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "analyze_raster",
+    "status": "completed",
+    "result_id": "r_80a289c78708e93f",
+    "result_status": "ok"
+   },
+   "t": 36850
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "change-cww0g5gv",
+    "name": "ΔNDBI 2023-06-23 → 2025-06-22",
+    "result_id": "r_80a289c78708e93f"
+   },
+   "t": 36850
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     150.7,
+     -33.9,
+     150.73,
+     -33.876
+    ]
+   },
+   "t": 36850
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 3,
+    "item_id": "struct_season_alignment",
+    "op": "analyze_raster",
+    "resultId": "r_80a289c78708e93f",
+    "status": "ok",
+    "summary": "NDBI decreased between 2023-06-23 and 2025-06-22 — mean change -0.071 NDBI units. 54% of clear pixels fell by more than 0.05, 20% rose, 26% held steady (σ 0.168, range -1.012 to 0.815). Computed on the 52,456 pixels that",
+    "measured": true,
+    "features": {
+     "anniversary_gap_days": 1
+    },
+    "feature": {
+     "name": "anniversary_gap_days",
+     "value": 1,
+     "unit": "days from a whole number of years",
+     "field": "date_after",
+     "derivation": "days between the scenes actually used, from the nearest whole number of years",
+     "bin": "< 30 days from a whole number of years"
+    },
+    "likelihood_ratios": {
+     "struct_construction": 1.59,
+     "struct_demolition": 1.327,
+     "struct_temporary_surfaces": 1.12,
+     "struct_imagery_mismatch": 0.149
+    },
+    "capped": false,
+    "caveat": "Only meaningful for a window of about a year or more."
+   },
+   "t": 36850
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 3,
+    "updated": true,
+    "posteriors": {
+     "struct_construction": 0.5399325084364455,
+     "struct_demolition": 0.16872890888638928,
+     "struct_temporary_surfaces": 0.2530933633295837,
+     "struct_imagery_mismatch": 0.03824521934758157
+    },
+    "posterior": [
+     {
+      "id": "struct_construction",
+      "label": "New construction",
+      "p": 0.5399325084364455,
+      "delta": 0.11534161944927168
+     },
+     {
+      "id": "struct_temporary_surfaces",
+      "label": "Temporary surfaces",
+      "p": 0.2530933633295837,
+      "delta": 0.020895220914723123
+     },
+     {
+      "id": "struct_demolition",
+      "label": "Demolition",
+      "p": 0.16872890888638928,
+      "delta": 0.03604425607789741
+     },
+     {
+      "id": "struct_imagery_mismatch",
+      "label": "Image registration or date mismatch",
+      "p": 0.03824521934758157,
+      "delta": -0.17228109644189216
+     }
+    ],
+    "leading": "struct_construction",
+    "entropy_bits": 1.595
+   },
+   "t": 36850
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 4,
+    "item_id": "struct_ndbi_change",
+    "title": "Built-up index change (Sentinel-2 NDBI)",
+    "op": "analyze_raster",
+    "args": {
+     "operation": "change",
+     "index": "NDBI",
+     "date": "2023-06-01",
+     "date2": "2025-06-01"
+    },
+    "why": "This evidence settles whether more of the area is built-up or bare than at the start and is expected to remove 0.07 bits of uncertainty.",
+    "why_source": "model",
+    "voi": 0.0709,
+    "cost_s": 0,
+    "reused": true,
+    "considered": [
+     {
+      "item_id": "struct_ndbi_change",
+      "voi": 0.0709,
+      "cost_s": 0
+     },
+     {
+      "item_id": "struct_vision",
+      "voi": 0.1422,
+      "cost_s": 20
+     },
+     {
+      "item_id": "struct_osm_density",
+      "voi": 0.0184,
+      "cost_s": 8
+     }
+    ],
+    "skipped": []
+   },
+   "t": 38598
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 4,
+    "item_id": "struct_ndbi_change",
+    "op": "analyze_raster",
+    "resultId": "r_80a289c78708e93f",
+    "status": "ok",
+    "summary": "NDBI decreased between 2023-06-23 and 2025-06-22 — mean change -0.071 NDBI units. 54% of clear pixels fell by more than 0.05, 20% rose, 26% held steady (σ 0.168, range -1.012 to 0.815). Computed on the 52,456 pixels that",
+    "measured": true,
+    "features": {
+     "ndbi_rise": -0.0708
+    },
+    "feature": {
+     "name": "ndbi_rise",
+     "value": -0.0708,
+     "unit": "NDBI",
+     "field": "mean_delta",
+     "derivation": "mean_delta (after minus before)",
+     "bin": "< 0.02 NDBI"
+    },
+    "likelihood_ratios": {
+     "struct_construction": 0.395,
+     "struct_demolition": 2.08,
+     "struct_temporary_surfaces": 1.246,
+     "struct_imagery_mismatch": 2.478
+    },
+    "capped": false,
+    "caveat": "Bare soil also raises NDBI, so the index alone does not say it is a building."
+   },
+   "t": 38598
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 4,
+    "updated": true,
+    "posteriors": {
+     "struct_construction": 0.316622691292876,
+     "struct_demolition": 0.2968337730870714,
+     "struct_temporary_surfaces": 0.29683377308707115,
+     "struct_imagery_mismatch": 0.08970976253298157
+    },
+    "posterior": [
+     {
+      "id": "struct_construction",
+      "label": "New construction",
+      "p": 0.316622691292876,
+      "delta": -0.22330981714356946
+     },
+     {
+      "id": "struct_demolition",
+      "label": "Demolition",
+      "p": 0.2968337730870714,
+      "delta": 0.1281048642006821
+     },
+     {
+      "id": "struct_temporary_surfaces",
+      "label": "Temporary surfaces",
+      "p": 0.29683377308707115,
+      "delta": 0.04374040975748744
+     },
+     {
+      "id": "struct_imagery_mismatch",
+      "label": "Image registration or date mismatch",
+      "p": 0.08970976253298157,
+      "delta": 0.0514645431854
+     }
+    ],
+    "leading": "struct_construction",
+    "entropy_bits": 1.8777
+   },
+   "t": 38598
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 5,
+    "item_id": "struct_vision",
+    "title": "A vision model looks at the true-colour scene",
+    "op": "inspect_imagery",
+    "args": {
+     "date": "2025-06-01",
+     "question": "Are there buildings, foundations, or cleared plots? Established neighbourhoods, tents or stockpiles, greenhouse roofs, or only bare ground? Is cloud covering the ground?"
+    },
+    "why": "Drafting options:**",
+    "why_source": "model",
+    "voi": 0.1122,
+    "cost_s": 20,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "struct_vision",
+      "voi": 0.1122,
+      "cost_s": 20
+     },
+     {
+      "item_id": "struct_osm_density",
+      "voi": 0.0262,
+      "cost_s": 8
+     }
+    ],
+    "skipped": []
+   },
+   "t": 41270
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "inspect_imagery",
+    "status": "running"
+   },
+   "t": 41270
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "inspect_imagery",
+    "status": "completed",
+    "result_id": "r_598f31756e501b07",
+    "result_status": "ok"
+   },
+   "t": 52658
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "inspect-yficf8i7",
+    "name": "True colour — 2025-06-22",
+    "result_id": "r_598f31756e501b07"
+   },
+   "t": 52658
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     150.7,
+     -33.9,
+     150.73,
+     -33.876
+    ]
+   },
+   "t": 52658
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 5,
+    "item_id": "struct_vision",
+    "op": "inspect_imagery",
+    "resultId": "r_598f31756e501b07",
+    "status": "ok",
+    "summary": "gemini-3.8-flash looking at Sentinel-2 L2A true-colour (red/green/blue) composite, 2025-06-22, clipped to the drawn AOI polygon: 1. Atmospheric/artefact interference: The image is clear; there is no cloud, haze, cloud sh",
+    "measured": true,
+    "features": {},
+    "feature": {
+     "name": "vision",
+     "value": "established_buildings",
+     "unit": "category",
+     "field": "scene_date",
+     "derivation": "a vision model chose this category from the catalogue list",
+     "bin": "established_buildings"
+    },
+    "likelihood_ratios": {
+     "struct_construction": 1.671,
+     "struct_demolition": 0.609,
+     "struct_temporary_surfaces": 0.609,
+     "struct_imagery_mismatch": 1.855
+    },
+    "capped": false,
+    "vision_category": "established_buildings",
+    "caveat": "A single date cannot show that anything is new; the reading is capped."
+   },
+   "t": 55166
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 5,
+    "updated": true,
+    "posteriors": {
+     "struct_construction": 0.4363636363636364,
+     "struct_demolition": 0.2045454545454546,
+     "struct_temporary_surfaces": 0.20454545454545445,
+     "struct_imagery_mismatch": 0.1545454545454546
+    },
+    "posterior": [
+     {
+      "id": "struct_construction",
+      "label": "New construction",
+      "p": 0.4363636363636364,
+      "delta": 0.11974094507076039
+     },
+     {
+      "id": "struct_demolition",
+      "label": "Demolition",
+      "p": 0.2045454545454546,
+      "delta": -0.09228831854161676
+     },
+     {
+      "id": "struct_temporary_surfaces",
+      "label": "Temporary surfaces",
+      "p": 0.20454545454545445,
+      "delta": -0.0922883185416167
+     },
+     {
+      "id": "struct_imagery_mismatch",
+      "label": "Image registration or date mismatch",
+      "p": 0.1545454545454546,
+      "delta": 0.06483569201247302
+     }
+    ],
+    "leading": "struct_construction",
+    "entropy_bits": 1.875
+   },
+   "t": 55166
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 6,
+    "item_id": "struct_osm_density",
+    "title": "Mapped buildings in OpenStreetMap",
+    "op": "query_osm",
+    "args": {
+     "query": "buildings"
+    },
+    "why": "Gathering mapped buildings in OpenStreetMap is next because it settles how well the area is mapped, showing if an inventory could be out of date, removing 0.02 bits of uncertainty.",
+    "why_source": "model",
+    "voi": 0.0214,
+    "cost_s": 8,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "struct_osm_density",
+      "voi": 0.0214,
+      "cost_s": 8
+     }
+    ],
+    "skipped": []
+   },
+   "t": 57869
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "query_osm",
+    "status": "running"
+   },
+   "t": 57869
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "query_osm",
+    "status": "completed",
+    "result_id": "r_aaf9975d336f9896",
+    "result_status": "ok"
+   },
+   "t": 67630
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "osm-b3z1fdvg",
+    "name": "OSM: Buildings (89)",
+    "result_id": "r_aaf9975d336f9896"
+   },
+   "t": 67630
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 6,
+    "item_id": "struct_osm_density",
+    "op": "query_osm",
+    "resultId": "r_aaf9975d336f9896",
+    "status": "ok",
+    "summary": "OpenStreetMap digitization: found 89 Buildings in the AOI (7.4 km²). Tags matched: \"building\" Geometry: Polygon (incl. multipolygon relations) Render color: #9ca3af Source: real OSM via Overpass API",
+    "measured": true,
+    "features": {
+     "mapped_building_density_per_km2": 12.027
+    },
+    "feature": {
+     "name": "mapped_building_density_per_km2",
+     "value": 12.027,
+     "unit": "buildings per km2",
+     "field": "feature_count",
+     "derivation": "feature_count / area_km2",
+     "bin": "< 20 buildings per km2"
+    },
+    "likelihood_ratios": {
+     "struct_construction": 1.092,
+     "struct_demolition": 0.67,
+     "struct_temporary_surfaces": 1.5,
+     "struct_imagery_mismatch": 1.233
+    },
+    "capped": true,
+    "caveat": "OpenStreetMap records when a feature was edited, not when the building was built. A mapped footprint is not evidence that a building is new; this item is deliberately given little weight."
+   },
+   "t": 67630
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 6,
+    "updated": true,
+    "posteriors": {
+     "struct_construction": 0.4292397317624213,
+     "struct_demolition": 0.13768847787329772,
+     "struct_temporary_surfaces": 0.2607797313651978,
+     "struct_imagery_mismatch": 0.1722920589990831
+    },
+    "posterior": [
+     {
+      "id": "struct_construction",
+      "label": "New construction",
+      "p": 0.4292397317624213,
+      "delta": -0.007123904601215092
+     },
+     {
+      "id": "struct_temporary_surfaces",
+      "label": "Temporary surfaces",
+      "p": 0.2607797313651978,
+      "delta": 0.05623427681974333
+     },
+     {
+      "id": "struct_imagery_mismatch",
+      "label": "Image registration or date mismatch",
+      "p": 0.1722920589990831,
+      "delta": 0.017746604453628495
+     },
+     {
+      "id": "struct_demolition",
+      "label": "Demolition",
+      "p": 0.13768847787329772,
+      "delta": -0.0668569766721569
+     }
+    ],
+    "leading": "struct_construction",
+    "entropy_bits": 1.8604
+   },
+   "t": 67630
+  },
+  {
+   "event": "verdict",
+   "data": {
+    "type": "verdict",
+    "kind": "cannot_determine",
+    "id": null,
+    "decidingEvidence": [],
+    "label": "Cannot determine",
+    "posterior": 0.4292,
+    "runner_up": {
+     "id": "struct_temporary_surfaces",
+     "label": "Temporary surfaces",
+     "p": 0.2608
+    },
+    "stop_reason": "no_informative_evidence",
+    "evidence_ops_run": 5,
+    "items_measured": 6,
+    "items_unmeasured": 0,
+    "evidence_that_would_decide": [],
+    "calibration_note": "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+   },
+   "t": 67631
+  },
+  {
+   "event": "corroboration",
+   "data": {
+    "type": "corroboration",
+    "role": "context",
+    "query": "any of: New construction; Temporary surfaces | Badgerys Creek | 2023-06-01 to 2025-06-01",
+    "status": "grounded",
+    "sources": [
+     {
+      "title": "Press conference - Western Sydney Airport",
+      "url": "https://minister.infrastructure.gov.au/c-king/interview/press-conference-western-sydney-airport",
+      "publisher": "Ministers for the Department of Infrastructure",
+      "date": "2023-06-08",
+      "inWindow": true,
+      "days_from_window": 0
+     }
+    ],
+    "note": "Context only: these reports do not change the finding. Publication dates are the search model's reading of each page (1 of 1 carried one) and are not verified."
+   },
+   "t": 78238
+  },
+  {
+   "event": "dossier",
+   "data": {
+    "type": "dossier",
+    "summary": "Verdict: Cannot determine.\n\nThe ESA WorldCover baseline showed a built-up share of 0.9 % [[r_afe78a253f094d02#built_up_pct]]. OpenStreetMap recorded 89 building features [[r_aaf9975d336f9896#feature_count]]. Across the same dates, the mean NDBI delta was -0.0708 [[r_80a289c78708e93f#mean_delta]]. Inspection of imagery on 2025-06-22 indicated established buildings [[r_598f31756e501b07#scene_date]].\n\nNew construction could not be measured because the vision inspection evaluated a single scene date, which cannot show change. Bare soil also elevates NDBI, meaning the index does not verify a building.\n\nLimits apply: mapped footprints record edit dates rather than construction dates; the land-cover dataset serves solely as a baseline without measuring change; satellite comparisons use two single scenes where seasonal gaps register as change; and temporary structures mimic construction without sub-metre imagery or a third observation date.",
+    "summary_source": "model",
+    "sentences_dropped": 1,
+    "family": "structures",
+    "window": {
+     "start": "2023-06-01",
+     "end": "2025-06-01"
+    },
+    "bbox": [
+     150.7,
+     -33.9,
+     150.73,
+     -33.876
+    ],
+    "final_posterior": [
+     {
+      "id": "struct_construction",
+      "label": "New construction",
+      "p": 0.4292397317624213,
+      "delta": 0
+     },
+     {
+      "id": "struct_temporary_surfaces",
+      "label": "Temporary surfaces",
+      "p": 0.2607797313651978,
+      "delta": 0
+     },
+     {
+      "id": "struct_imagery_mismatch",
+      "label": "Image registration or date mismatch",
+      "p": 0.1722920589990831,
+      "delta": 0
+     },
+     {
+      "id": "struct_demolition",
+      "label": "Demolition",
+      "p": 0.13768847787329772,
+      "delta": 0
+     }
+    ],
+    "evidence": [
+     {
+      "item_id": "struct_ndvi_change",
+      "title": "NDVI change between the two dates",
+      "op": "analyze_raster",
+      "result_id": "r_ecf7e2e4402cb40f",
+      "measured": true,
+      "value": -0.1188,
+      "field": "mean_delta",
+      "unit": "NDVI",
+      "bin": "< 0.03 NDVI",
+      "reason": null
+     },
+     {
+      "item_id": "struct_baseline_builtup",
+      "title": "Built-up share in 2021 (ESA WorldCover)",
+      "op": "fetch_built_surface",
+      "result_id": "r_afe78a253f094d02",
+      "measured": true,
+      "value": 0.9,
+      "field": "built_up_pct",
+      "unit": "% built-up",
+      "bin": "< 5 % built-up",
+      "reason": null
+     },
+     {
+      "item_id": "struct_season_alignment",
+      "title": "Are the two scenes the same time of year",
+      "op": "analyze_raster",
+      "result_id": "r_80a289c78708e93f",
+      "measured": true,
+      "value": 1,
+      "field": "date_after",
+      "unit": "days from a whole number of years",
+      "bin": "< 30 days from a whole number of years",
+      "reason": null
+     },
+     {
+      "item_id": "struct_ndbi_change",
+      "title": "Built-up index change (Sentinel-2 NDBI)",
+      "op": "analyze_raster",
+      "result_id": "r_80a289c78708e93f",
+      "measured": true,
+      "value": -0.0708,
+      "field": "mean_delta",
+      "unit": "NDBI",
+      "bin": "< 0.02 NDBI",
+      "reason": null
+     },
+     {
+      "item_id": "struct_vision",
+      "title": "A vision model looks at the true-colour scene",
+      "op": "inspect_imagery",
+      "result_id": "r_598f31756e501b07",
+      "measured": true,
+      "value": "established_buildings",
+      "field": "scene_date",
+      "unit": "category",
+      "bin": "established_buildings",
+      "reason": null
+     },
+     {
+      "item_id": "struct_osm_density",
+      "title": "Mapped buildings in OpenStreetMap",
+      "op": "query_osm",
+      "result_id": "r_aaf9975d336f9896",
+      "measured": true,
+      "value": 12.027,
+      "field": "feature_count",
+      "unit": "buildings per km2",
+      "bin": "< 20 buildings per km2",
+      "reason": null
+     }
+    ],
+    "skipped": [],
+    "limits": [
+     "A mapped building footprint (OpenStreetMap, Overture) is never proof that a building is new: those datasets record edit and release dates, not construction dates.",
+     "ESA WorldCover is a single-year (2021) land-cover map: a baseline, not a change measure.",
+     "Change compares two single Sentinel-2 scenes at 10 m; the dates actually used are reported, and a seasonal gap between them reads as change.",
+     "Temporary structures (tents, stockpiles, greenhouses) look like construction in two dates; telling them apart needs a third date or sub-metre imagery.",
+     "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+    ],
+    "corroboration": {
+     "role": "context",
+     "status": "grounded",
+     "query": "any of: New construction; Temporary surfaces | Badgerys Creek | 2023-06-01 to 2025-06-01",
+     "sources": [
+      {
+       "title": "Press conference - Western Sydney Airport",
+       "url": "https://minister.infrastructure.gov.au/c-king/interview/press-conference-western-sydney-airport",
+       "publisher": "Ministers for the Department of Infrastructure",
+       "date": "2023-06-08",
+       "inWindow": true,
+       "days_from_window": 0
+      }
+     ],
+     "note": "Context only: these reports do not change the finding. Publication dates are the search model's reading of each page (1 of 1 carried one) and are not verified."
+    },
+    "timings_ms": {
+     "total": 78237,
+     "investigation": 63259,
+     "corroboration": 10607
+    },
+    "runId": ""
+   },
+   "t": 78238
+  },
+  {
+   "event": "done",
+   "data": {
+    "type": "done"
+   },
+   "t": 78238
+  }
+ ]
+}

@@ -1,0 +1,157 @@
+# Claim: "this plot has not been cleared since <date>".
+#
+# Evidence: Sentinel-2 L2A NDVI of the plot near the claim date (the baseline) and near its
+# last same-season anniversary before `as_of` (so the two scenes are the same time of year,
+# which removes most of the leaf-on / leaf-off signal). Cloud, shadow and cirrus are masked per
+# pixel by the operations; a difference counts only where both scenes are clear.
+# Only operations that are always registered are used (no GEO_SERVICE_URL needed).
+#
+# Thresholds are starting values set on the development split of eval/claims (see
+# eval/RESULTS.md); change one and you release a new version of this file.
+id: not_cleared_since
+version: 1.0.0
+title: Not cleared since a date
+description: >
+  Supported when the plot's vegetation shows no clearing signal between the claim date and
+  today (or `as_of`); Contradicted when a large share of its clear pixels lost a large part of
+  their NDVI; Cannot determine when the plot is too small for 10 m pixels, was not vegetated to
+  begin with, or too little of it was clear on either date.
+claim: "This plot has not been cleared since {date}."
+
+params:
+  date:
+    type: date
+    required: true
+    description: The date the plot is said to have been uncleared on (the start of the period).
+  as_of:
+    type: date
+    default: today
+    description: The end of the period; the claim is checked up to here.
+
+derived:
+  # Latest same-day-of-year as `date` that is on or before as_of (at least a year later), else as_of.
+  compare_date: { fn: anniversary_before, args: [{ param: date }, { param: as_of }] }
+  plot_area_ha: { fn: plot_area_ha, args: [] }
+
+plan:
+  - tool: analyze_raster
+    args: { operation: stats, index: NDVI, date: { param: date } }
+    reason: How green and how clear the plot was at the start of the period.
+    explain: >-
+      On {scene_date} the plot's median NDVI was {median} (middle half {p25} to {p75});
+      {clear_pixels} of {in_polygon_pixels} pixels in the plot were clear, and the scene was
+      {clear_pct}% clear over it.
+  - tool: analyze_raster
+    args: { operation: change, index: NDVI, date: { param: date }, date2: { param: compare_date }, threshold: 0.2 }
+    reason: Per-pixel NDVI change between the start of the period and the same season at its end.
+    explain: >-
+      Between {date_before} and {date_after} the plot's median NDVI changed by {median_delta}
+      (mean {mean_delta}). {decreased_pct}% of the pixels clear on both dates fell by more than
+      {threshold} NDVI and {increased_pct}% rose by more than that; {pixels_clear_both} pixels
+      were clear on both dates.
+
+decision:
+  requires: [0, 1]
+  inputs:
+    plot_ha: { param: plot_area_ha }
+    # The pixel size actually used (10 m Sentinel-2; 30 m Landsat when a date precedes Sentinel-2).
+    res_m: { stat: "1.sensor_resolution_m" }
+    min_plot_ha: { fn: div, args: [{ fn: mul, args: [{ fn: mul, args: [{ ref: res_m }, { ref: res_m }] }, 50] }, 10000] }
+    base_median: { stat: "0.median" }
+    base_clear_frac: { fn: div, args: [{ stat: "0.clear_pixels" }, { stat: "0.in_polygon_pixels" }] }
+    both_clear_frac: { fn: div, args: [{ stat: "1.pixels_clear_both" }, { stat: "0.in_polygon_pixels" }] }
+    decreased_pct: { stat: "1.decreased_pct" }
+    median_delta: { stat: "1.median_delta" }
+    season_gap: { fn: day_of_year_gap, args: [{ stat: "1.date_before" }, { stat: "1.date_after" }] }
+  rules:
+    - id: plot_below_10m
+      when: { lt: [{ ref: plot_ha }, 0.5] }
+      verdict: cannot_determine
+      kind: out_of_scope
+      reason: >-
+        The plot is {plot_ha} ha, under 0.5 ha: fewer than about 50 Sentinel-2 pixels (10 m), too
+        few to tell clearing from noise.
+    - id: no_baseline
+      when: { missing: { ref: base_median } }
+      verdict: cannot_determine
+      kind: data_unavailable
+      reason: >-
+        No clear Sentinel-2 observation of the plot was available near {date} (step 0 reports why).
+    - id: no_change_pair
+      when: { any: [{ missing: { ref: decreased_pct } }, { missing: { ref: both_clear_frac } }] }
+      verdict: cannot_determine
+      kind: data_unavailable
+      reason: >-
+        No pair of clear Sentinel-2 observations was available near {date} and {compare_date}
+        (step 1 reports why).
+    - id: plot_below_sensor
+      when: { lt: [{ ref: plot_ha }, { ref: min_plot_ha }] }
+      verdict: cannot_determine
+      kind: out_of_scope
+      reason: >-
+        The plot is {plot_ha} ha; at {res_m} m pixels (the sensor these dates need) at least
+        {min_plot_ha} ha is needed.
+    - id: baseline_cloudy
+      when: { lt: [{ ref: base_clear_frac }, 0.6] }
+      verdict: cannot_determine
+      kind: insufficient_quality
+      reason: >-
+        Only {base_clear_frac} of the plot was clear in the baseline scene (at least 0.6 is needed).
+    - id: pair_cloudy
+      when: { lt: [{ ref: both_clear_frac }, 0.5] }
+      verdict: cannot_determine
+      kind: insufficient_quality
+      reason: >-
+        Only {both_clear_frac} of the plot was clear on both dates (at least 0.5 is needed), so a
+        change cannot be told from cloud.
+    - id: season_mismatch
+      when: { gt: [{ ref: season_gap }, 45] }
+      verdict: cannot_determine
+      kind: insufficient_quality
+      reason: >-
+        The two scenes are {season_gap} days apart in the year (at most 45): the NDVI difference
+        could be the season, not clearing.
+    - id: not_vegetated_at_start
+      when: { lt: [{ ref: base_median }, 0.4] }
+      verdict: cannot_determine
+      kind: out_of_scope
+      reason: >-
+        The plot's median NDVI was {base_median} at the start of the period (under 0.4): it was
+        not densely vegetated, so "cleared" is not something this recipe can measure.
+    - id: cleared
+      when: { all: [{ gte: [{ ref: decreased_pct }, 25] }, { lte: [{ ref: median_delta }, -0.1] }] }
+      verdict: contradicted
+      reason: >-
+        {decreased_pct}% of the plot's clear pixels lost more than 0.2 NDVI between the two dates
+        and the median change is {median_delta}: a clearing signal.
+      confidence:
+        base: 0.55
+        terms:
+          - { weight: 0.2, value: { ref: decreased_pct }, from: 25, to: 70 }
+          - { weight: 0.1, value: { ref: both_clear_frac }, from: 0.5, to: 0.9 }
+          - { weight: 0.1, value: { fn: mul, args: [{ ref: median_delta }, -1] }, from: 0.1, to: 0.4 }
+        cap: 0.95
+    - id: intact
+      when: { all: [{ lte: [{ ref: decreased_pct }, 5] }, { gt: [{ ref: median_delta }, -0.1] }] }
+      verdict: supported
+      reason: >-
+        Only {decreased_pct}% of the plot's clear pixels lost more than 0.2 NDVI and the median
+        change is {median_delta}: no clearing signal.
+      confidence:
+        base: 0.55
+        terms:
+          - { weight: 0.25, value: { ref: both_clear_frac }, from: 0.5, to: 0.9 }
+          - { weight: 0.15, value: { fn: sub, args: [5, { ref: decreased_pct }] }, from: 0, to: 5 }
+        cap: 0.95
+  otherwise:
+    kind: inconclusive
+    reason: >-
+      The signal is mixed: {decreased_pct}% of the plot's clear pixels lost more than 0.2 NDVI
+      (median change {median_delta}). That is neither clearly intact (5% or less) nor clearly
+      cleared (25% or more).
+
+limitations:
+  - Two dates are compared. Clearing followed by regrowth or a crop back to the same NDVI between them is not seen, and neither is thinning that leaves canopy.
+  - NDVI falls for reasons other than clearing (drought, fire, flood, harvest of a plantation, a crop cycle). The recipe reports a loss of vegetation, not its cause.
+  - Scenes are picked within 30 days of each date, so the seasonal match is approximate; the recipe abstains when the scenes are more than 45 days apart in the year.
+  - Sentinel-1 radar is not used, so a plot under persistent cloud gets Cannot determine rather than a radar-based answer.

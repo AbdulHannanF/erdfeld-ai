@@ -1,0 +1,144 @@
+# Claim: "this plot was flooded on <date>" (within a tolerance of days).
+#
+# Evidence: Sentinel-1 RTC radar through map_flood: the scene nearest the claim date against a
+# dry reference scene a month earlier (same orbit where possible); new flood = water after AND
+# NOT water before, with one shared threshold. Radar sees through cloud, so cloud is not an
+# abstention reason here; the abstentions are about the satellite pass, coverage and a plot that
+# was already wet.
+id: flooded_on
+version: 1.0.0
+title: Flooded on a date
+description: >
+  Supported when the new-flood extent covers at least `min_flooded_pct` of the plot on a
+  Sentinel-1 pass within `tolerance_days` of the claim date; Contradicted when it covers under
+  5% of the plot; Cannot determine when there is no pass in the tolerance window, the pair does
+  not cover the plot, or the plot was already wet on the reference date.
+claim: "This plot was flooded on {date} (within {tolerance_days} days)."
+
+params:
+  date:
+    type: date
+    required: true
+    description: The day the plot is said to have been flooded.
+  tolerance_days:
+    type: integer
+    default: 7
+    min: 0
+    max: 15
+    description: How far from the date a Sentinel-1 pass may be and still count.
+  min_flooded_pct:
+    type: number
+    default: 30
+    min: 1
+    max: 100
+    description: Share of the plot that must be newly under water for the claim to be supported.
+  reference_days:
+    type: integer
+    default: 30
+    min: 12
+    max: 120
+    description: How long before the date the dry reference scene is looked for.
+
+derived:
+  reference_date: { fn: add_days, args: [{ param: date }, { fn: mul, args: [{ param: reference_days }, -1] }] }
+  plot_area_ha: { fn: plot_area_ha, args: [] }
+
+plan:
+  - tool: map_flood
+    args: { before: { param: reference_date }, after: { param: date }, include_roads: false }
+    reason: New water between a dry reference scene and the Sentinel-1 pass nearest the claim date.
+    explain: >-
+      The Sentinel-1 pass used was {after_date} (orbit {after_orbit}); the dry reference was
+      {before_date}. Geometry match between them: {orbit_match}. {flood_pct_of_observed}% of the
+      {observed_km2} km2 observed in the plot was newly under water ({flood_area_km2} km2); water
+      covered {before_water_pct}% of the plot on the reference date and {after_water_pct}% on the
+      pass. Threshold {threshold_db} dB ({threshold_method}); {valid_pixel_pct}% of the plot was
+      observed on both dates.
+
+decision:
+  requires: [0]
+  inputs:
+    plot_ha: { param: plot_area_ha }
+    flood_pct: { stat: "0.flood_pct_of_observed" }
+    valid: { stat: "0.valid_pixel_pct" }
+    pass_gap: { fn: abs_days, args: [{ stat: "0.after_date" }, { param: date }] }
+    before_water: { stat: "0.before_water_pct" }
+    after_water: { stat: "0.after_water_pct" }
+    orbit_match: { stat: "0.orbit_match" }
+  rules:
+    - id: plot_below_10m
+      when: { lt: [{ ref: plot_ha }, 0.5] }
+      verdict: cannot_determine
+      kind: out_of_scope
+      reason: >-
+        The plot is {plot_ha} ha, under 0.5 ha: too few 10 m Sentinel-1 pixels for a flood extent.
+    - id: no_pair
+      when: { any: [{ missing: { ref: flood_pct } }, { missing: { ref: pass_gap } }] }
+      verdict: cannot_determine
+      kind: data_unavailable
+      reason: >-
+        No usable pair of Sentinel-1 scenes was found for this plot near {date} (step 0 reports why).
+    - id: pass_outside_tolerance
+      when: { gt: [{ ref: pass_gap }, { param: tolerance_days }] }
+      verdict: cannot_determine
+      kind: data_unavailable
+      reason: >-
+        The nearest Sentinel-1 pass was {pass_gap} days from {date}; the tolerance is
+        {tolerance_days} days, so no pass in the window observed the plot.
+    - id: low_coverage
+      when: { lt: [{ ref: valid }, 80] }
+      verdict: cannot_determine
+      kind: insufficient_quality
+      reason: >-
+        The two scenes observed only {valid}% of the plot (at least 80% is needed).
+    - id: orbit_geometry_differs
+      when: { eq: [{ ref: orbit_match }, any] }
+      verdict: cannot_determine
+      kind: insufficient_quality
+      reason: >-
+        The reference and the pass were imaged from different orbit geometries, so incidence-angle
+        differences could pass for water change.
+    - id: already_wet
+      when: { gte: [{ ref: before_water }, 60] }
+      verdict: cannot_determine
+      kind: inconclusive
+      reason: >-
+        The plot was already {before_water}% water on the reference date, so new flooding cannot be
+        separated from standing or permanent water.
+    - id: flooded
+      when: { gte: [{ ref: flood_pct }, { param: min_flooded_pct }] }
+      verdict: supported
+      reason: >-
+        {flood_pct}% of the plot was newly under water on a pass {pass_gap} days from {date}
+        (the claim needs {min_flooded_pct}%).
+      confidence:
+        base: 0.6
+        terms:
+          - { weight: 0.2, value: { ref: flood_pct }, from: 30, to: 80 }
+          - { weight: 0.1, value: { ref: valid }, from: 80, to: 100 }
+          - { weight: 0.1, value: { fn: sub, args: [{ param: tolerance_days }, { ref: pass_gap }] }, from: 0, to: 7 }
+        cap: 0.9
+    - id: dry
+      when: { lt: [{ ref: flood_pct }, 5] }
+      verdict: contradicted
+      reason: >-
+        Only {flood_pct}% of the plot was newly under water on a pass {pass_gap} days from {date}.
+        Radar can miss flooding under vegetation or among buildings, so this is evidence against the
+        claim, not proof.
+      confidence:
+        base: 0.5
+        terms:
+          - { weight: 0.15, value: { ref: valid }, from: 80, to: 100 }
+          - { weight: 0.1, value: { fn: sub, args: [5, { ref: flood_pct }] }, from: 0, to: 5 }
+        cap: 0.7
+  otherwise:
+    kind: inconclusive
+    reason: >-
+      {flood_pct}% of the plot was newly under water: partial, between the 5% that would
+      contradict the claim and the {min_flooded_pct}% it needs.
+
+limitations:
+  - Radar sees open, smooth water. Flooding under dense vegetation or among buildings is largely invisible to it, so a plot that did flood can read as dry.
+  - The extent is a snapshot on the Sentinel-1 pass, not the peak of the event, and the pass may be a few days from the claim date (it is reported).
+  - The water threshold is estimated from the plot's own backscatter histogram (Otsu clamped to -23..-15 dB, or -18 dB when it is not bimodal), not calibrated to the site.
+  - Wind-roughened water reads as land and there is no terrain-shadow mask.

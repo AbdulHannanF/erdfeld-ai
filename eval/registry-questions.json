@@ -1,0 +1,1496 @@
+[
+ {
+  "theme": "elevation",
+  "q": "Where can I get a 30 m global digital elevation model?",
+  "acceptable": [
+   "planetary-computer:cop-dem-glo-30",
+   "planetary-computer:nasadem",
+   "gee:USGS/SRTMGL1_003",
+   "planetary-computer:alos-dem",
+   "cdse:cop-dem-glo-30-dged-cog",
+   "eodc:COP_DEM",
+   "cmr:LPCLOUD/NASADEM_HGT_001",
+   "cmr:LPCLOUD/ASTGTM_003",
+   "gee:COPERNICUS/DEM/GLO30*",
+   "gee:JAXA/ALOS/AW3D30/*"
+  ]
+ },
+ {
+  "theme": "elevation",
+  "q": "SRTM elevation data",
+  "acceptable": [
+   "gee:USGS/SRTMGL1_003",
+   "planetary-computer:nasadem",
+   "gee:CGIAR/SRTM90_V4",
+   "cmr:LPCLOUD/NASADEM_HGT_001",
+   "cmr:LPCLOUD/SRTMGL*"
+  ]
+ },
+ {
+  "theme": "elevation",
+  "q": "I need terrain heights to compute slope and hillshade for my site",
+  "acceptable": [
+   "planetary-computer:cop-dem-glo-30",
+   "planetary-computer:nasadem",
+   "gee:USGS/SRTMGL1_003",
+   "planetary-computer:cop-dem-glo-90",
+   "planetary-computer:alos-dem",
+   "cmr:LPCLOUD/NASADEM_HGT_001",
+   "gee:COPERNICUS/DEM/GLO30*",
+   "gee:MERIT/DEM/v1_0_3"
+  ]
+ },
+ {
+  "theme": "elevation",
+  "q": "digital surface model including buildings and tree tops",
+  "acceptable": [
+   "planetary-computer:alos-dem",
+   "planetary-computer:cop-dem-glo-30",
+   "gee:JAXA/ALOS/AW3D30/*",
+   "eodc:COP_DEM",
+   "gee:COPERNICUS/DEM/GLO30*",
+   "planetary-computer:cop-dem-glo-90",
+   "cdse:cop-dem-glo-30-dged-cog"
+  ]
+ },
+ {
+  "theme": "elevation",
+  "q": "bathymetry of the sea floor",
+  "acceptable": [
+   "gebco:bathymetry-grid",
+   "cmr:NSIDC_CPRD/ATL24_*",
+   "gee:NOAA/NGDC/ETOPO1",
+   "overture:base"
+  ]
+ },
+ {
+  "theme": "elevation",
+  "q": "half metre DEM of the Netherlands",
+  "acceptable": [
+   "gee:AHN/*"
+  ]
+ },
+ {
+  "theme": "elevation",
+  "q": "ArcticDEM strips",
+  "acceptable": [
+   "gee:UMN/PGC/ArcticDEM/*"
+  ]
+ },
+ {
+  "theme": "elevation",
+  "q": "hydrologically conditioned DEM for flow routing",
+  "acceptable": [
+   "gee:WWF/HydroSHEDS/*",
+   "gee:MERIT/DEM/v1_0_3",
+   "gee:AU/GA/DEM_1SEC/v10/DEM-H"
+  ]
+ },
+ {
+  "theme": "lidar",
+  "q": "airborne lidar point clouds for the United States",
+  "acceptable": [
+   "usgs-3dep:lidar-ept",
+   "planetary-computer:3dep-lidar-copc",
+   "opentopography:*",
+   "planetary-computer:3dep-lidar-classification"
+  ]
+ },
+ {
+  "theme": "lidar",
+  "q": "canopy height model",
+  "acceptable": [
+   "meta-wri:canopy-height",
+   "planetary-computer:3dep-lidar-hag",
+   "cmr:ORNL_CLOUD/GEDI_ICESAT2_Global_Veg_Height_2294_1",
+   "cmr:ORNL_CLOUD/ForestHt_Biomass_GEDI_TDX_2298_1",
+   "cmr:LPCLOUD/GEDI02_B_00*",
+   "cmr:ORNL_CLOUD/GEDI_Fusion_Structure_2236_1"
+  ]
+ },
+ {
+  "theme": "lidar",
+  "q": "GEDI spaceborne lidar waveform footprints",
+  "acceptable": [
+   "cmr:LPCLOUD/GEDI0*",
+   "cmr:ORNL_CLOUD/GEDI*"
+  ]
+ },
+ {
+  "theme": "lidar",
+  "q": "ICESat-2 land and vegetation height",
+  "acceptable": [
+   "cmr:NSIDC_CPRD/ATL08_*",
+   "cmr:NSIDC_CPRD/ATL08QL_*",
+   "cmr:NSIDC_CPRD/ATL03_*"
+  ]
+ },
+ {
+  "theme": "lidar",
+  "q": "lidar survey data for a small area in southern California",
+  "acceptable": [
+   "opentopography:*",
+   "usgs-3dep:lidar-ept",
+   "planetary-computer:3dep-lidar-copc"
+  ],
+  "aoi": [
+   -117.5,
+   33,
+   -116.5,
+   34
+  ]
+ },
+ {
+  "theme": "lidar",
+  "q": "bare-earth digital terrain model derived from lidar",
+  "acceptable": [
+   "planetary-computer:3dep-lidar-dtm",
+   "planetary-computer:3dep-lidar-dtm-native",
+   "usgs-3dep:lidar-ept",
+   "opentopography:*",
+   "gee:projects/neon-prod-earthengine/assets/DEM/001",
+   "cmr:NSIDC_CPRD/SNEX20_QSI_DEM*"
+  ]
+ },
+ {
+  "theme": "sar",
+  "q": "Sentinel-1 radar backscatter",
+  "acceptable": [
+   "planetary-computer:sentinel-1-rtc",
+   "planetary-computer:sentinel-1-grd",
+   "gee:COPERNICUS/S1_GRD",
+   "eodc:SENTINEL1_*",
+   "gee:OPERA/RTC/L2_V1/S1",
+   "cmr:ASF/OPERA_L2_RTC-S1_V1_1",
+   "cdse:sentinel-1-*",
+   "openeo-cdse:SENTINEL1_*"
+  ]
+ },
+ {
+  "theme": "sar",
+  "q": "L-band radar for mapping forest",
+  "acceptable": [
+   "planetary-computer:alos-palsar-mosaic",
+   "gee:JAXA/ALOS/PALSAR/YEARLY/*",
+   "gee:JAXA/ALOS/PALSAR-2/*",
+   "cmr:ASF/ALOS2_*",
+   "planetary-computer:alos-fnf-mosaic",
+   "cmr:ASF/NISAR_*"
+  ]
+ },
+ {
+  "theme": "sar",
+  "q": "interferometric SAR to measure ground deformation",
+  "acceptable": [
+   "cdse:sentinel-1-slc*",
+   "eodc:SENTINEL1_SLC",
+   "cmr:ASF/NISAR_L1_RIFG_*",
+   "cmr:ASF/NISAR_L1_RUNW_*",
+   "cmr:ASF/NISAR_L1_RSLC_*",
+   "cmr:ASF/OPERA_L3_DISP-*",
+   "cmr:ASF/SENTINEL-1*",
+   "cmr:ASF/ARIA_S1_GUNW_1",
+   "cmr:ASF/NISAR_L2_GUNW_*",
+   "cmr:ASF/NISAR_L2_GSLC_*"
+  ]
+ },
+ {
+  "theme": "sar",
+  "q": "land subsidence monitoring",
+  "acceptable": [
+   "cdse:sentinel-1-slc*",
+   "eodc:SENTINEL1_SLC",
+   "cmr:ASF/NISAR_L1_RUNW_*",
+   "cmr:ASF/NISAR_L1_RIFG_*",
+   "cmr:ASF/OPERA_L3_DISP-*",
+   "cmr:ASF/SENTINEL-1*",
+   "cmr:ASF/ARIA_S1_GUNW_1"
+  ]
+ },
+ {
+  "theme": "sar",
+  "q": "flood extent mapping from SAR",
+  "acceptable": [
+   "eodc:GFM",
+   "planetary-computer:sentinel-1-rtc",
+   "planetary-computer:sentinel-1-grd",
+   "gee:OPERA/DSWX/L3_V1/S1",
+   "planetary-computer:deltares-floods",
+   "gee:COPERNICUS/S1_GRD"
+  ]
+ },
+ {
+  "theme": "sar",
+  "q": "NISAR L-band radar data",
+  "acceptable": [
+   "cmr:ASF/NISAR_*"
+  ]
+ },
+ {
+  "theme": "sar",
+  "q": "imaging that sees through clouds and at night",
+  "acceptable": [
+   "planetary-computer:sentinel-1-rtc",
+   "planetary-computer:sentinel-1-grd",
+   "gee:COPERNICUS/S1_GRD",
+   "eodc:SENTINEL1_GRD",
+   "cdse:sentinel-1-*",
+   "cmr:ASF/NISAR_*",
+   "gee:JAXA/ALOS/PALSAR-2/*"
+  ]
+ },
+ {
+  "theme": "optical",
+  "q": "Sentinel-2 surface reflectance imagery",
+  "acceptable": [
+   "planetary-computer:sentinel-2-l2a",
+   "gee:COPERNICUS/S2_SR_HARMONIZED",
+   "openeo-cdse:SENTINEL2_L2A",
+   "cdse:sentinel-2-*",
+   "element84:sentinel-2-*"
+  ]
+ },
+ {
+  "theme": "optical",
+  "q": "Landsat 8 Collection 2 Level-2 surface reflectance",
+  "acceptable": [
+   "planetary-computer:landsat-c2-l2",
+   "landsatlook:landsat-c2l2-sr",
+   "gee:LANDSAT/LC08/C02/T1_L2",
+   "landsatlook:landsat-c2ard-sr",
+   "cdse:landsat-c2-*"
+  ]
+ },
+ {
+  "theme": "optical",
+  "q": "Harmonized Landsat Sentinel-2 30 m",
+  "acceptable": [
+   "planetary-computer:hls2-s30",
+   "planetary-computer:hls2-l30",
+   "gee:NASA/HLS/*",
+   "cmr:LPCLOUD/HLS*"
+  ]
+ },
+ {
+  "theme": "optical",
+  "q": "high resolution aerial imagery of the United States",
+  "acceptable": [
+   "planetary-computer:naip",
+   "gee:USDA/NAIP/DOQQ"
+  ]
+ },
+ {
+  "theme": "optical",
+  "q": "daily MODIS surface reflectance",
+  "acceptable": [
+   "gee:MODIS/061/MOD09GA",
+   "gee:MODIS/061/MYD09GA",
+   "cmr:LPCLOUD/MOD09GA_061",
+   "cmr:LPCLOUD/MYD09GA_061",
+   "planetary-computer:modis-09A1-061",
+   "cmr:LAADS/MOD09*",
+   "cmr:LAADS/MYD09*",
+   "gee:MODIS/061/MOD09*",
+   "gee:MODIS/061/MYD09*",
+   "cdse:modis-*-mod09*",
+   "cdse:modis-*-myd09*",
+   "cmr:LPCLOUD/MOD09*",
+   "cmr:LPCLOUD/MYD09*"
+  ]
+ },
+ {
+  "theme": "optical",
+  "q": "true colour satellite imagery tiles for a web map",
+  "acceptable": [
+   "nasa-gibs:imagery",
+   "planetary-computer:sentinel-2-l2a",
+   "planetary-computer:planet-nicfi-visual",
+   "planetary-computer:naip"
+  ]
+ },
+ {
+  "theme": "optical",
+  "q": "tropical basemap mosaics from Planet",
+  "acceptable": [
+   "planetary-computer:planet-nicfi-*"
+  ]
+ },
+ {
+  "theme": "land-cover",
+  "q": "10 m global land cover map",
+  "acceptable": [
+   "planetary-computer:esa-worldcover",
+   "gee:GOOGLE/DYNAMICWORLD/V1",
+   "planetary-computer:io-lulc-annual-v02",
+   "openeo-cdse:ESA_WORLDCOVER*",
+   "gee:ESA/WorldCover/*",
+   "planetary-computer:io-lulc-9-class",
+   "cdse:clms_lcm_global_10m_yearly_v1_cog"
+  ]
+ },
+ {
+  "theme": "land-cover",
+  "q": "near real-time land cover classification",
+  "acceptable": [
+   "gee:GOOGLE/DYNAMICWORLD/V1"
+  ]
+ },
+ {
+  "theme": "land-cover",
+  "q": "CORINE land cover Europe",
+  "acceptable": [
+   "gee:COPERNICUS/CORINE/*",
+   "cdse:clms_clcplus*",
+   "openeo-cdse:CLMS_CLCPLUS*"
+  ]
+ },
+ {
+  "theme": "land-cover",
+  "q": "annual land use land cover 2017 to 2023",
+  "acceptable": [
+   "planetary-computer:io-lulc-annual-v02",
+   "gee:GOOGLE/DYNAMICWORLD/V1",
+   "planetary-computer:esa-cci-lc",
+   "planetary-computer:esa-worldcover",
+   "planetary-computer:io-lulc-9-class",
+   "gee:ESA/WorldCover/*"
+  ]
+ },
+ {
+  "theme": "land-cover",
+  "q": "National Land Cover Database for the US",
+  "acceptable": [
+   "gee:USGS/NLCD_RELEASES/*",
+   "planetary-computer:usgs-lcmap-conus-v13",
+   "planetary-computer:gap",
+   "planetary-computer:noaa-c-cap"
+  ],
+  "aoi": [
+   -100,
+   35,
+   -99,
+   36
+  ]
+ },
+ {
+  "theme": "land-cover",
+  "q": "land cover classes from the Copernicus global land service at 100 m",
+  "acceptable": [
+   "cdse:clms_lc_global_100m_yearly_v3_cog",
+   "openeo-cdse:CLMS_LC_GLOBAL_100M_YEARLY_V3",
+   "gee:COPERNICUS/Landcover/100m/Proba-V-C3/Global"
+  ]
+ },
+ {
+  "theme": "vegetation",
+  "q": "NDVI time series 16-day 250 m",
+  "acceptable": [
+   "planetary-computer:modis-13Q1-061",
+   "gee:MODIS/061/MOD13Q1",
+   "gee:MODIS/061/MYD13Q1",
+   "cmr:LPCLOUD/MOD13Q1_061",
+   "cmr:LPCLOUD/MYD13Q1_061",
+   "cdse:modis-terra-mod13q1"
+  ]
+ },
+ {
+  "theme": "vegetation",
+  "q": "leaf area index and fAPAR",
+  "acceptable": [
+   "planetary-computer:modis-15A2H-061",
+   "planetary-computer:modis-15A3H-061",
+   "gee:MODIS/061/MCD15A3H",
+   "gee:MODIS/061/MOD15A2H",
+   "cmr:LPCLOUD/MCD15A3H_061",
+   "cmr:LPCLOUD/MOD15A2H_061",
+   "cdse:clms_lai_*",
+   "cdse:clms_fapar_*",
+   "openeo-cdse:CLMS_LAI*",
+   "openeo-cdse:CLMS_FAPAR*"
+  ]
+ },
+ {
+  "theme": "vegetation",
+  "q": "gross primary productivity",
+  "acceptable": [
+   "planetary-computer:modis-17A2H-061",
+   "planetary-computer:modis-17A2HGF-061",
+   "gee:MODIS/061/MOD17A2H",
+   "cdse:clms_gpp_*",
+   "openeo-cdse:CLMS_GPP*",
+   "cmr:LPCLOUD/MOD17A2H_061"
+  ]
+ },
+ {
+  "theme": "vegetation",
+  "q": "global evapotranspiration",
+  "acceptable": [
+   "planetary-computer:modis-16A3GF-061",
+   "gee:MODIS/061/MOD16A2",
+   "gee:MODIS/061/MOD16A2GF",
+   "cdse:clms_eta_*",
+   "openeo-cdse:CLMS_ETA*",
+   "planetary-computer:terraclimate",
+   "cmr:LPCLOUD/MOD16*",
+   "cmr:LPCLOUD/MYD16*",
+   "gee:projects/pml_evapotranspiration/*"
+  ]
+ },
+ {
+  "theme": "vegetation",
+  "q": "vegetation phenology start of season",
+  "acceptable": [
+   "cdse:clms_lsp_*",
+   "openeo-cdse:CLMS_LSP*",
+   "gee:MODIS/061/MCD12Q2",
+   "cmr:LPCLOUD/MCD12Q2_061",
+   "openeo-cdse:COPERNICUS_VEGETATION_PHENOLOGY_PRODUCTIVITY_*",
+   "gee:NASA/VIIRS/002/VNP22Q2"
+  ]
+ },
+ {
+  "theme": "forest",
+  "q": "deforestation alerts",
+  "acceptable": [
+   "gfw:gfw_integrated_alerts",
+   "gfw:umd_glad_landsat_alerts",
+   "gfw:umd_glad_sentinel2_alerts",
+   "gfw:wur_radd_alerts",
+   "gfw:gfw_integrated_dist_alerts",
+   "gfw:umd_tree_cover_loss"
+  ]
+ },
+ {
+  "theme": "forest",
+  "q": "annual tree cover loss",
+  "acceptable": [
+   "gfw:umd_tree_cover_loss",
+   "hansen:global-forest-change",
+   "gee:UMD/hansen/*",
+   "gfw:umd_tree_cover_loss_from_fires",
+   "gfw:wri_google_tree_cover_loss_drivers"
+  ]
+ },
+ {
+  "theme": "forest",
+  "q": "global forest cover change since 2000",
+  "acceptable": [
+   "hansen:global-forest-change",
+   "gee:UMD/hansen/*",
+   "gfw:umd_tree_cover_loss"
+  ]
+ },
+ {
+  "theme": "forest",
+  "q": "above-ground biomass map",
+  "acceptable": [
+   "gee:ESA/CCI/Above_Ground_Biomass/V6_0",
+   "planetary-computer:chloris-biomass",
+   "cmr:ORNL_CLOUD/ForestHt_Biomass_GEDI_TDX_2298_1",
+   "cmr:ORNL_CLOUD/CMS_Global_Forest_AGC_2180_1",
+   "cmr:ORNL_CLOUD/GEDI_HighQuality_Shots_Rasters_2339_1",
+   "cmr:ORNL_CLOUD/*Biomass*"
+  ]
+ },
+ {
+  "theme": "forest",
+  "q": "mangrove forest extent",
+  "acceptable": [
+   "gee:LANDSAT/MANGROVE_FORESTS",
+   "gee:projects/mangrovedatahub2/*",
+   "gfw:gmw_global_mangrove_extent*"
+  ]
+ },
+ {
+  "theme": "forest",
+  "q": "forest carbon stocks and fluxes",
+  "acceptable": [
+   "gfw:gfw_*carbon*",
+   "gfw:gfw_forest_carbon_*",
+   "cmr:ORNL_CLOUD/CMS_Global_Forest_AGC_2180_1",
+   "gee:ESA/CCI/Above_Ground_Biomass/V6_0",
+   "planetary-computer:chloris-biomass"
+  ]
+ },
+ {
+  "theme": "forest",
+  "q": "tree canopy cover percent",
+  "acceptable": [
+   "gee:UMD/hansen/*",
+   "hansen:global-forest-change",
+   "cdse:clms_tcd_*",
+   "openeo-cdse:CLMS_TCD*",
+   "gee:NASA/MEASURES/GFCC/*",
+   "gee:MODIS/061/MOD44B",
+   "cmr:LPCLOUD/MOD44B_061",
+   "gfw:umd_tree_cover_density_2000"
+  ]
+ },
+ {
+  "theme": "agriculture",
+  "q": "crop type map for the US",
+  "acceptable": [
+   "planetary-computer:usda-cdl",
+   "gee:USDA/NASS/CDL"
+  ],
+  "aoi": [
+   -100,
+   40,
+   -99,
+   41
+  ]
+ },
+ {
+  "theme": "agriculture",
+  "q": "global cropland extent",
+  "acceptable": [
+   "gee:ESA/WorldCereal/*",
+   "gee:USGS/GFSAD1000_V1",
+   "gee:*GFSAD*",
+   "planetary-computer:esa-worldcover",
+   "gee:GOOGLE/DYNAMICWORLD/V1",
+   "planetary-computer:esa-cci-lc",
+   "cmr:LPCLOUD/LGRIP30_*"
+  ]
+ },
+ {
+  "theme": "agriculture",
+  "q": "irrigated areas",
+  "acceptable": [
+   "cmr:LPCLOUD/LGRIP30_*",
+   "gee:UMT/Climate/IrrMapper*",
+   "gee:USGS/GFSAD1000_V1"
+  ]
+ },
+ {
+  "theme": "agriculture",
+  "q": "crop yield",
+  "acceptable": [
+   "gfw:mapspam_yield_*"
+  ]
+ },
+ {
+  "theme": "soil",
+  "q": "soil organic carbon at 250 m",
+  "acceptable": [
+   "isric:soilgrids",
+   "isric:soilgrids-bulk",
+   "gee:OpenLandMap/SOL/SOL_ORGANIC-CARBON_USDA-6A1C_M/v02",
+   "gee:ISDASOIL/Africa/v1/carbon_organic"
+  ]
+ },
+ {
+  "theme": "soil",
+  "q": "soil moisture from satellite",
+  "acceptable": [
+   "cmr:NSIDC_CPRD/SPL3SMP_E_006",
+   "cmr:NSIDC_CPRD/SPL3SMP_009",
+   "cmr:NSIDC_CPRD/SPL3SMA_003",
+   "cmr:NSIDC_CPRD/SPL3SMAP_003",
+   "cmr:NSIDC_CPRD/SPL4SMGP_008",
+   "cmr:NSIDC_CPRD/SPL4SMAU_008",
+   "gee:NASA/SMAP/*",
+   "cmr:NSIDC_CPRD/NSIDC-0779_1",
+   "cmr:NSIDC_CPRD/NSIDC-0800_2",
+   "cmr:NSIDC_CPRD/NSIDC-0797_1",
+   "cdse:clms_ssm_*",
+   "openeo-cdse:CLMS_SSM*",
+   "cmr:NSIDC_CPRD/SPL2SMP_*",
+   "cmr:NSIDC_CPRD/SPL2SMAP_*",
+   "cmr:NSIDC_CPRD/SPL1*",
+   "cmr:NSIDC_CPRD/SPL4*",
+   "cmr:NSIDC_CPRD/SPL2*",
+   "cmr:NSIDC_CPRD/SPL3*",
+   "cmr:NSIDC_CPRD/SMAP_L4_SM_*"
+  ]
+ },
+ {
+  "theme": "soil",
+  "q": "soil texture clay sand silt fractions",
+  "acceptable": [
+   "isric:soilgrids",
+   "isric:soilgrids-bulk",
+   "gee:OpenLandMap/SOL/SOL_TEXTURE-CLASS_USDA-TT_M/v02",
+   "gee:OpenLandMap/SOL/SOL_CLAY-WFRACTION_USDA-3A1A1A_M/v02",
+   "gee:OpenLandMap/SOL/SOL_SAND-WFRACTION_USDA-3A1A1A_M/v02",
+   "gee:ISDASOIL/Africa/v1/clay_content",
+   "gee:ISDASOIL/Africa/v1/sand_content",
+   "gee:ISDASOIL/Africa/v1/silt_content",
+   "gee:ISDASOIL/Africa/v1/texture_class"
+  ]
+ },
+ {
+  "theme": "soil",
+  "q": "soil pH map",
+  "acceptable": [
+   "isric:soilgrids",
+   "isric:soilgrids-bulk",
+   "gee:OpenLandMap/SOL/SOL_PH-H2O_USDA-4C1A2A_M/v02",
+   "gee:ISDASOIL/Africa/v1/ph"
+  ]
+ },
+ {
+  "theme": "soil",
+  "q": "detailed soil survey for the United States",
+  "acceptable": [
+   "planetary-computer:gnatsgo-rasters",
+   "planetary-computer:gnatsgo-tables",
+   "gee:USDA/SOLUS100/V0"
+  ],
+  "aoi": [
+   -100,
+   40,
+   -99,
+   41
+  ]
+ },
+ {
+  "theme": "soil",
+  "q": "volumetric soil water content in the root zone",
+  "acceptable": [
+   "gee:ECMWF/ERA5_LAND/HOURLY",
+   "gee:ECMWF/ERA5_LAND/DAILY_AGGR",
+   "gee:ECMWF/ERA5_LAND/MONTHLY_AGGR",
+   "cmr:NSIDC_CPRD/SPL4SMGP_008",
+   "cmr:NSIDC_CPRD/SPL4SMAU_008",
+   "cdse:clms_swi_*",
+   "openeo-cdse:CLMS_SWI*",
+   "gee:NASA/SMAP/SPL4SMGP/*",
+   "gee:NASA/GLDAS/*",
+   "cmr:GES_DISC/GLDAS*",
+   "cmr:NSIDC_CPRD/SMAP_L4_SM_*",
+   "cmr:NSIDC_CPRD/SPL4*",
+   "cmr:GES_DISC/SMERGE_*",
+   "cmr:ORNL_CLOUD/AirMOSS_L4_RZ_Soil_Moisture_1421_1"
+  ]
+ },
+ {
+  "theme": "climate",
+  "q": "hourly climate reanalysis since 1940",
+  "acceptable": [
+   "planetary-computer:era5-pds",
+   "arco-era5:pressure-levels",
+   "open-meteo:era5-archive",
+   "gee:ECMWF/ERA5/*",
+   "gee:ECMWF/ERA5_LAND/*"
+  ]
+ },
+ {
+  "theme": "climate",
+  "q": "downscaled CMIP6 climate projections",
+  "acceptable": [
+   "planetary-computer:nasa-nex-gddp-cmip6",
+   "open-meteo:climate",
+   "planetary-computer:cil-gdpcir-*",
+   "gee:NASA/GDDP-CMIP6"
+  ]
+ },
+ {
+  "theme": "climate",
+  "q": "WorldClim bioclimatic variables",
+  "acceptable": [
+   "gee:WORLDCLIM/V1/BIO",
+   "gee:WORLDCLIM/V1/MONTHLY"
+  ]
+ },
+ {
+  "theme": "climate",
+  "q": "monthly climate normals gridded",
+  "acceptable": [
+   "planetary-computer:noaa-climate-normals-gridded",
+   "planetary-computer:noaa-climate-normals-netcdf",
+   "gee:WORLDCLIM/V1/MONTHLY",
+   "planetary-computer:terraclimate",
+   "planetary-computer:noaa-nclimgrid-monthly",
+   "gee:IDAHO_EPSCOR/TERRACLIMATE"
+  ]
+ },
+ {
+  "theme": "climate",
+  "q": "1 km daily temperature and precipitation for North America",
+  "acceptable": [
+   "planetary-computer:daymet-daily-na",
+   "gee:NASA/ORNL/DAYMET_V4",
+   "planetary-computer:daymet-*",
+   "planetary-computer:gridmet"
+  ]
+ },
+ {
+  "theme": "climate",
+  "q": "solar radiation and meteorological data for agroclimatology",
+  "acceptable": [
+   "nasa-power:daily-point",
+   "open-meteo:era5-archive",
+   "planetary-computer:terraclimate",
+   "gee:ECMWF/ERA5_LAND/DAILY_AGGR"
+  ]
+ },
+ {
+  "theme": "weather",
+  "q": "weather forecast for a location",
+  "acceptable": [
+   "open-meteo:forecast",
+   "planetary-computer:ecmwf-forecast",
+   "planetary-computer:met-office-*",
+   "gee:NOAA/GFS0P25"
+  ]
+ },
+ {
+  "theme": "weather",
+  "q": "wind speed and direction",
+  "acceptable": [
+   "open-meteo:forecast",
+   "open-meteo:era5-archive",
+   "planetary-computer:era5-pds",
+   "arco-era5:pressure-levels",
+   "gee:ECMWF/ERA5/*",
+   "gee:ECMWF/ERA5_LAND/*",
+   "planetary-computer:met-office-*",
+   "planetary-computer:ecmwf-forecast",
+   "gee:NOAA/GFS0P25",
+   "nasa-power:daily-point"
+  ]
+ },
+ {
+  "theme": "weather",
+  "q": "lightning flash detections",
+  "acceptable": [
+   "planetary-computer:goes-glm",
+   "cmr:GHRC_DAAC/*lis*",
+   "cmr:GHRC_DAAC/*glm*"
+  ]
+ },
+ {
+  "theme": "precipitation",
+  "q": "daily rainfall estimates at 5 km",
+  "acceptable": [
+   "chc:chirps-v2",
+   "gee:UCSB-CHG/CHIRPS/DAILY",
+   "gee:UCSB-CHC/CHIRPS/V3/*",
+   "gee:JAXA/GPM_L3/GSMaP/*"
+  ]
+ },
+ {
+  "theme": "precipitation",
+  "q": "satellite precipitation IMERG half-hourly",
+  "acceptable": [
+   "cmr:GES_DISC/GPM_3IMERGHH*",
+   "planetary-computer:gpm-imerg-hhr",
+   "gee:NASA/GPM_L3/IMERG_V07",
+   "gee:NASA/GPM_L3/IMERG*"
+  ]
+ },
+ {
+  "theme": "precipitation",
+  "q": "radar-based quantitative precipitation estimates for the US",
+  "acceptable": [
+   "planetary-computer:noaa-mrms-qpe-*"
+  ]
+ },
+ {
+  "theme": "precipitation",
+  "q": "drought index SPEI",
+  "acceptable": [
+   "gee:CSIC/SPEI/*",
+   "gee:GRIDMET/DROUGHT"
+  ]
+ },
+ {
+  "theme": "precipitation",
+  "q": "monsoon rainfall history for India",
+  "acceptable": [
+   "chc:chirps-v2",
+   "gee:UCSB-CHG/CHIRPS/DAILY",
+   "cmr:GES_DISC/GPM_3IMERG*",
+   "gee:NASA/GPM_L3/IMERG*",
+   "open-meteo:era5-archive",
+   "planetary-computer:era5-pds",
+   "gee:ECMWF/ERA5/*",
+   "gee:ECMWF/ERA5_LAND/*",
+   "arco-era5:pressure-levels",
+   "gee:JAXA/GPM_L3/GSMaP/*"
+  ],
+  "aoi": [
+   68,
+   6,
+   98,
+   36
+  ]
+ },
+ {
+  "theme": "temperature",
+  "q": "land surface temperature",
+  "acceptable": [
+   "planetary-computer:modis-11A1-061",
+   "planetary-computer:modis-11A2-061",
+   "gee:MODIS/061/MOD11A1",
+   "gee:MODIS/061/MOD11A2",
+   "gee:MODIS/061/MYD11A1",
+   "cmr:LPCLOUD/MOD11A1_061",
+   "cmr:LPCLOUD/MYD11A1_061",
+   "cdse:modis-terra-mod11a*",
+   "cdse:clms_lst_*",
+   "openeo-cdse:CLMS_LST*",
+   "cmr:LPCLOUD/MOD11A2_061",
+   "cmr:LPCLOUD/ECO*LSTE*",
+   "landsatlook:landsat-c2l2-st",
+   "planetary-computer:landsat-c2-l2"
+  ]
+ },
+ {
+  "theme": "temperature",
+  "q": "sea surface temperature",
+  "acceptable": [
+   "planetary-computer:noaa-cdr-sea-surface-temperature-*",
+   "gee:NOAA/CDR/OISST/V2_1",
+   "gee:NASA/OCEANDATA/MODIS-Aqua/L3SMI",
+   "cmr:POCLOUD/*SST*",
+   "cmr:POCLOUD/*MUR*"
+  ]
+ },
+ {
+  "theme": "temperature",
+  "q": "urban heat island thermal imagery",
+  "acceptable": [
+   "planetary-computer:landsat-c2-l2",
+   "landsatlook:landsat-c2l2-st",
+   "landsatlook:landsat-c2ard-st",
+   "gee:LANDSAT/LC08/C02/T1_L2",
+   "planetary-computer:modis-11A1-061",
+   "cmr:LPCLOUD/ECO*",
+   "gee:MODIS/061/MOD11A1",
+   "gee:YALE/YCEO/UHI/*"
+  ]
+ },
+ {
+  "theme": "temperature",
+  "q": "daily maximum and minimum air temperature gridded",
+  "acceptable": [
+   "planetary-computer:gridmet",
+   "planetary-computer:daymet-daily-na",
+   "planetary-computer:terraclimate",
+   "gee:IDAHO_EPSCOR/GRIDMET",
+   "gee:ECMWF/ERA5_LAND/DAILY_AGGR",
+   "gee:ECMWF/ERA5/DAILY",
+   "planetary-computer:era5-pds",
+   "open-meteo:era5-archive",
+   "planetary-computer:noaa-nclimgrid-monthly",
+   "gee:OREGONSTATE/PRISM/*",
+   "gee:NASA/ORNL/DAYMET_V4",
+   "gee:UCSB-CHG/CHIRTS/DAILY",
+   "cmr:GES_DISC/M2SDNXSLV_*",
+   "planetary-computer:daymet-daily-*"
+  ]
+ },
+ {
+  "theme": "water",
+  "q": "surface water occurrence over time",
+  "acceptable": [
+   "planetary-computer:jrc-gsw",
+   "gee:JRC/GSW1_4/*",
+   "landsatlook:landsat-c2l3-dswe",
+   "gee:OPERA/DSWX/*"
+  ]
+ },
+ {
+  "theme": "water",
+  "q": "global flood monitoring",
+  "acceptable": [
+   "eodc:GFM",
+   "open-meteo:flood",
+   "planetary-computer:deltares-floods",
+   "gee:GLOBAL_FLOOD_DB/*",
+   "gee:JRC/CEMS_GLOFAS/*"
+  ]
+ },
+ {
+  "theme": "water",
+  "q": "lake water quality chlorophyll turbidity",
+  "acceptable": [
+   "cdse:clms_lwq*",
+   "openeo-cdse:CLMS_LWQ*",
+   "planetary-computer:sentinel-3-olci-wfr-l2-netcdf",
+   "gee:COPERNICUS/S3/OLCI"
+  ]
+ },
+ {
+  "theme": "water",
+  "q": "wetlands inventory for the US",
+  "acceptable": [
+   "planetary-computer:fws-nwi"
+  ]
+ },
+ {
+  "theme": "water",
+  "q": "reservoirs and lakes database",
+  "acceptable": [
+   "cmr:POCLOUD/PRESWOT_HYDRO_*",
+   "cmr:POCLOUD/SWOT_L2_HR_Lake*"
+  ]
+ },
+ {
+  "theme": "hydrology",
+  "q": "watershed boundaries and river networks",
+  "acceptable": [
+   "gee:WWF/HydroSHEDS/*",
+   "gee:MERIT/Hydro/*",
+   "gee:WWF/HydroATLAS/*"
+  ]
+ },
+ {
+  "theme": "hydrology",
+  "q": "river discharge forecasts",
+  "acceptable": [
+   "open-meteo:flood",
+   "gee:JRC/CEMS_GLOFAS/*",
+   "planetary-computer:kaza-hydroforecast"
+  ]
+ },
+ {
+  "theme": "hydrology",
+  "q": "terrestrial water storage groundwater GRACE",
+  "acceptable": [
+   "cmr:POCLOUD/*GRACE*",
+   "cmr:GES_DISC/*GRACE*",
+   "gee:NASA/GRACE/*",
+   "gee:NASA/GLDAS*",
+   "cmr:GES_DISC/GLDAS*"
+  ]
+ },
+ {
+  "theme": "snow-ice",
+  "q": "daily snow cover from MODIS",
+  "acceptable": [
+   "planetary-computer:modis-10A1-061",
+   "gee:MODIS/061/MOD10A1",
+   "gee:MODIS/061/MYD10A1",
+   "cdse:modis-*-mod10a1",
+   "cdse:modis-*-myd10a1",
+   "cmr:NSIDC_CPRD/MOD10A1_*",
+   "cmr:NSIDC_CPRD/MYD10A1_*"
+  ]
+ },
+ {
+  "theme": "snow-ice",
+  "q": "snow water equivalent",
+  "acceptable": [
+   "cdse:clms_swe_*",
+   "openeo-cdse:CLMS_SWE*",
+   "cmr:NSIDC_CPRD/*SWE*",
+   "gee:NASA/ORNL/*",
+   "cmr:NSIDC_CPRD/NSIDC-0*"
+  ]
+ },
+ {
+  "theme": "snow-ice",
+  "q": "glacier outlines inventory",
+  "acceptable": [
+   "gee:GLIMS/*"
+  ]
+ },
+ {
+  "theme": "snow-ice",
+  "q": "sea ice concentration",
+  "acceptable": [
+   "cmr:NSIDC_CPRD/NSIDC-0051_*",
+   "cmr:NSIDC_CPRD/NSIDC-0079_*",
+   "cmr:POCLOUD/*AMSR*"
+  ]
+ },
+ {
+  "theme": "ocean",
+  "q": "chlorophyll and ocean colour",
+  "acceptable": [
+   "cmr:OB_CLOUD/MODISA_L3*",
+   "cmr:OB_CLOUD/MODIST_L3*",
+   "cmr:OB_CLOUD/VIIRS*_L3*",
+   "cmr:OB_CLOUD/*OC*",
+   "cmr:OB_CLOUD/PACE*",
+   "gee:NASA/OCEANDATA/*",
+   "planetary-computer:sentinel-3-olci-wfr-l2-netcdf",
+   "gee:COPERNICUS/MARINE/*"
+  ]
+ },
+ {
+  "theme": "ocean",
+  "q": "wave height and swell forecast",
+  "acceptable": [
+   "open-meteo:marine"
+  ]
+ },
+ {
+  "theme": "ocean",
+  "q": "sea level and ocean altimetry",
+  "acceptable": [
+   "cmr:POCLOUD/*SSH*",
+   "cmr:POCLOUD/*SEA_SURFACE_HEIGHT*",
+   "cmr:POCLOUD/SWOT*",
+   "planetary-computer:sentinel-3-sral-wat-l2-netcdf",
+   "cmr:POCLOUD/*ALT*",
+   "cmr:POCLOUD/JASON*",
+   "cmr:POCLOUD/*SLA*",
+   "cmr:POCLOUD/*GMSL*",
+   "cmr:POCLOUD/*OSTM*",
+   "cmr:POCLOUD/*TOPEX*"
+  ]
+ },
+ {
+  "theme": "ocean",
+  "q": "coral reef habitat maps",
+  "acceptable": [
+   "gee:ACA/reef_habitat/*"
+  ]
+ },
+ {
+  "theme": "air-quality",
+  "q": "tropospheric NO2 column from Sentinel-5P",
+  "acceptable": [
+   "gee:COPERNICUS/S5P/OFFL/L3_NO2",
+   "gee:COPERNICUS/S5P/NRTI/L3_NO2",
+   "planetary-computer:sentinel-5p-l2-netcdf",
+   "cmr:GES_DISC/S5P_L2__NO2*",
+   "cmr:GES_DISC/TROPOMI*NO2*",
+   "cdse:sentinel-5p-*"
+  ]
+ },
+ {
+  "theme": "air-quality",
+  "q": "PM2.5 air quality forecast",
+  "acceptable": [
+   "open-meteo:air-quality",
+   "gee:ECMWF/CAMS/NRT"
+  ]
+ },
+ {
+  "theme": "air-quality",
+  "q": "aerosol optical depth",
+  "acceptable": [
+   "cmr:LPCLOUD/MCD19A2*",
+   "gee:MODIS/061/MCD19A2_GRANULES",
+   "cmr:GES_DISC/AER*",
+   "gee:NOAA/VIIRS/AOD_EDR/V3",
+   "planetary-computer:sentinel-3-synergy-aod-l2-netcdf",
+   "gee:ECMWF/CAMS/NRT",
+   "cmr:LAADS/MOD04*",
+   "cmr:LAADS/MYD04*",
+   "cmr:LAADS/AERDB*",
+   "cmr:LAADS/AERDT*",
+   "cmr:LAADS/CLDMSK*",
+   "cmr:LAADS/*AER*"
+  ]
+ },
+ {
+  "theme": "air-quality",
+  "q": "methane emissions from space",
+  "acceptable": [
+   "cmr:GES_DISC/S5P_L2__CH4*",
+   "gee:COPERNICUS/S5P/OFFL/L3_CH4",
+   "cmr:LPCLOUD/EMIT*CH4*",
+   "cmr:LPCLOUD/EMITL2BCH4*",
+   "cmr:GES_DISC/*CH4*",
+   "cmr:ORNL_CLOUD/*Methane*",
+   "cmr:ORNL_CLOUD/*CH4*"
+  ]
+ },
+ {
+  "theme": "air-quality",
+  "q": "surface ozone concentration",
+  "acceptable": [
+   "gee:COPERNICUS/S5P/OFFL/L3_O3",
+   "cmr:GES_DISC/OMTO3*",
+   "cmr:GES_DISC/S5P_L2__O3*",
+   "gee:ECMWF/CAMS/NRT",
+   "open-meteo:air-quality",
+   "cmr:GES_DISC/*O3*",
+   "cmr:LARC_CLOUD/TEMPO*O3*"
+  ]
+ },
+ {
+  "theme": "fire",
+  "q": "active fire detections in near real time",
+  "acceptable": [
+   "nasa-firms:active-fires",
+   "planetary-computer:modis-14A1-061",
+   "gee:FIRMS",
+   "gee:MODIS/061/MOD14A1",
+   "nasa-eonet:events",
+   "cmr:LPCLOUD/MOD14*",
+   "cmr:LPCLOUD/MYD14*",
+   "planetary-computer:modis-14A2-061",
+   "gee:MODIS/061/MYD14A1"
+  ]
+ },
+ {
+  "theme": "fire",
+  "q": "monthly burned area",
+  "acceptable": [
+   "cmr:LPCLOUD/MCD64A1_061",
+   "planetary-computer:modis-64A1-061",
+   "gee:MODIS/061/MCD64A1",
+   "gee:ESA/CCI/FireCCI/5_1",
+   "cdse:modis-terraaqua-mcd64a1",
+   "cmr:LPCLOUD/VNP64A1_002",
+   "cdse:clms_ba_*",
+   "openeo-cdse:CLMS_BA*"
+  ]
+ },
+ {
+  "theme": "fire",
+  "q": "burn severity maps for the US",
+  "acceptable": [
+   "planetary-computer:mtbs",
+   "gee:USFS/GTAC/MTBS/*",
+   "gee:*MTBS*"
+  ],
+  "aoi": [
+   -120,
+   38,
+   -119,
+   39
+  ]
+ },
+ {
+  "theme": "fire",
+  "q": "wildfire perimeters and global fire events",
+  "acceptable": [
+   "gee:JRC/GWIS/GlobFire/*",
+   "nasa-eonet:events",
+   "planetary-computer:mtbs",
+   "gee:*GlobFire*",
+   "gee:*erimeter*"
+  ]
+ },
+ {
+  "theme": "fire",
+  "q": "fire radiative power",
+  "acceptable": [
+   "nasa-firms:active-fires",
+   "planetary-computer:sentinel-3-slstr-frp-l2-netcdf",
+   "gee:FIRMS",
+   "planetary-computer:modis-14A1-061",
+   "gee:MODIS/061/MOD14A1",
+   "cmr:LPCLOUD/MOD14*",
+   "cmr:LPCLOUD/MYD14*",
+   "cmr:LPCLOUD/VNP14*"
+  ]
+ },
+ {
+  "theme": "nightlights",
+  "q": "night-time lights VIIRS",
+  "acceptable": [
+   "gee:NOAA/VIIRS/DNB/*",
+   "cmr:LAADS/VNP46*",
+   "cmr:LAADS/VJ146*",
+   "nasa-gibs:viirs-black-marble",
+   "gee:NOAA/VIIRS/001/VNP46A1"
+  ]
+ },
+ {
+  "theme": "nightlights",
+  "q": "Black Marble daily nighttime radiance",
+  "acceptable": [
+   "cmr:LAADS/VNP46A*",
+   "cmr:LAADS/VJ146A*",
+   "nasa-gibs:viirs-black-marble",
+   "gee:NOAA/VIIRS/001/VNP46A1"
+  ]
+ },
+ {
+  "theme": "nightlights",
+  "q": "DMSP-OLS stable lights 1992 to 2013",
+  "acceptable": [
+   "gee:NOAA/DMSP-OLS/*",
+   "gee:*DMSP*"
+  ]
+ },
+ {
+  "theme": "nightlights",
+  "q": "how bright is the city at night over the years",
+  "acceptable": [
+   "gee:NOAA/VIIRS/DNB/*",
+   "cmr:LAADS/VNP46*",
+   "cmr:LAADS/VJ146*",
+   "nasa-gibs:viirs-black-marble",
+   "gee:NOAA/VIIRS/001/VNP46A1",
+   "gee:NOAA/DMSP-OLS/*"
+  ]
+ },
+ {
+  "theme": "population",
+  "q": "gridded population at 100 m",
+  "acceptable": [
+   "worldpop:population",
+   "gee:WorldPop/GP/100m/pop",
+   "gee:JRC/GHSL/P2023A/GHS_POP",
+   "kontur:population",
+   "gee:CIESIN/GPWv411/GPW_Population_Count"
+  ]
+ },
+ {
+  "theme": "population",
+  "q": "worldwide population density",
+  "acceptable": [
+   "gee:CIESIN/GPWv411/GPW_Population_Density",
+   "gee:JRC/GHSL/P2023A/GHS_POP",
+   "worldpop:population",
+   "kontur:population",
+   "gee:WorldPop/*",
+   "gee:CIESIN/GPWv411/GPW_UNWPP-Adjusted_Population_Density"
+  ]
+ },
+ {
+  "theme": "population",
+  "q": "population by age and sex",
+  "acceptable": [
+   "worldpop:age-structures",
+   "gee:WorldPop/GP/100m/pop_age_sex",
+   "gee:CIESIN/GPWv411/GPW_Basic_Demographic_Characteristics",
+   "gee:WorldPop/*"
+  ]
+ },
+ {
+  "theme": "population",
+  "q": "H3 hexagon population dataset",
+  "acceptable": [
+   "kontur:population"
+  ]
+ },
+ {
+  "theme": "population",
+  "q": "how many people live inside my study area",
+  "acceptable": [
+   "worldpop:population",
+   "gee:JRC/GHSL/P2023A/GHS_POP",
+   "kontur:population",
+   "gee:CIESIN/GPWv411/GPW_Population_Count",
+   "gee:WorldPop/*",
+   "gee:CIESIN/GPWv411/GPW_Population_Density"
+  ]
+ },
+ {
+  "theme": "urban",
+  "q": "built-up area extent over time",
+  "acceptable": [
+   "gee:JRC/GHSL/P2023A/GHS_BUILT_S",
+   "gee:JRC/GHSL/P2023A/GHS_BUILT_S_10m",
+   "gee:JRC/GHSL/*",
+   "gee:DLR/WSF/*"
+  ]
+ },
+ {
+  "theme": "urban",
+  "q": "degree of urbanisation settlement classification",
+  "acceptable": [
+   "gee:JRC/GHSL/P2023A/GHS_SMOD_V2-0",
+   "gee:JRC/GHSL/P2023A/GHS_BUILT_C"
+  ]
+ },
+ {
+  "theme": "urban",
+  "q": "impervious surface",
+  "acceptable": [
+   "gee:Tsinghua/FROM-GLC/GAIA/*",
+   "gee:JRC/GHSL/P2023A/GHS_BUILT_S",
+   "gee:JRC/GHSL/P2023A/GHS_BUILT_S_10m",
+   "planetary-computer:esa-worldcover",
+   "gee:GOOGLE/DYNAMICWORLD/V1",
+   "gee:DLR/WSF/*"
+  ]
+ },
+ {
+  "theme": "buildings",
+  "q": "building footprints",
+  "acceptable": [
+   "overture:buildings",
+   "planetary-computer:ms-buildings",
+   "google-open-buildings:v3",
+   "vida:google-microsoft-osm-buildings",
+   "microsoft-buildings:global-ml-footprints",
+   "gee:GOOGLE/Research/open-buildings/*",
+   "osm:overpass"
+  ]
+ },
+ {
+  "theme": "buildings",
+  "q": "building heights",
+  "acceptable": [
+   "gee:JRC/GHSL/P2023A/GHS_BUILT_H",
+   "overture:buildings",
+   "cdse:clms_ua_building-height_europe_10m_3yearly_v1",
+   "gee:GOOGLE/Research/open-buildings-temporal/*",
+   "gee:JRC/GHSL/P2023A/GHS_BUILT_V"
+  ]
+ },
+ {
+  "theme": "buildings",
+  "q": "Microsoft building footprints",
+  "acceptable": [
+   "planetary-computer:ms-buildings",
+   "microsoft-buildings:global-ml-footprints"
+  ]
+ },
+ {
+  "theme": "buildings",
+  "q": "Google Open Buildings for Africa",
+  "acceptable": [
+   "google-open-buildings:v3",
+   "gee:GOOGLE/Research/open-buildings/*",
+   "gee:GOOGLE/Research/open-buildings-temporal/*"
+  ]
+ },
+ {
+  "theme": "infrastructure",
+  "q": "road network data",
+  "acceptable": [
+   "overture:transportation",
+   "osm:overpass"
+  ]
+ },
+ {
+  "theme": "infrastructure",
+  "q": "points of interest like hospitals and schools",
+  "acceptable": [
+   "overture:places",
+   "osm:overpass"
+  ]
+ },
+ {
+  "theme": "infrastructure",
+  "q": "OpenStreetMap features by bounding box",
+  "acceptable": [
+   "osm:overpass"
+  ]
+ },
+ {
+  "theme": "infrastructure",
+  "q": "power plants and electricity grid",
+  "acceptable": [
+   "gee:WRI/GPPD/power_plants",
+   "gfw:wri_global_power_plant_database",
+   "osm:overpass"
+  ]
+ },
+ {
+  "theme": "boundaries",
+  "q": "administrative boundaries level 1 provinces",
+  "acceptable": [
+   "gee:FAO/GAUL/2025/level1",
+   "gee:WM/geoLab/geoBoundaries/600/ADM1",
+   "overture:divisions",
+   "gee:FAO/GAUL_SIMPLIFIED_500m/2025/level1",
+   "gfw:gadm_administrative_boundaries"
+  ]
+ },
+ {
+  "theme": "boundaries",
+  "q": "country borders",
+  "acceptable": [
+   "overture:divisions",
+   "gee:FAO/GAUL/2015/level0",
+   "gee:WM/geoLab/geoBoundaries/600/ADM0",
+   "gee:USDOS/LSIB*",
+   "gee:FAO/GAUL_SIMPLIFIED_500m/2015/level0"
+  ]
+ },
+ {
+  "theme": "boundaries",
+  "q": "protected areas WDPA",
+  "acceptable": [
+   "gee:WCMC/WDPA/current/polygons",
+   "gfw:wdpa_protected_areas",
+   "gee:WCMC/WDPA/current/points",
+   "gfw:wdpa_licensed_protected_areas"
+  ]
+ },
+ {
+  "theme": "biodiversity",
+  "q": "species occurrence records",
+  "acceptable": [
+   "planetary-computer:gbif",
+   "planetary-computer:mobi"
+  ]
+ },
+ {
+  "theme": "biodiversity",
+  "q": "biodiversity intactness and key biodiversity areas",
+  "acceptable": [
+   "gfw:birdlife_biodiversity_intactness",
+   "gfw:birdlife_key_biodiversity_areas",
+   "gfw:ci_biodiversity_hotspots",
+   "planetary-computer:io-biodiversity",
+   "planetary-computer:mobi"
+  ]
+ },
+ {
+  "theme": "biodiversity",
+  "q": "terrestrial ecoregions and biomes",
+  "acceptable": [
+   "gee:RESOLVE/ECOREGIONS/*",
+   "gfw:wwf_terrestrial_ecoregions",
+   "gee:OpenLandMap/PNV/PNV_BIOME-TYPE_BIOME00K_C/v01",
+   "gfw:fao_ecozones"
+  ]
+ },
+ {
+  "theme": "geology",
+  "q": "earthquake catalog",
+  "acceptable": [
+   "usgs-earthquakes:fdsn-catalog"
+  ]
+ },
+ {
+  "theme": "geology",
+  "q": "bedrock geology and lithology map",
+  "acceptable": [
+   "gee:CSP/ERGo/1_0/US/lithology"
+  ]
+ },
+ {
+  "theme": "geology",
+  "q": "volcano eruptions and thermal anomalies",
+  "acceptable": [
+   "nasa-eonet:events",
+   "cmr:LARC_CLOUD/*VOLC*",
+   "cmr:GES_DISC/MSAQSO2L4_*",
+   "planetary-computer:modis-14A1-061"
+  ]
+ },
+ {
+  "theme": "hazards",
+  "q": "natural disaster events tracker",
+  "acceptable": [
+   "nasa-eonet:events"
+  ]
+ },
+ {
+  "theme": "hazards",
+  "q": "landslide susceptibility",
+  "acceptable": [
+   "cmr:GES_DISC/Global_Landslide_*"
+  ]
+ },
+ {
+  "theme": "hazards",
+  "q": "flood hazard maps",
+  "acceptable": [
+   "planetary-computer:deltares-floods",
+   "open-meteo:flood",
+   "eodc:GFM",
+   "gee:GLOBAL_FLOOD_DB/*"
+  ]
+ },
+ {
+  "theme": "embeddings",
+  "q": "satellite embeddings AlphaEarth",
+  "acceptable": [
+   "gee:GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL"
+  ]
+ },
+ {
+  "theme": "embeddings",
+  "q": "foundation model embeddings for land classification",
+  "acceptable": [
+   "gee:GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL"
+  ]
+ }
+]

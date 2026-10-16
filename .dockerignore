@@ -1,0 +1,46 @@
+# Dependencies — reinstalled fresh inside Docker
+node_modules
+mini-services/geoagent-service/node_modules
+
+# Build output — rebuilt inside Docker
+.next
+
+# Runtime data — mounted as Docker volume
+db/*.db
+db/*.db-shm
+db/*.db-wal
+public/uploads
+
+# Secrets — passed via env_file or environment
+.env
+.env.*
+!.env.example
+secrets
+
+# Not part of the web image (the geo service has its own build context)
+services
+e2e
+playwright-report
+test-results
+*.rar
+.claude
+
+# Dev tooling
+*.log
+dev.log
+server.log
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

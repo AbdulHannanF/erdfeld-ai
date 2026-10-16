@@ -1,0 +1,49 @@
+[project]
+name = "geo-service"
+version = "0.1.0"
+description = "GeoAgent Python geo execution backend: cloud-masked composites, time series, zonal stats"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn>=0.32",
+  "pystac-client>=0.8",
+  "odc-stac>=0.4",
+  "xarray>=2024.10",
+  "rioxarray>=0.17",
+  "rio-tiler>=7.0",
+  "rasterio>=1.4",
+  "numpy>=2.0",
+  "shapely>=2.0",
+  "pyproj>=3.7",
+  "exactextract>=0.2",
+  "pandas>=2.2",
+]
+
+[project.optional-dependencies]
+# TimesFM 2.5 (Apache-2.0 code AND weights). Off by default (GEO_TIMESFM=0) and heavy (~1 GB with torch),
+# so it is an extra: `uv sync --extra timesfm`, or docker build --build-arg WITH_TIMESFM=1.
+# CPU torch wheels, see [tool.uv.sources].
+timesfm = [
+  "timesfm[torch]==3.0.2",
+  "torch==2.9.1",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "httpx>=0.27",
+    "mercantile>=1.2.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+filterwarnings = ["ignore::DeprecationWarning", "ignore::PendingDeprecationWarning"]

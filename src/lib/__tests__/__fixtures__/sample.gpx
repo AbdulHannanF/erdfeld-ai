@@ -1,0 +1,6 @@
+<?xml version="1.0"?><gpx version="1.1" xmlns="http://www.topografix.com/GPX/1/1">
+  <wpt lat="12.5" lon="72.5"><ele>100.5</ele><name>Camp</name></wpt>
+  <wpt lon="1"><name>no lat</name></wpt>
+  <rte><name>R</name><rtept lat="1" lon="1"/><rtept lat="2" lon="2"/></rte>
+  <trk><name>T</name><trkseg><trkpt lat="3" lon="3"/><trkpt lat="3.1" lon="3.1"/></trkseg><trkseg><trkpt lat="4" lon="4"/><trkpt lat="4.1" lon="4.1"/></trkseg></trk>
+  <trk><name>single</name><trkseg><trkpt lat="3" lon="3"/></trkseg></trk></gpx>

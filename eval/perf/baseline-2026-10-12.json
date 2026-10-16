@@ -1,0 +1,4390 @@
+{
+  "date": "2026-10-12",
+  "node": "v22.22.0",
+  "titilerEndpoint": "https://titiler.xyz (default)",
+  "geoServiceConfigured": false,
+  "aois": [
+    {
+      "id": "kasur",
+      "name": "Kasur, PK",
+      "why": "Fixed baseline AOI (irrigated Punjab cropland, hazy/dusty).",
+      "bbox": [
+        74.05,
+        31.12,
+        74.08,
+        31.15
+      ],
+      "areaKm2": 9.5
+    },
+    {
+      "id": "lahore",
+      "name": "Lahore edge, PK",
+      "why": "Fixed baseline AOI (peri-urban edge, mixed built/crop).",
+      "bbox": [
+        74.2,
+        31.28,
+        74.23,
+        31.31
+      ],
+      "areaKm2": 9.5
+    },
+    {
+      "id": "beauce",
+      "name": "Beauce, FR",
+      "why": "Temperate European large-field arable; frequent cloud, different S2 tile/UTM zone (31U).",
+      "bbox": [
+        1.8,
+        48.3,
+        1.83,
+        48.33
+      ],
+      "areaKm2": 7.4
+    },
+    {
+      "id": "iowa",
+      "name": "Story Co., Iowa, US",
+      "why": "US Midwest row-crop grid; Landsat/S2 overlap region, UTM zone 15.",
+      "bbox": [
+        -93.7,
+        42,
+        -93.67,
+        42.03
+      ],
+      "areaKm2": 8.2
+    },
+    {
+      "id": "kitale",
+      "name": "Kitale, KE",
+      "why": "East African highland maize; equatorial cloud, southern-hemisphere-adjacent tiling, high elevation.",
+      "bbox": [
+        34.98,
+        1,
+        35.01,
+        1.03
+      ],
+      "areaKm2": 11.1
+    }
+  ],
+  "tools": [
+    {
+      "name": "fetch_ndvi",
+      "tool": "fetch_ndvi",
+      "args": {}
+    },
+    {
+      "name": "render_raster",
+      "tool": "render_raster",
+      "args": {
+        "bands": [
+          "B08"
+        ],
+        "start": "2026-09-12",
+        "end": "2026-10-12"
+      }
+    },
+    {
+      "name": "compute_spectral_index",
+      "tool": "compute_spectral_index",
+      "args": {
+        "index": "NDWI"
+      }
+    },
+    {
+      "name": "fetch_dem",
+      "tool": "fetch_dem",
+      "args": {}
+    }
+  ],
+  "rows": [
+    {
+      "tool": "fetch_ndvi",
+      "aoi": "kasur",
+      "cold": {
+        "totalMs": 4844.6728650000005,
+        "ok": true,
+        "summaryHead": "NDVI colormap (B08−B04)/(B08+B04) for 9.5 km² (drawn polygon). **Scene:** 2026-10-08 | **Cloud cover (scene-wide):** 28.6% | **Satellite:** sentinel-2a **NDVI mean (drawn AOI polygon, cloud-masked):** 0.359 **Scene quali",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_43RDQ_20261008_0_L2A&assets=nir&assets=red&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=0.11271%2C0.60258&colormap_name=rdylgn&return_mask=true",
+        "requests": 10,
+        "failedRequests": 0,
+        "bytes": 920251,
+        "stageWallMs": {
+          "stac_search": 663.624908,
+          "titiler_npy": 1443.477241,
+          "titiler_npy_after": 2646.7242580000006,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 663.624908,
+          "titiler_npy": 5631.174641,
+          "titiler_npy_after": 2646.7242580000006,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 3,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 90.84645799999998,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 663.624908,
+            "bytes": 126145
+          },
+          "titiler.xyz": {
+            "requests": 9,
+            "sumMs": 8277.898899,
+            "bytes": 794106
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 11,
+            "endMs": 675,
+            "ttfbMs": 559,
+            "bytes": 126145,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 676,
+            "endMs": 2120,
+            "ttfbMs": 1443,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 677,
+            "endMs": 1290,
+            "ttfbMs": 611,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 679,
+            "endMs": 1151,
+            "ttfbMs": 469,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 680,
+            "endMs": 1712,
+            "ttfbMs": 1031,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 681,
+            "endMs": 1609,
+            "ttfbMs": 927,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 682,
+            "endMs": 1824,
+            "ttfbMs": 1141,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2129,
+            "endMs": 3227,
+            "ttfbMs": 1075,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 3242,
+            "endMs": 3775,
+            "ttfbMs": 533,
+            "bytes": 46946,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 3777,
+            "endMs": 4793,
+            "ttfbMs": 978,
+            "bytes": 561944,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 71.41316099999949,
+        "ok": true,
+        "summaryHead": "NDVI colormap (B08−B04)/(B08+B04) for 9.5 km² (drawn polygon). **Scene:** 2026-10-08 | **Cloud cover (scene-wide):** 28.6% | **Satellite:** sentinel-2a **NDVI mean (drawn AOI polygon, cloud-masked):** 0.359 **Scene quali",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_43RDQ_20261008_0_L2A&assets=nir&assets=red&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=0.11271%2C0.60258&colormap_name=rdylgn&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 71.41316099999949,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 11562,
+        "y": 6699,
+        "ms": 58.23663699999997,
+        "status": 200,
+        "bytes": 120895
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 11562,
+        "y": 6699,
+        "ms": 77.42569000000003,
+        "status": 200,
+        "bytes": 120895
+      }
+    },
+    {
+      "tool": "render_raster",
+      "aoi": "kasur",
+      "cold": {
+        "totalMs": 3972.6880300000003,
+        "ok": true,
+        "summaryHead": "**Sentinel-2 B08** rendered over 9.5 km² (drawn polygon). **Scene:** S2A_43RDQ_20261008_0_L2A | **Date:** 2026-10-08 | **Scene-wide cloud:** 28.6% **Scene quality (over your AOI):** 90% of the AOI was clear (not vegetate",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_43RDQ_20261008_0_L2A&assets=nir&expression=%28b1*0.0001%29&rescale=0.2104%2C0.3818&colormap_name=viridis&return_mask=true",
+        "requests": 9,
+        "failedRequests": 0,
+        "bytes": 830114,
+        "stageWallMs": {
+          "stac_search": 832.7923550000005,
+          "titiler_npy": 912.6718650000003,
+          "titiler_npy_after": 2179.8892529999994,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 832.7923550000005,
+          "titiler_npy": 5007.516530999999,
+          "titiler_npy_after": 2179.8892529999994,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 2,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 47.33455700000013,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 832.7923550000005,
+            "bytes": 251554
+          },
+          "titiler.xyz": {
+            "requests": 8,
+            "sumMs": 7187.405783999999,
+            "bytes": 578560
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 3,
+            "endMs": 836,
+            "ttfbMs": 650,
+            "bytes": 251554,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 836,
+            "endMs": 1664,
+            "ttfbMs": 827,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 837,
+            "endMs": 1724,
+            "ttfbMs": 882,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 837,
+            "endMs": 1688,
+            "ttfbMs": 850,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 838,
+            "endMs": 1534,
+            "ttfbMs": 695,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 838,
+            "endMs": 1749,
+            "ttfbMs": 910,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 838,
+            "endMs": 1672,
+            "ttfbMs": 833,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1750,
+            "endMs": 2926,
+            "ttfbMs": 1164,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2941,
+            "endMs": 3945,
+            "ttfbMs": 986,
+            "bytes": 393344,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 41.31941700000061,
+        "ok": true,
+        "summaryHead": "**Sentinel-2 B08** rendered over 9.5 km² (drawn polygon). **Scene:** S2A_43RDQ_20261008_0_L2A | **Date:** 2026-10-08 | **Scene-wide cloud:** 28.6% **Scene quality (over your AOI):** 90% of the AOI was clear (not vegetate",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_43RDQ_20261008_0_L2A&assets=nir&expression=%28b1*0.0001%29&rescale=0.2104%2C0.3818&colormap_name=viridis&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 41.31941700000061,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 11562,
+        "y": 6699,
+        "ms": 55.35897499999919,
+        "status": 200,
+        "bytes": 105810
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 11562,
+        "y": 6699,
+        "ms": 70.86101200000121,
+        "status": 200,
+        "bytes": 105810
+      }
+    },
+    {
+      "tool": "compute_spectral_index",
+      "aoi": "kasur",
+      "cold": {
+        "totalMs": 2436.966434,
+        "ok": true,
+        "summaryHead": "**NDWI** (water body detection (white→blue)) computed for 9.5 km² (drawn polygon). **Formula:** `(B03-B08)/(B03+B08)` **Scene:** 2026-10-08 | **Scene-wide cloud:** 28.6% **NDWI mean (drawn polygon, cloud-masked):** -0.36",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_43RDQ_20261008_0_L2A&assets=green&assets=nir&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=-0.55313%2C-0.18332&colormap_name=blues_r&return_mask=true",
+        "requests": 10,
+        "failedRequests": 0,
+        "bytes": 920251,
+        "stageWallMs": {
+          "stac_search": 282.95149200000014,
+          "titiler_npy": 491.4899499999992,
+          "titiler_npy_after": 1598.7311189999982,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 282.95149200000014,
+          "titiler_npy": 1579.9913680000009,
+          "titiler_npy_after": 1598.7311189999982,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 3,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 63.79387300000235,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 282.95149200000014,
+            "bytes": 126145
+          },
+          "titiler.xyz": {
+            "requests": 9,
+            "sumMs": 3178.722486999999,
+            "bytes": 794106
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 1,
+            "endMs": 284,
+            "ttfbMs": 222,
+            "bytes": 126145,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 284,
+            "endMs": 449,
+            "ttfbMs": 164,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 285,
+            "endMs": 464,
+            "ttfbMs": 178,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 285,
+            "endMs": 455,
+            "ttfbMs": 169,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 285,
+            "endMs": 690,
+            "ttfbMs": 405,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 285,
+            "endMs": 455,
+            "ttfbMs": 169,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 285,
+            "endMs": 776,
+            "ttfbMs": 489,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 777,
+            "endMs": 1155,
+            "ttfbMs": 357,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1166,
+            "endMs": 1331,
+            "ttfbMs": 163,
+            "bytes": 46946,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1333,
+            "endMs": 2388,
+            "ttfbMs": 1007,
+            "bytes": 561944,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 40.83114899999964,
+        "ok": true,
+        "summaryHead": "**NDWI** (water body detection (white→blue)) computed for 9.5 km² (drawn polygon). **Formula:** `(B03-B08)/(B03+B08)` **Scene:** 2026-10-08 | **Scene-wide cloud:** 28.6% **NDWI mean (drawn polygon, cloud-masked):** -0.36",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_43RDQ_20261008_0_L2A&assets=green&assets=nir&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=-0.55313%2C-0.18332&colormap_name=blues_r&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 40.83114899999964,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 11562,
+        "y": 6699,
+        "ms": 56.67608999999902,
+        "status": 200,
+        "bytes": 103701
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 11562,
+        "y": 6699,
+        "ms": 71.68493200000012,
+        "status": 200,
+        "bytes": 103701
+      }
+    },
+    {
+      "tool": "fetch_dem",
+      "aoi": "kasur",
+      "cold": {
+        "totalMs": 4089.520912,
+        "ok": true,
+        "summaryHead": "Digital Elevation Model for 9.5 km² at 31.1350°N, 74.0650°E. **Real elevation statistics (Mapzen ~30m (global merged) via opentopodata.org):** - Min: **193 m** - Max: **205 m** - Mean: **199 m** - Relief: **12 m** - Std ",
+        "layerCount": 2,
+        "tileUrl": "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Felevationeuwest.blob.core.windows.net%2Fcopernicus-dem%2FCOP30_hh%2FCopernicus_DSM_COG_10_N31_00_E074_00_DEM.tif%3Fst%3D2026-10-11T09%253A56%253A30Z%26se%3D2026-10-12T10%253A41%253A30Z%26sp%3Drl%26sv%3D2025-07-05%26sr%3Dc%26skoid%3D9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a%26sktid%3D72f988bf-86f1-41af-91ab-2d7cd011db47%26skt%3D2026-10-12T08%253A06%253A40Z%26ske%3D2026-10-19T08%253A06%253A40Z%26sks%3Db%26skv%3D2025-07-05%26sig%3D0%252B1e3Fa9L%252BAknGJe9HT2clqeJZwGASClONy0Xvve9oE%253D&rescale=193%2C205&colormap_name=terrain&return_mask=true",
+        "requests": 4,
+        "failedRequests": 0,
+        "bytes": 17948,
+        "stageWallMs": {
+          "stac_search": 750.6375630000002,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1935.6181909999996,
+          "dem": 907.3280529999993,
+          "other": 490.7818360000001
+        },
+        "stageSumMs": {
+          "stac_search": 750.6375630000002,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1935.7475639999993,
+          "dem": 907.3280529999993,
+          "other": 490.7818360000001
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1,
+          "dem": 1,
+          "other": 1
+        },
+        "noRequestMs": 5.1552690000007715,
+        "hosts": {
+          "api.opentopodata.org": {
+            "requests": 1,
+            "sumMs": 907.3280529999993,
+            "bytes": 14220
+          },
+          "planetarycomputer.microsoft.com": {
+            "requests": 2,
+            "sumMs": 1241.4193990000003,
+            "bytes": 3471
+          },
+          "titiler.xyz": {
+            "requests": 1,
+            "sumMs": 1935.7475639999993,
+            "bytes": 257
+          }
+        },
+        "reqs": [
+          {
+            "host": "api.opentopodata.org",
+            "path": "/v1/mapzen",
+            "method": "POST",
+            "kind": "dem",
+            "startMs": 3,
+            "endMs": 910,
+            "ttfbMs": 906,
+            "bytes": 14220,
+            "status": 200
+          },
+          {
+            "host": "planetarycomputer.microsoft.com",
+            "path": "/api/stac/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 911,
+            "endMs": 1662,
+            "ttfbMs": 750,
+            "bytes": 2953,
+            "status": 200
+          },
+          {
+            "host": "planetarycomputer.microsoft.com",
+            "path": "/api/sas/v1/sign",
+            "method": "GET",
+            "kind": "other",
+            "startMs": 1663,
+            "endMs": 2153,
+            "ttfbMs": 490,
+            "bytes": 518,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/cog/tiles/WebMercatorQuad/12/2890/1674.png",
+            "method": "GET",
+            "kind": "tiles",
+            "startMs": 2154,
+            "endMs": 4090,
+            "ttfbMs": 1935,
+            "bytes": 257,
+            "status": 206
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 273.0153710000013,
+        "ok": true,
+        "summaryHead": "Digital Elevation Model for 9.5 km² at 31.1350°N, 74.0650°E. **Real elevation statistics (Mapzen ~30m (global merged) via opentopodata.org):** - Min: **193 m** - Max: **205 m** - Mean: **199 m** - Relief: **12 m** - Std ",
+        "layerCount": 2,
+        "tileUrl": "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Felevationeuwest.blob.core.windows.net%2Fcopernicus-dem%2FCOP30_hh%2FCopernicus_DSM_COG_10_N31_00_E074_00_DEM.tif%3Fst%3D2026-10-11T09%253A56%253A30Z%26se%3D2026-10-12T10%253A41%253A30Z%26sp%3Drl%26sv%3D2025-07-05%26sr%3Dc%26skoid%3D9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a%26sktid%3D72f988bf-86f1-41af-91ab-2d7cd011db47%26skt%3D2026-10-12T08%253A06%253A40Z%26ske%3D2026-10-19T08%253A06%253A40Z%26sks%3Db%26skv%3D2025-07-05%26sig%3D0%252B1e3Fa9L%252BAknGJe9HT2clqeJZwGASClONy0Xvve9oE%253D&rescale=193%2C205&colormap_name=terrain&return_mask=true",
+        "requests": 1,
+        "failedRequests": 0,
+        "bytes": 257,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 272.27317799999946,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 272.3727550000003,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 0.742193000001862,
+        "hosts": {
+          "titiler.xyz": {
+            "requests": 1,
+            "sumMs": 272.3727550000003,
+            "bytes": 257
+          }
+        },
+        "reqs": [
+          {
+            "host": "titiler.xyz",
+            "path": "/cog/tiles/WebMercatorQuad/12/2890/1674.png",
+            "method": "GET",
+            "kind": "tiles",
+            "startMs": 1,
+            "endMs": 273,
+            "ttfbMs": 272,
+            "bytes": 257,
+            "status": 206
+          }
+        ]
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 11562,
+        "y": 6699,
+        "ms": 1417.4082479999997,
+        "status": 200,
+        "bytes": 15880
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 11562,
+        "y": 6699,
+        "ms": 436.1046320000023,
+        "status": 200,
+        "bytes": 15880
+      }
+    },
+    {
+      "tool": "fetch_ndvi",
+      "aoi": "lahore",
+      "cold": {
+        "totalMs": 4995.6469929999985,
+        "ok": true,
+        "summaryHead": "NDVI colormap (B08−B04)/(B08+B04) for 9.5 km² (drawn polygon). **Scene:** 2026-10-08 | **Cloud cover (scene-wide):** 8.1% | **Satellite:** sentinel-2b **NDVI mean (drawn AOI polygon, cloud-masked):** 0.230 **Scene qualit",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2B_43RDQ_20261008_1_L2A&assets=nir&assets=red&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=0.045184%2C0.47091&colormap_name=rdylgn&return_mask=true",
+        "requests": 10,
+        "failedRequests": 0,
+        "bytes": 920154,
+        "stageWallMs": {
+          "stac_search": 966.1433799999977,
+          "titiler_npy": 1415.4171539999988,
+          "titiler_npy_after": 2564.692041000002,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 966.1433799999977,
+          "titiler_npy": 4471.994608000001,
+          "titiler_npy_after": 2564.692041000002,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 3,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 49.39441799999986,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 966.1433799999977,
+            "bytes": 126048
+          },
+          "titiler.xyz": {
+            "requests": 9,
+            "sumMs": 7036.686649000003,
+            "bytes": 794106
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 1,
+            "endMs": 967,
+            "ttfbMs": 851,
+            "bytes": 126048,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 967,
+            "endMs": 1154,
+            "ttfbMs": 186,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 968,
+            "endMs": 1428,
+            "ttfbMs": 460,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 968,
+            "endMs": 1734,
+            "ttfbMs": 765,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 968,
+            "endMs": 2383,
+            "ttfbMs": 1414,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 969,
+            "endMs": 2008,
+            "ttfbMs": 1038,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 969,
+            "endMs": 1574,
+            "ttfbMs": 604,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2383,
+            "endMs": 3451,
+            "ttfbMs": 1044,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 3464,
+            "endMs": 3968,
+            "ttfbMs": 503,
+            "bytes": 46946,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 3969,
+            "endMs": 4962,
+            "ttfbMs": 956,
+            "bytes": 561944,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 32.03172799999811,
+        "ok": true,
+        "summaryHead": "NDVI colormap (B08−B04)/(B08+B04) for 9.5 km² (drawn polygon). **Scene:** 2026-10-08 | **Cloud cover (scene-wide):** 8.1% | **Satellite:** sentinel-2b **NDVI mean (drawn AOI polygon, cloud-masked):** 0.230 **Scene qualit",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2B_43RDQ_20261008_1_L2A&assets=nir&assets=red&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=0.045184%2C0.47091&colormap_name=rdylgn&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 32.03172799999811,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 11569,
+        "y": 6691,
+        "ms": 55.75248900000224,
+        "status": 200,
+        "bytes": 119778
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 11569,
+        "y": 6691,
+        "ms": 73.56207100000029,
+        "status": 200,
+        "bytes": 119778
+      }
+    },
+    {
+      "tool": "render_raster",
+      "aoi": "lahore",
+      "cold": {
+        "totalMs": 2889.734356000001,
+        "ok": true,
+        "summaryHead": "**Sentinel-2 B08** rendered over 9.5 km² (drawn polygon). **Scene:** S2B_43RDQ_20261008_1_L2A | **Date:** 2026-10-08 | **Scene-wide cloud:** 8.1% **Scene quality (over your AOI):** 96% of the AOI was clear (not vegetated",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2B_43RDQ_20261008_1_L2A&assets=nir&expression=%28b1*0.0001%29&rescale=0.2156%2C0.3455&colormap_name=viridis&return_mask=true",
+        "requests": 9,
+        "failedRequests": 0,
+        "bytes": 829873,
+        "stageWallMs": {
+          "stac_search": 889.151428000001,
+          "titiler_npy": 1243.8179999999993,
+          "titiler_npy_after": 709.3547260000014,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 889.151428000001,
+          "titiler_npy": 3298.464198999998,
+          "titiler_npy_after": 709.3547260000014,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 2,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 47.41020199999912,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 889.151428000001,
+            "bytes": 251313
+          },
+          "titiler.xyz": {
+            "requests": 8,
+            "sumMs": 4007.8189249999996,
+            "bytes": 578560
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 1,
+            "endMs": 890,
+            "ttfbMs": 711,
+            "bytes": 251313,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 890,
+            "endMs": 1272,
+            "ttfbMs": 381,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 891,
+            "endMs": 1068,
+            "ttfbMs": 177,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 891,
+            "endMs": 1332,
+            "ttfbMs": 441,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 891,
+            "endMs": 1408,
+            "ttfbMs": 516,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 891,
+            "endMs": 1429,
+            "ttfbMs": 538,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 891,
+            "endMs": 2134,
+            "ttfbMs": 1242,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2135,
+            "endMs": 2495,
+            "ttfbMs": 338,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2510,
+            "endMs": 2859,
+            "ttfbMs": 324,
+            "bytes": 393344,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 27.49992900000143,
+        "ok": true,
+        "summaryHead": "**Sentinel-2 B08** rendered over 9.5 km² (drawn polygon). **Scene:** S2B_43RDQ_20261008_1_L2A | **Date:** 2026-10-08 | **Scene-wide cloud:** 8.1% **Scene quality (over your AOI):** 96% of the AOI was clear (not vegetated",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2B_43RDQ_20261008_1_L2A&assets=nir&expression=%28b1*0.0001%29&rescale=0.2156%2C0.3455&colormap_name=viridis&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 27.49992900000143,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 11569,
+        "y": 6691,
+        "ms": 53.8785910000006,
+        "status": 200,
+        "bytes": 112157
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 11569,
+        "y": 6691,
+        "ms": 82.74296400000094,
+        "status": 200,
+        "bytes": 112157
+      }
+    },
+    {
+      "tool": "compute_spectral_index",
+      "aoi": "lahore",
+      "cold": {
+        "totalMs": 3563.0275539999966,
+        "ok": true,
+        "summaryHead": "**NDWI** (water body detection (white→blue)) computed for 9.5 km² (drawn polygon). **Formula:** `(B03-B08)/(B03+B08)` **Scene:** 2026-10-08 | **Scene-wide cloud:** 8.1% **NDWI mean (drawn polygon, cloud-masked):** -0.239",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2B_43RDQ_20261008_1_L2A&assets=green&assets=nir&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=-0.42785%2C-0.076589&colormap_name=blues_r&return_mask=true",
+        "requests": 10,
+        "failedRequests": 0,
+        "bytes": 920154,
+        "stageWallMs": {
+          "stac_search": 442.23714800000016,
+          "titiler_npy": 557.2351419999977,
+          "titiler_npy_after": 2508.4596399999973,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 442.23714800000016,
+          "titiler_npy": 2017.607052000003,
+          "titiler_npy_after": 2508.4596399999973,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 3,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 55.09562400000141,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 442.23714800000016,
+            "bytes": 126048
+          },
+          "titiler.xyz": {
+            "requests": 9,
+            "sumMs": 4526.066692,
+            "bytes": 794106
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 1,
+            "endMs": 443,
+            "ttfbMs": 336,
+            "bytes": 126048,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 443,
+            "endMs": 841,
+            "ttfbMs": 389,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 444,
+            "endMs": 982,
+            "ttfbMs": 538,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 444,
+            "endMs": 1000,
+            "ttfbMs": 555,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 445,
+            "endMs": 614,
+            "ttfbMs": 168,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 445,
+            "endMs": 621,
+            "ttfbMs": 176,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 445,
+            "endMs": 624,
+            "ttfbMs": 178,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1001,
+            "endMs": 1977,
+            "ttfbMs": 954,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1987,
+            "endMs": 2374,
+            "ttfbMs": 386,
+            "bytes": 46946,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2375,
+            "endMs": 3520,
+            "ttfbMs": 1109,
+            "bytes": 561944,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 46.945254999998724,
+        "ok": true,
+        "summaryHead": "**NDWI** (water body detection (white→blue)) computed for 9.5 km² (drawn polygon). **Formula:** `(B03-B08)/(B03+B08)` **Scene:** 2026-10-08 | **Scene-wide cloud:** 8.1% **NDWI mean (drawn polygon, cloud-masked):** -0.239",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2B_43RDQ_20261008_1_L2A&assets=green&assets=nir&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=-0.42785%2C-0.076589&colormap_name=blues_r&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 46.945254999998724,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 11569,
+        "y": 6691,
+        "ms": 53.59590500000195,
+        "status": 200,
+        "bytes": 104721
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 11569,
+        "y": 6691,
+        "ms": 72.91161999999895,
+        "status": 200,
+        "bytes": 104721
+      }
+    },
+    {
+      "tool": "fetch_dem",
+      "aoi": "lahore",
+      "cold": {
+        "totalMs": 4457.930131000001,
+        "ok": true,
+        "summaryHead": "Digital Elevation Model for 9.5 km² at 31.2950°N, 74.2150°E. **Real elevation statistics (Mapzen ~30m (global merged) via opentopodata.org):** - Min: **195 m** - Max: **211 m** - Mean: **203 m** - Relief: **16 m** - Std ",
+        "layerCount": 2,
+        "tileUrl": "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Felevationeuwest.blob.core.windows.net%2Fcopernicus-dem%2FCOP30_hh%2FCopernicus_DSM_COG_10_N31_00_E074_00_DEM.tif%3Fst%3D2026-10-11T09%253A56%253A50Z%26se%3D2026-10-12T10%253A41%253A50Z%26sp%3Drl%26sv%3D2025-07-05%26sr%3Dc%26skoid%3D9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a%26sktid%3D72f988bf-86f1-41af-91ab-2d7cd011db47%26skt%3D2026-10-12T07%253A55%253A53Z%26ske%3D2026-10-19T07%253A55%253A53Z%26sks%3Db%26skv%3D2025-07-05%26sig%3DNdhE3DksX7z7R1qWI86RnsVL3jJyJbS23BJpCBpaho0%253D&rescale=195%2C211&colormap_name=terrain&return_mask=true",
+        "requests": 4,
+        "failedRequests": 0,
+        "bytes": 17924,
+        "stageWallMs": {
+          "stac_search": 773.0210260000022,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 2211.971221,
+          "dem": 698.8015210000012,
+          "other": 772.0463649999947
+        },
+        "stageSumMs": {
+          "stac_search": 773.0210260000022,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 2212.069890999999,
+          "dem": 698.8015210000012,
+          "other": 772.0463649999947
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1,
+          "dem": 1,
+          "other": 1
+        },
+        "noRequestMs": 2.0899980000031064,
+        "hosts": {
+          "api.opentopodata.org": {
+            "requests": 1,
+            "sumMs": 698.8015210000012,
+            "bytes": 14200
+          },
+          "planetarycomputer.microsoft.com": {
+            "requests": 2,
+            "sumMs": 1545.0673909999969,
+            "bytes": 3467
+          },
+          "titiler.xyz": {
+            "requests": 1,
+            "sumMs": 2212.069890999999,
+            "bytes": 257
+          }
+        },
+        "reqs": [
+          {
+            "host": "api.opentopodata.org",
+            "path": "/v1/mapzen",
+            "method": "POST",
+            "kind": "dem",
+            "startMs": 1,
+            "endMs": 700,
+            "ttfbMs": 697,
+            "bytes": 14200,
+            "status": 200
+          },
+          {
+            "host": "planetarycomputer.microsoft.com",
+            "path": "/api/stac/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 700,
+            "endMs": 1473,
+            "ttfbMs": 773,
+            "bytes": 2953,
+            "status": 200
+          },
+          {
+            "host": "planetarycomputer.microsoft.com",
+            "path": "/api/sas/v1/sign",
+            "method": "GET",
+            "kind": "other",
+            "startMs": 1474,
+            "endMs": 2246,
+            "ttfbMs": 772,
+            "bytes": 514,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/cog/tiles/WebMercatorQuad/12/2892/1672.png",
+            "method": "GET",
+            "kind": "tiles",
+            "startMs": 2246,
+            "endMs": 4458,
+            "ttfbMs": 2212,
+            "bytes": 257,
+            "status": 206
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 49.37499600000592,
+        "ok": true,
+        "summaryHead": "Digital Elevation Model for 9.5 km² at 31.2950°N, 74.2150°E. **Real elevation statistics (Mapzen ~30m (global merged) via opentopodata.org):** - Min: **195 m** - Max: **211 m** - Mean: **203 m** - Relief: **16 m** - Std ",
+        "layerCount": 2,
+        "tileUrl": "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Felevationeuwest.blob.core.windows.net%2Fcopernicus-dem%2FCOP30_hh%2FCopernicus_DSM_COG_10_N31_00_E074_00_DEM.tif%3Fst%3D2026-10-11T09%253A56%253A50Z%26se%3D2026-10-12T10%253A41%253A50Z%26sp%3Drl%26sv%3D2025-07-05%26sr%3Dc%26skoid%3D9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a%26sktid%3D72f988bf-86f1-41af-91ab-2d7cd011db47%26skt%3D2026-10-12T07%253A55%253A53Z%26ske%3D2026-10-19T07%253A55%253A53Z%26sks%3Db%26skv%3D2025-07-05%26sig%3DNdhE3DksX7z7R1qWI86RnsVL3jJyJbS23BJpCBpaho0%253D&rescale=195%2C211&colormap_name=terrain&return_mask=true",
+        "requests": 1,
+        "failedRequests": 0,
+        "bytes": 257,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 48.80819800000609,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 48.917255000000296,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 0.5667979999998352,
+        "hosts": {
+          "titiler.xyz": {
+            "requests": 1,
+            "sumMs": 48.917255000000296,
+            "bytes": 257
+          }
+        },
+        "reqs": [
+          {
+            "host": "titiler.xyz",
+            "path": "/cog/tiles/WebMercatorQuad/12/2892/1672.png",
+            "method": "GET",
+            "kind": "tiles",
+            "startMs": 1,
+            "endMs": 49,
+            "ttfbMs": 49,
+            "bytes": 257,
+            "status": 206
+          }
+        ]
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 11569,
+        "y": 6691,
+        "ms": 172.7072860000044,
+        "status": 200,
+        "bytes": 15887
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 11569,
+        "y": 6691,
+        "ms": 490.9225310000038,
+        "status": 200,
+        "bytes": 15887
+      }
+    },
+    {
+      "tool": "fetch_ndvi",
+      "aoi": "beauce",
+      "cold": {
+        "totalMs": 4377.018738999999,
+        "ok": true,
+        "summaryHead": "NDVI colormap (B08−B04)/(B08+B04) for 7.4 km² (drawn polygon). **Scene:** 2026-10-06 | **Cloud cover (scene-wide):** 29.4% | **Satellite:** sentinel-2c **NDVI mean (drawn AOI polygon, cloud-masked):** 0.200 **Scene quali",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_31UDP_20261006_0_L2A&assets=nir&assets=red&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=0.12625%2C0.51236&colormap_name=rdylgn&return_mask=true",
+        "requests": 10,
+        "failedRequests": 0,
+        "bytes": 754605,
+        "stageWallMs": {
+          "stac_search": 631.2442329999976,
+          "titiler_npy": 1100.1866089999967,
+          "titiler_npy_after": 2604.116836999994,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 631.2442329999976,
+          "titiler_npy": 4712.441632999995,
+          "titiler_npy_after": 2604.116836999994,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 3,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 41.471060000010766,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 631.2442329999976,
+            "bytes": 126085
+          },
+          "titiler.xyz": {
+            "requests": 9,
+            "sumMs": 7316.558469999989,
+            "bytes": 628520
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 0,
+            "endMs": 632,
+            "ttfbMs": 512,
+            "bytes": 126085,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 632,
+            "endMs": 1287,
+            "ttfbMs": 655,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 632,
+            "endMs": 1513,
+            "ttfbMs": 880,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 633,
+            "endMs": 1156,
+            "ttfbMs": 523,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 633,
+            "endMs": 1160,
+            "ttfbMs": 527,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 633,
+            "endMs": 1659,
+            "ttfbMs": 1026,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 633,
+            "endMs": 1732,
+            "ttfbMs": 1098,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1733,
+            "endMs": 2884,
+            "ttfbMs": 1141,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2897,
+            "endMs": 3503,
+            "ttfbMs": 605,
+            "bytes": 34450,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 3504,
+            "endMs": 4350,
+            "ttfbMs": 821,
+            "bytes": 408854,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 39.29786199999944,
+        "ok": true,
+        "summaryHead": "NDVI colormap (B08−B04)/(B08+B04) for 7.4 km² (drawn polygon). **Scene:** 2026-10-06 | **Cloud cover (scene-wide):** 29.4% | **Satellite:** sentinel-2c **NDVI mean (drawn AOI polygon, cloud-masked):** 0.200 **Scene quali",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_31UDP_20261006_0_L2A&assets=nir&assets=red&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=0.12625%2C0.51236&colormap_name=rdylgn&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 39.29786199999944,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 8274,
+        "y": 5673,
+        "ms": 51.800962000001164,
+        "status": 200,
+        "bytes": 61247
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 8274,
+        "y": 5673,
+        "ms": 72.79054000000178,
+        "status": 200,
+        "bytes": 61247
+      }
+    },
+    {
+      "tool": "render_raster",
+      "aoi": "beauce",
+      "cold": {
+        "totalMs": 3821.6440939999957,
+        "ok": true,
+        "summaryHead": "**Sentinel-2 B08** rendered over 7.4 km² (drawn polygon). **Scene:** S2C_31UDP_20261006_0_L2A | **Date:** 2026-10-06 | **Scene-wide cloud:** 29.4% **Scene quality (over your AOI):** 100% of the AOI was clear (not vegetat",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_31UDP_20261006_0_L2A&assets=nir&expression=%28b1*0.0001%29&rescale=0.118%2C0.3604&colormap_name=viridis&return_mask=true",
+        "requests": 9,
+        "failedRequests": 0,
+        "bytes": 829891,
+        "stageWallMs": {
+          "stac_search": 808.0383369999981,
+          "titiler_npy": 1062.5675090000004,
+          "titiler_npy_after": 1912.3683779999992,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 808.0383369999981,
+          "titiler_npy": 3638.7149659999995,
+          "titiler_npy_after": 1912.3683779999992,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 2,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 38.6698699999979,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 808.0383369999981,
+            "bytes": 251331
+          },
+          "titiler.xyz": {
+            "requests": 8,
+            "sumMs": 5551.083343999999,
+            "bytes": 578560
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 1,
+            "endMs": 809,
+            "ttfbMs": 646,
+            "bytes": 251331,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 809,
+            "endMs": 1696,
+            "ttfbMs": 886,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 810,
+            "endMs": 1613,
+            "ttfbMs": 803,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 810,
+            "endMs": 1348,
+            "ttfbMs": 537,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 810,
+            "endMs": 1872,
+            "ttfbMs": 1061,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 810,
+            "endMs": 989,
+            "ttfbMs": 178,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 810,
+            "endMs": 981,
+            "ttfbMs": 170,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1873,
+            "endMs": 2905,
+            "ttfbMs": 1021,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2917,
+            "endMs": 3797,
+            "ttfbMs": 856,
+            "bytes": 393344,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 24.911136000002443,
+        "ok": true,
+        "summaryHead": "**Sentinel-2 B08** rendered over 7.4 km² (drawn polygon). **Scene:** S2C_31UDP_20261006_0_L2A | **Date:** 2026-10-06 | **Scene-wide cloud:** 29.4% **Scene quality (over your AOI):** 100% of the AOI was clear (not vegetat",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_31UDP_20261006_0_L2A&assets=nir&expression=%28b1*0.0001%29&rescale=0.118%2C0.3604&colormap_name=viridis&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 24.911136000002443,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 8274,
+        "y": 5673,
+        "ms": 82.8668519999992,
+        "status": 200,
+        "bytes": 57710
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 8274,
+        "y": 5673,
+        "ms": 76.09768099999928,
+        "status": 200,
+        "bytes": 57710
+      }
+    },
+    {
+      "tool": "compute_spectral_index",
+      "aoi": "beauce",
+      "cold": {
+        "totalMs": 3258.654088000003,
+        "ok": true,
+        "summaryHead": "**NDWI** (water body detection (white→blue)) computed for 7.4 km² (drawn polygon). **Formula:** `(B03-B08)/(B03+B08)` **Scene:** 2026-10-06 | **Scene-wide cloud:** 29.4% **NDWI mean (drawn polygon, cloud-masked):** -0.34",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_31UDP_20261006_0_L2A&assets=green&assets=nir&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=-0.51713%2C-0.28333&colormap_name=blues_r&return_mask=true",
+        "requests": 10,
+        "failedRequests": 0,
+        "bytes": 754605,
+        "stageWallMs": {
+          "stac_search": 329.496570000003,
+          "titiler_npy": 760.9337149999992,
+          "titiler_npy_after": 2123.6686229999978,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 329.496570000003,
+          "titiler_npy": 2860.674196000007,
+          "titiler_npy_after": 2123.6686229999978,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 3,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 44.55518000000302,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 329.496570000003,
+            "bytes": 126085
+          },
+          "titiler.xyz": {
+            "requests": 9,
+            "sumMs": 4984.342819000005,
+            "bytes": 628520
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 0,
+            "endMs": 330,
+            "ttfbMs": 222,
+            "bytes": 126085,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 330,
+            "endMs": 514,
+            "ttfbMs": 182,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 331,
+            "endMs": 513,
+            "ttfbMs": 181,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 331,
+            "endMs": 830,
+            "ttfbMs": 498,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 331,
+            "endMs": 1018,
+            "ttfbMs": 686,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 331,
+            "endMs": 880,
+            "ttfbMs": 548,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 332,
+            "endMs": 1091,
+            "ttfbMs": 759,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1092,
+            "endMs": 1979,
+            "ttfbMs": 885,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1991,
+            "endMs": 2150,
+            "ttfbMs": 158,
+            "bytes": 34450,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2151,
+            "endMs": 3228,
+            "ttfbMs": 1053,
+            "bytes": 408854,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 36.87556900000345,
+        "ok": true,
+        "summaryHead": "**NDWI** (water body detection (white→blue)) computed for 7.4 km² (drawn polygon). **Formula:** `(B03-B08)/(B03+B08)` **Scene:** 2026-10-06 | **Scene-wide cloud:** 29.4% **NDWI mean (drawn polygon, cloud-masked):** -0.34",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_31UDP_20261006_0_L2A&assets=green&assets=nir&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=-0.51713%2C-0.28333&colormap_name=blues_r&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 36.87556900000345,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 8274,
+        "y": 5673,
+        "ms": 43.933900999996695,
+        "status": 200,
+        "bytes": 61120
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 8274,
+        "y": 5673,
+        "ms": 73.6064680000054,
+        "status": 200,
+        "bytes": 61120
+      }
+    },
+    {
+      "tool": "fetch_dem",
+      "aoi": "beauce",
+      "cold": {
+        "totalMs": 3823.879922,
+        "ok": true,
+        "summaryHead": "Digital Elevation Model for 7.4 km² at 48.3150°N, 1.8150°E. **Real elevation statistics (Mapzen ~30m (global merged) via opentopodata.org):** - Min: **139 m** - Max: **150 m** - Mean: **145 m** - Relief: **11 m** - Std d",
+        "layerCount": 2,
+        "tileUrl": "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Felevationeuwest.blob.core.windows.net%2Fcopernicus-dem%2FCOP30_hh%2FCopernicus_DSM_COG_10_N48_00_E001_00_DEM.tif%3Fst%3D2026-10-11T09%253A57%253A08Z%26se%3D2026-10-12T10%253A42%253A08Z%26sp%3Drl%26sv%3D2025-07-05%26sr%3Dc%26skoid%3D9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a%26sktid%3D72f988bf-86f1-41af-91ab-2d7cd011db47%26skt%3D2026-10-12T08%253A00%253A36Z%26ske%3D2026-10-19T08%253A00%253A36Z%26sks%3Db%26skv%3D2025-07-05%26sig%3DRG8BGNboLMR53eCg6BGrW0SrerWDsN46sTOEgdHKCTw%253D&rescale=139%2C150&colormap_name=terrain&return_mask=true",
+        "requests": 4,
+        "failedRequests": 0,
+        "bytes": 17821,
+        "stageWallMs": {
+          "stac_search": 977.468200999996,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1736.1632859999954,
+          "dem": 572.1145990000005,
+          "other": 536.6524550000031
+        },
+        "stageSumMs": {
+          "stac_search": 977.468200999996,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1736.262431999996,
+          "dem": 572.1145990000005,
+          "other": 536.6524550000031
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1,
+          "dem": 1,
+          "other": 1
+        },
+        "noRequestMs": 1.481381000005058,
+        "hosts": {
+          "api.opentopodata.org": {
+            "requests": 1,
+            "sumMs": 572.1145990000005,
+            "bytes": 14100
+          },
+          "planetarycomputer.microsoft.com": {
+            "requests": 2,
+            "sumMs": 1514.1206559999991,
+            "bytes": 3464
+          },
+          "titiler.xyz": {
+            "requests": 1,
+            "sumMs": 1736.262431999996,
+            "bytes": 257
+          }
+        },
+        "reqs": [
+          {
+            "host": "api.opentopodata.org",
+            "path": "/v1/mapzen",
+            "method": "POST",
+            "kind": "dem",
+            "startMs": 0,
+            "endMs": 573,
+            "ttfbMs": 571,
+            "bytes": 14100,
+            "status": 200
+          },
+          {
+            "host": "planetarycomputer.microsoft.com",
+            "path": "/api/stac/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 573,
+            "endMs": 1550,
+            "ttfbMs": 977,
+            "bytes": 2950,
+            "status": 200
+          },
+          {
+            "host": "planetarycomputer.microsoft.com",
+            "path": "/api/sas/v1/sign",
+            "method": "GET",
+            "kind": "other",
+            "startMs": 1551,
+            "endMs": 2087,
+            "ttfbMs": 536,
+            "bytes": 514,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/cog/tiles/WebMercatorQuad/12/2068/1418.png",
+            "method": "GET",
+            "kind": "tiles",
+            "startMs": 2088,
+            "endMs": 3824,
+            "ttfbMs": 1736,
+            "bytes": 257,
+            "status": 206
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 46.687654999994265,
+        "ok": true,
+        "summaryHead": "Digital Elevation Model for 7.4 km² at 48.3150°N, 1.8150°E. **Real elevation statistics (Mapzen ~30m (global merged) via opentopodata.org):** - Min: **139 m** - Max: **150 m** - Mean: **145 m** - Relief: **11 m** - Std d",
+        "layerCount": 2,
+        "tileUrl": "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Felevationeuwest.blob.core.windows.net%2Fcopernicus-dem%2FCOP30_hh%2FCopernicus_DSM_COG_10_N48_00_E001_00_DEM.tif%3Fst%3D2026-10-11T09%253A57%253A08Z%26se%3D2026-10-12T10%253A42%253A08Z%26sp%3Drl%26sv%3D2025-07-05%26sr%3Dc%26skoid%3D9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a%26sktid%3D72f988bf-86f1-41af-91ab-2d7cd011db47%26skt%3D2026-10-12T08%253A00%253A36Z%26ske%3D2026-10-19T08%253A00%253A36Z%26sks%3Db%26skv%3D2025-07-05%26sig%3DRG8BGNboLMR53eCg6BGrW0SrerWDsN46sTOEgdHKCTw%253D&rescale=139%2C150&colormap_name=terrain&return_mask=true",
+        "requests": 1,
+        "failedRequests": 0,
+        "bytes": 257,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 46.00811199999589,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 46.1087800000023,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 0.6795429999983753,
+        "hosts": {
+          "titiler.xyz": {
+            "requests": 1,
+            "sumMs": 46.1087800000023,
+            "bytes": 257
+          }
+        },
+        "reqs": [
+          {
+            "host": "titiler.xyz",
+            "path": "/cog/tiles/WebMercatorQuad/12/2068/1418.png",
+            "method": "GET",
+            "kind": "tiles",
+            "startMs": 1,
+            "endMs": 47,
+            "ttfbMs": 46,
+            "bytes": 257,
+            "status": 206
+          }
+        ]
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 8274,
+        "y": 5673,
+        "ms": 165.79768800000602,
+        "status": 200,
+        "bytes": 13276
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 8274,
+        "y": 5673,
+        "ms": 423.6465489999973,
+        "status": 200,
+        "bytes": 13276
+      }
+    },
+    {
+      "tool": "fetch_ndvi",
+      "aoi": "iowa",
+      "cold": {
+        "totalMs": 4411.737090000002,
+        "ok": true,
+        "summaryHead": "NDVI colormap (B08−B04)/(B08+B04) for 8.3 km² (drawn polygon). **Scene:** 2026-10-10 | **Cloud cover (scene-wide):** 0.0% | **Satellite:** sentinel-2c **NDVI mean (drawn AOI polygon, cloud-masked):** 0.545 **Scene qualit",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_15TVG_20261010_0_L2A&assets=nir&assets=red&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=0.094727%2C0.83435&colormap_name=rdylgn&return_mask=true",
+        "requests": 10,
+        "failedRequests": 0,
+        "bytes": 825111,
+        "stageWallMs": {
+          "stac_search": 649.430293999998,
+          "titiler_npy": 1102.4623720000018,
+          "titiler_npy_after": 2613.9356160000025,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 649.430293999998,
+          "titiler_npy": 4721.176967999985,
+          "titiler_npy_after": 2613.9356160000025,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 3,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 45.908808000000136,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 649.430293999998,
+            "bytes": 126111
+          },
+          "titiler.xyz": {
+            "requests": 9,
+            "sumMs": 7335.112583999988,
+            "bytes": 699000
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 0,
+            "endMs": 650,
+            "ttfbMs": 530,
+            "bytes": 126111,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 650,
+            "endMs": 828,
+            "ttfbMs": 177,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 651,
+            "endMs": 1522,
+            "ttfbMs": 868,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 651,
+            "endMs": 1451,
+            "ttfbMs": 799,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 651,
+            "endMs": 1591,
+            "ttfbMs": 940,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 651,
+            "endMs": 1482,
+            "ttfbMs": 830,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 651,
+            "endMs": 1753,
+            "ttfbMs": 1100,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1753,
+            "endMs": 2705,
+            "ttfbMs": 931,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2722,
+            "endMs": 3342,
+            "ttfbMs": 619,
+            "bytes": 39890,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 3343,
+            "endMs": 4385,
+            "ttfbMs": 998,
+            "bytes": 473894,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 56.347334999998566,
+        "ok": true,
+        "summaryHead": "NDVI colormap (B08−B04)/(B08+B04) for 8.3 km² (drawn polygon). **Scene:** 2026-10-10 | **Cloud cover (scene-wide):** 0.0% | **Satellite:** sentinel-2c **NDVI mean (drawn AOI polygon, cloud-masked):** 0.545 **Scene qualit",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_15TVG_20261010_0_L2A&assets=nir&assets=red&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=0.094727%2C0.83435&colormap_name=rdylgn&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 56.347334999998566,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 3928,
+        "y": 6081,
+        "ms": 55.99290199999814,
+        "status": 200,
+        "bytes": 101754
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 3928,
+        "y": 6081,
+        "ms": 105.89131400000042,
+        "status": 200,
+        "bytes": 101754
+      }
+    },
+    {
+      "tool": "render_raster",
+      "aoi": "iowa",
+      "cold": {
+        "totalMs": 3820.4144919999962,
+        "ok": true,
+        "summaryHead": "**Sentinel-2 B08** rendered over 8.3 km² (drawn polygon). **Scene:** S2C_15TVG_20261010_0_L2A | **Date:** 2026-10-10 | **Scene-wide cloud:** 0.0% **Scene quality (over your AOI):** 100% of the AOI was clear (vegetation 6",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_15TVG_20261010_0_L2A&assets=nir&expression=%28b1*0.0001%29&rescale=0.09367%2C0.3794&colormap_name=viridis&return_mask=true",
+        "requests": 9,
+        "failedRequests": 0,
+        "bytes": 829754,
+        "stageWallMs": {
+          "stac_search": 764.8448270000008,
+          "titiler_npy": 1293.2720520000003,
+          "titiler_npy_after": 1721.7451619999993,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 764.8448270000008,
+          "titiler_npy": 5100.589466999998,
+          "titiler_npy_after": 1721.7451619999993,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 2,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 40.552450999995926,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 764.8448270000008,
+            "bytes": 251194
+          },
+          "titiler.xyz": {
+            "requests": 8,
+            "sumMs": 6822.334628999997,
+            "bytes": 578560
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 0,
+            "endMs": 765,
+            "ttfbMs": 605,
+            "bytes": 251194,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 766,
+            "endMs": 935,
+            "ttfbMs": 169,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 766,
+            "endMs": 1577,
+            "ttfbMs": 810,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 766,
+            "endMs": 1586,
+            "ttfbMs": 819,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 766,
+            "endMs": 2059,
+            "ttfbMs": 1292,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 766,
+            "endMs": 1966,
+            "ttfbMs": 1199,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 767,
+            "endMs": 1575,
+            "ttfbMs": 807,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2059,
+            "endMs": 2941,
+            "ttfbMs": 871,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2954,
+            "endMs": 3794,
+            "ttfbMs": 822,
+            "bytes": 393344,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 31.110896000005596,
+        "ok": true,
+        "summaryHead": "**Sentinel-2 B08** rendered over 8.3 km² (drawn polygon). **Scene:** S2C_15TVG_20261010_0_L2A | **Date:** 2026-10-10 | **Scene-wide cloud:** 0.0% **Scene quality (over your AOI):** 100% of the AOI was clear (vegetation 6",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_15TVG_20261010_0_L2A&assets=nir&expression=%28b1*0.0001%29&rescale=0.09367%2C0.3794&colormap_name=viridis&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 31.110896000005596,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 3928,
+        "y": 6081,
+        "ms": 55.89586099999724,
+        "status": 200,
+        "bytes": 98489
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 3928,
+        "y": 6081,
+        "ms": 99.30534900000202,
+        "status": 200,
+        "bytes": 98489
+      }
+    },
+    {
+      "tool": "compute_spectral_index",
+      "aoi": "iowa",
+      "cold": {
+        "totalMs": 2939.785833999995,
+        "ok": true,
+        "summaryHead": "**NDWI** (water body detection (white→blue)) computed for 8.3 km² (drawn polygon). **Formula:** `(B03-B08)/(B03+B08)` **Scene:** 2026-10-10 | **Scene-wide cloud:** 0.0% **NDWI mean (drawn polygon, cloud-masked):** -0.538",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_15TVG_20261010_0_L2A&assets=green&assets=nir&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=-0.76842%2C-0.13063&colormap_name=blues_r&return_mask=true",
+        "requests": 10,
+        "failedRequests": 0,
+        "bytes": 825111,
+        "stageWallMs": {
+          "stac_search": 319.76923999999417,
+          "titiler_npy": 801.1217800000013,
+          "titiler_npy_after": 1778.4895069999911,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 319.76923999999417,
+          "titiler_npy": 3161.6458630000125,
+          "titiler_npy_after": 1778.4895069999911,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 3,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 40.40530700000818,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 319.76923999999417,
+            "bytes": 126111
+          },
+          "titiler.xyz": {
+            "requests": 9,
+            "sumMs": 4940.135370000004,
+            "bytes": 699000
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 0,
+            "endMs": 320,
+            "ttfbMs": 223,
+            "bytes": 126111,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 320,
+            "endMs": 959,
+            "ttfbMs": 638,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 321,
+            "endMs": 1097,
+            "ttfbMs": 775,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 322,
+            "endMs": 492,
+            "ttfbMs": 170,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 322,
+            "endMs": 933,
+            "ttfbMs": 601,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 322,
+            "endMs": 490,
+            "ttfbMs": 167,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 323,
+            "endMs": 1122,
+            "ttfbMs": 798,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1122,
+            "endMs": 1453,
+            "ttfbMs": 309,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1465,
+            "endMs": 1631,
+            "ttfbMs": 166,
+            "bytes": 39890,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1632,
+            "endMs": 2914,
+            "ttfbMs": 1248,
+            "bytes": 473894,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 29.65525099998922,
+        "ok": true,
+        "summaryHead": "**NDWI** (water body detection (white→blue)) computed for 8.3 km² (drawn polygon). **Formula:** `(B03-B08)/(B03+B08)` **Scene:** 2026-10-10 | **Scene-wide cloud:** 0.0% **NDWI mean (drawn polygon, cloud-masked):** -0.538",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2C_15TVG_20261010_0_L2A&assets=green&assets=nir&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=-0.76842%2C-0.13063&colormap_name=blues_r&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 29.65525099998922,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 3928,
+        "y": 6081,
+        "ms": 44.659943999999086,
+        "status": 200,
+        "bytes": 90635
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 3928,
+        "y": 6081,
+        "ms": 61.603847999998834,
+        "status": 200,
+        "bytes": 90635
+      }
+    },
+    {
+      "tool": "fetch_dem",
+      "aoi": "iowa",
+      "cold": {
+        "totalMs": 3524.973179000008,
+        "ok": true,
+        "summaryHead": "Digital Elevation Model for 8.3 km² at 42.0150°N, -93.6850°E. **Real elevation statistics (Mapzen ~30m (global merged) via opentopodata.org):** - Min: **294 m** - Max: **322 m** - Mean: **310 m** - Relief: **28 m** - Std",
+        "layerCount": 2,
+        "tileUrl": "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Felevationeuwest.blob.core.windows.net%2Fcopernicus-dem%2FCOP30_hh%2FCopernicus_DSM_COG_10_N42_00_W094_00_DEM.tif%3Fst%3D2026-10-11T09%253A57%253A25Z%26se%3D2026-10-12T10%253A42%253A25Z%26sp%3Drl%26sv%3D2025-07-05%26sr%3Dc%26skoid%3D9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a%26sktid%3D72f988bf-86f1-41af-91ab-2d7cd011db47%26skt%3D2026-10-12T07%253A58%253A42Z%26ske%3D2026-10-19T07%253A58%253A42Z%26sks%3Db%26skv%3D2025-07-05%26sig%3DYeqdHPBIr1DzkaICUga5jlMVTFC6OYPIuTrwKvzBJkc%253D&rescale=294%2C322&colormap_name=terrain&return_mask=true",
+        "requests": 4,
+        "failedRequests": 0,
+        "bytes": 18347,
+        "stageWallMs": {
+          "stac_search": 751.3660320000054,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1553.098926000006,
+          "dem": 568.3188929999887,
+          "other": 650.3044430000009
+        },
+        "stageSumMs": {
+          "stac_search": 751.3660320000054,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1553.278655000002,
+          "dem": 568.3188929999887,
+          "other": 650.3044430000009
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1,
+          "dem": 1,
+          "other": 1
+        },
+        "noRequestMs": 1.8848850000067614,
+        "hosts": {
+          "api.opentopodata.org": {
+            "requests": 1,
+            "sumMs": 568.3188929999887,
+            "bytes": 14300
+          },
+          "planetarycomputer.microsoft.com": {
+            "requests": 2,
+            "sumMs": 1401.6704750000063,
+            "bytes": 3790
+          },
+          "titiler.xyz": {
+            "requests": 1,
+            "sumMs": 1553.278655000002,
+            "bytes": 257
+          }
+        },
+        "reqs": [
+          {
+            "host": "api.opentopodata.org",
+            "path": "/v1/mapzen",
+            "method": "POST",
+            "kind": "dem",
+            "startMs": 1,
+            "endMs": 569,
+            "ttfbMs": 567,
+            "bytes": 14300,
+            "status": 200
+          },
+          {
+            "host": "planetarycomputer.microsoft.com",
+            "path": "/api/stac/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 569,
+            "endMs": 1321,
+            "ttfbMs": 749,
+            "bytes": 3276,
+            "status": 200
+          },
+          {
+            "host": "planetarycomputer.microsoft.com",
+            "path": "/api/sas/v1/sign",
+            "method": "GET",
+            "kind": "other",
+            "startMs": 1321,
+            "endMs": 1971,
+            "ttfbMs": 650,
+            "bytes": 514,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/cog/tiles/WebMercatorQuad/12/982/1520.png",
+            "method": "GET",
+            "kind": "tiles",
+            "startMs": 1972,
+            "endMs": 3525,
+            "ttfbMs": 1553,
+            "bytes": 257,
+            "status": 206
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 52.159995000009076,
+        "ok": true,
+        "summaryHead": "Digital Elevation Model for 8.3 km² at 42.0150°N, -93.6850°E. **Real elevation statistics (Mapzen ~30m (global merged) via opentopodata.org):** - Min: **294 m** - Max: **322 m** - Mean: **310 m** - Relief: **28 m** - Std",
+        "layerCount": 2,
+        "tileUrl": "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Felevationeuwest.blob.core.windows.net%2Fcopernicus-dem%2FCOP30_hh%2FCopernicus_DSM_COG_10_N42_00_W094_00_DEM.tif%3Fst%3D2026-10-11T09%253A57%253A25Z%26se%3D2026-10-12T10%253A42%253A25Z%26sp%3Drl%26sv%3D2025-07-05%26sr%3Dc%26skoid%3D9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a%26sktid%3D72f988bf-86f1-41af-91ab-2d7cd011db47%26skt%3D2026-10-12T07%253A58%253A42Z%26ske%3D2026-10-19T07%253A58%253A42Z%26sks%3Db%26skv%3D2025-07-05%26sig%3DYeqdHPBIr1DzkaICUga5jlMVTFC6OYPIuTrwKvzBJkc%253D&rescale=294%2C322&colormap_name=terrain&return_mask=true",
+        "requests": 1,
+        "failedRequests": 0,
+        "bytes": 257,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 51.29924700000265,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 51.43891100000474,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 0.8607480000064243,
+        "hosts": {
+          "titiler.xyz": {
+            "requests": 1,
+            "sumMs": 51.43891100000474,
+            "bytes": 257
+          }
+        },
+        "reqs": [
+          {
+            "host": "titiler.xyz",
+            "path": "/cog/tiles/WebMercatorQuad/12/982/1520.png",
+            "method": "GET",
+            "kind": "tiles",
+            "startMs": 1,
+            "endMs": 52,
+            "ttfbMs": 51,
+            "bytes": 257,
+            "status": 206
+          }
+        ]
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 3928,
+        "y": 6081,
+        "ms": 165.72793100000126,
+        "status": 200,
+        "bytes": 15854
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 3928,
+        "y": 6081,
+        "ms": 440.5159500000009,
+        "status": 200,
+        "bytes": 15854
+      }
+    },
+    {
+      "tool": "fetch_ndvi",
+      "aoi": "kitale",
+      "cold": {
+        "totalMs": 4656.758658000006,
+        "ok": true,
+        "summaryHead": "NDVI colormap (B08−B04)/(B08+B04) for 11.1 km² (drawn polygon). **Scene:** 2026-10-04 | **Cloud cover (scene-wide):** 6.8% | **Satellite:** sentinel-2a **NDVI mean (drawn AOI polygon, cloud-masked):** 0.374 **Scene quali",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_36NYG_20261004_0_L2A&assets=nir&assets=red&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=0.065173%2C0.84316&colormap_name=rdylgn&return_mask=true",
+        "requests": 10,
+        "failedRequests": 0,
+        "bytes": 1031722,
+        "stageWallMs": {
+          "stac_search": 579.9119440000068,
+          "titiler_npy": 1135.009223000001,
+          "titiler_npy_after": 2888.4280049999943,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 579.9119440000068,
+          "titiler_npy": 4143.569327000019,
+          "titiler_npy_after": 2888.4280049999943,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 3,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 53.40948600000411,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 579.9119440000068,
+            "bytes": 125804
+          },
+          "titiler.xyz": {
+            "requests": 9,
+            "sumMs": 7031.997332000014,
+            "bytes": 905918
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 0,
+            "endMs": 580,
+            "ttfbMs": 538,
+            "bytes": 125804,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 581,
+            "endMs": 760,
+            "ttfbMs": 179,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 581,
+            "endMs": 1218,
+            "ttfbMs": 637,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 581,
+            "endMs": 1716,
+            "ttfbMs": 1133,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 581,
+            "endMs": 1066,
+            "ttfbMs": 484,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 582,
+            "endMs": 1198,
+            "ttfbMs": 616,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 582,
+            "endMs": 1673,
+            "ttfbMs": 1091,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1716,
+            "endMs": 2736,
+            "ttfbMs": 1016,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2751,
+            "endMs": 3334,
+            "ttfbMs": 582,
+            "bytes": 55240,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 3335,
+            "endMs": 4621,
+            "ttfbMs": 1248,
+            "bytes": 665462,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 38.59319100000721,
+        "ok": true,
+        "summaryHead": "NDVI colormap (B08−B04)/(B08+B04) for 11.1 km² (drawn polygon). **Scene:** 2026-10-04 | **Cloud cover (scene-wide):** 6.8% | **Satellite:** sentinel-2a **NDVI mean (drawn AOI polygon, cloud-masked):** 0.374 **Scene quali",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_36NYG_20261004_0_L2A&assets=nir&assets=red&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=0.065173%2C0.84316&colormap_name=rdylgn&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 38.59319100000721,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 9784,
+        "y": 8145,
+        "ms": 54.255071000006865,
+        "status": 200,
+        "bytes": 173393
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 9784,
+        "y": 8145,
+        "ms": 119.05258299999696,
+        "status": 200,
+        "bytes": 173393
+      }
+    },
+    {
+      "tool": "render_raster",
+      "aoi": "kitale",
+      "cold": {
+        "totalMs": 4407.072331999996,
+        "ok": true,
+        "summaryHead": "**Sentinel-2 B08** rendered over 11.1 km² (drawn polygon). **Scene:** S2A_36NYG_20261004_0_L2A | **Date:** 2026-10-04 | **Scene-wide cloud:** 6.8% **Scene quality (over your AOI):** 93% of the AOI was clear (vegetation 5",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_36NYG_20261004_0_L2A&assets=nir&expression=%28b1*0.0001%29&rescale=0.173%2C0.3931&colormap_name=viridis&return_mask=true",
+        "requests": 9,
+        "failedRequests": 0,
+        "bytes": 766878,
+        "stageWallMs": {
+          "stac_search": 890.4148300000088,
+          "titiler_npy": 1454.3504169999942,
+          "titiler_npy_after": 2031.5375659999845,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 890.4148300000088,
+          "titiler_npy": 5515.552670000005,
+          "titiler_npy_after": 2031.5375659999845,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 2,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 30.769519000008586,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 890.4148300000088,
+            "bytes": 188318
+          },
+          "titiler.xyz": {
+            "requests": 8,
+            "sumMs": 7547.090235999989,
+            "bytes": 578560
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 1,
+            "endMs": 891,
+            "ttfbMs": 771,
+            "bytes": 188318,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 892,
+            "endMs": 1505,
+            "ttfbMs": 613,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 892,
+            "endMs": 1418,
+            "ttfbMs": 525,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 893,
+            "endMs": 2346,
+            "ttfbMs": 1453,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 893,
+            "endMs": 2028,
+            "ttfbMs": 1134,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 893,
+            "endMs": 2195,
+            "ttfbMs": 1301,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 894,
+            "endMs": 1380,
+            "ttfbMs": 486,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2347,
+            "endMs": 3362,
+            "ttfbMs": 1013,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 3373,
+            "endMs": 4389,
+            "ttfbMs": 992,
+            "bytes": 393344,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 28.149107000004733,
+        "ok": true,
+        "summaryHead": "**Sentinel-2 B08** rendered over 11.1 km² (drawn polygon). **Scene:** S2A_36NYG_20261004_0_L2A | **Date:** 2026-10-04 | **Scene-wide cloud:** 6.8% **Scene quality (over your AOI):** 93% of the AOI was clear (vegetation 5",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_36NYG_20261004_0_L2A&assets=nir&expression=%28b1*0.0001%29&rescale=0.173%2C0.3931&colormap_name=viridis&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 28.149107000004733,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 9784,
+        "y": 8145,
+        "ms": 56.13453599999775,
+        "status": 200,
+        "bytes": 151128
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 9784,
+        "y": 8145,
+        "ms": 171.17127099999925,
+        "status": 200,
+        "bytes": 151128
+      }
+    },
+    {
+      "tool": "compute_spectral_index",
+      "aoi": "kitale",
+      "cold": {
+        "totalMs": 3200.2134490000026,
+        "ok": true,
+        "summaryHead": "**NDWI** (water body detection (white→blue)) computed for 11.1 km² (drawn polygon). **Formula:** `(B03-B08)/(B03+B08)` **Scene:** 2026-10-04 | **Scene-wide cloud:** 6.8% **NDWI mean (drawn polygon, cloud-masked):** -0.46",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_36NYG_20261004_0_L2A&assets=green&assets=nir&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=-0.76424%2C-0.18836&colormap_name=blues_r&return_mask=true",
+        "requests": 10,
+        "failedRequests": 0,
+        "bytes": 1031722,
+        "stageWallMs": {
+          "stac_search": 792.8046600000089,
+          "titiler_npy": 760.5725660000026,
+          "titiler_npy_after": 1602.7224249999854,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 792.8046600000089,
+          "titiler_npy": 2574.5204910000175,
+          "titiler_npy_after": 1602.7224249999854,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 6,
+          "titiler_npy_after": 3,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 44.11379800000577,
+        "hosts": {
+          "earth-search.aws.element84.com": {
+            "requests": 1,
+            "sumMs": 792.8046600000089,
+            "bytes": 125804
+          },
+          "titiler.xyz": {
+            "requests": 9,
+            "sumMs": 4177.242916000003,
+            "bytes": 905918
+          }
+        },
+        "reqs": [
+          {
+            "host": "earth-search.aws.element84.com",
+            "path": "/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 0,
+            "endMs": 793,
+            "ttfbMs": 676,
+            "bytes": 125804,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 794,
+            "endMs": 966,
+            "ttfbMs": 172,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 794,
+            "endMs": 962,
+            "ttfbMs": 167,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 794,
+            "endMs": 1320,
+            "ttfbMs": 525,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 794,
+            "endMs": 1418,
+            "ttfbMs": 623,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 794,
+            "endMs": 1554,
+            "ttfbMs": 758,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy",
+            "startMs": 795,
+            "endMs": 1120,
+            "ttfbMs": 325,
+            "bytes": 18560,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1555,
+            "endMs": 1890,
+            "ttfbMs": 324,
+            "bytes": 73856,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 1900,
+            "endMs": 2074,
+            "ttfbMs": 174,
+            "bytes": 55240,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/stac/feature.npy",
+            "method": "POST",
+            "kind": "titiler_npy_after",
+            "startMs": 2075,
+            "endMs": 3169,
+            "ttfbMs": 1046,
+            "bytes": 665462,
+            "status": 200
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 46.94066300000122,
+        "ok": true,
+        "summaryHead": "**NDWI** (water body detection (white→blue)) computed for 11.1 km² (drawn polygon). **Formula:** `(B03-B08)/(B03+B08)` **Scene:** 2026-10-04 | **Scene-wide cloud:** 6.8% **NDWI mean (drawn polygon, cloud-masked):** -0.46",
+        "layerCount": 1,
+        "tileUrl": "https://titiler.xyz/stac/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Fearth-search.aws.element84.com%2Fv1%2Fcollections%2Fsentinel-2-l2a%2Fitems%2FS2A_36NYG_20261004_0_L2A&assets=green&assets=nir&expression=%28%28b1*0.0001%29-%28b2*0.0001%29%29%2F%28%28b1*0.0001%29%2B%28b2*0.0001%29%29&rescale=-0.76424%2C-0.18836&colormap_name=blues_r&return_mask=true",
+        "requests": 0,
+        "failedRequests": 0,
+        "bytes": 0,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 0,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 46.94066300000122,
+        "hosts": {},
+        "reqs": []
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 9784,
+        "y": 8145,
+        "ms": 57.01153400000476,
+        "status": 200,
+        "bytes": 152832
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 9784,
+        "y": 8145,
+        "ms": 171.86477699999523,
+        "status": 200,
+        "bytes": 152832
+      }
+    },
+    {
+      "tool": "fetch_dem",
+      "aoi": "kitale",
+      "cold": {
+        "totalMs": 3435.8091399999976,
+        "ok": true,
+        "summaryHead": "Digital Elevation Model for 11.1 km² at 1.0150°N, 34.9950°E. **Real elevation statistics (Mapzen ~30m (global merged) via opentopodata.org):** - Min: **1816 m** - Max: **1907 m** - Mean: **1865 m** - Relief: **91 m** - S",
+        "layerCount": 2,
+        "tileUrl": "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Felevationeuwest.blob.core.windows.net%2Fcopernicus-dem%2FCOP30_hh%2FCopernicus_DSM_COG_10_N01_00_E035_00_DEM.tif%3Fst%3D2026-10-11T09%253A57%253A44Z%26se%3D2026-10-12T10%253A42%253A44Z%26sp%3Drl%26sv%3D2025-07-05%26sr%3Dc%26skoid%3D9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a%26sktid%3D72f988bf-86f1-41af-91ab-2d7cd011db47%26skt%3D2026-10-12T08%253A06%253A40Z%26ske%3D2026-10-19T08%253A06%253A40Z%26sks%3Db%26skv%3D2025-07-05%26sig%3DMMH0QttKAOQqSl2oX7u%2FN4M2IZKD%252BttHbIG7ZS06kOE%253D&rescale=1816%2C1907&colormap_name=terrain&return_mask=true",
+        "requests": 4,
+        "failedRequests": 0,
+        "bytes": 18233,
+        "stageWallMs": {
+          "stac_search": 598.3130149999924,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1402.9309699999867,
+          "dem": 628.5474269999977,
+          "other": 804.2690869999933
+        },
+        "stageSumMs": {
+          "stac_search": 598.3130149999924,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1403.0120539999916,
+          "dem": 628.5474269999977,
+          "other": 804.2690869999933
+        },
+        "stageCount": {
+          "stac_search": 1,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1,
+          "dem": 1,
+          "other": 1
+        },
+        "noRequestMs": 1.748641000027419,
+        "hosts": {
+          "api.opentopodata.org": {
+            "requests": 1,
+            "sumMs": 628.5474269999977,
+            "bytes": 14200
+          },
+          "planetarycomputer.microsoft.com": {
+            "requests": 2,
+            "sumMs": 1402.5821019999858,
+            "bytes": 3776
+          },
+          "titiler.xyz": {
+            "requests": 1,
+            "sumMs": 1403.0120539999916,
+            "bytes": 257
+          }
+        },
+        "reqs": [
+          {
+            "host": "api.opentopodata.org",
+            "path": "/v1/mapzen",
+            "method": "POST",
+            "kind": "dem",
+            "startMs": 1,
+            "endMs": 629,
+            "ttfbMs": 627,
+            "bytes": 14200,
+            "status": 200
+          },
+          {
+            "host": "planetarycomputer.microsoft.com",
+            "path": "/api/stac/v1/search",
+            "method": "POST",
+            "kind": "stac_search",
+            "startMs": 630,
+            "endMs": 1228,
+            "ttfbMs": 598,
+            "bytes": 3260,
+            "status": 200
+          },
+          {
+            "host": "planetarycomputer.microsoft.com",
+            "path": "/api/sas/v1/sign",
+            "method": "GET",
+            "kind": "other",
+            "startMs": 1228,
+            "endMs": 2032,
+            "ttfbMs": 804,
+            "bytes": 516,
+            "status": 200
+          },
+          {
+            "host": "titiler.xyz",
+            "path": "/cog/tiles/WebMercatorQuad/12/2446/2036.png",
+            "method": "GET",
+            "kind": "tiles",
+            "startMs": 2033,
+            "endMs": 3436,
+            "ttfbMs": 1403,
+            "bytes": 257,
+            "status": 206
+          }
+        ]
+      },
+      "warm": {
+        "totalMs": 48.51536400000623,
+        "ok": true,
+        "summaryHead": "Digital Elevation Model for 11.1 km² at 1.0150°N, 34.9950°E. **Real elevation statistics (Mapzen ~30m (global merged) via opentopodata.org):** - Min: **1816 m** - Max: **1907 m** - Mean: **1865 m** - Relief: **91 m** - S",
+        "layerCount": 2,
+        "tileUrl": "https://titiler.xyz/cog/tiles/WebMercatorQuad/{z}/{x}/{y}.png?url=https%3A%2F%2Felevationeuwest.blob.core.windows.net%2Fcopernicus-dem%2FCOP30_hh%2FCopernicus_DSM_COG_10_N01_00_E035_00_DEM.tif%3Fst%3D2026-10-11T09%253A57%253A44Z%26se%3D2026-10-12T10%253A42%253A44Z%26sp%3Drl%26sv%3D2025-07-05%26sr%3Dc%26skoid%3D9c8ff44a-6a2c-4dfb-b298-1c9212f64d9a%26sktid%3D72f988bf-86f1-41af-91ab-2d7cd011db47%26skt%3D2026-10-12T08%253A06%253A40Z%26ske%3D2026-10-19T08%253A06%253A40Z%26sks%3Db%26skv%3D2025-07-05%26sig%3DMMH0QttKAOQqSl2oX7u%2FN4M2IZKD%252BttHbIG7ZS06kOE%253D&rescale=1816%2C1907&colormap_name=terrain&return_mask=true",
+        "requests": 1,
+        "failedRequests": 0,
+        "bytes": 257,
+        "stageWallMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 47.816047999993316,
+          "dem": 0,
+          "other": 0
+        },
+        "stageSumMs": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 48.026774999991176,
+          "dem": 0,
+          "other": 0
+        },
+        "stageCount": {
+          "stac_search": 0,
+          "titiler_npy": 0,
+          "titiler_npy_after": 0,
+          "titiler_stats": 0,
+          "titiler_png": 0,
+          "tiles": 1,
+          "dem": 0,
+          "other": 0
+        },
+        "noRequestMs": 0.6993160000129137,
+        "hosts": {
+          "titiler.xyz": {
+            "requests": 1,
+            "sumMs": 48.026774999991176,
+            "bytes": 257
+          }
+        },
+        "reqs": [
+          {
+            "host": "titiler.xyz",
+            "path": "/cog/tiles/WebMercatorQuad/12/2446/2036.png",
+            "method": "GET",
+            "kind": "tiles",
+            "startMs": 1,
+            "endMs": 49,
+            "ttfbMs": 47,
+            "bytes": 257,
+            "status": 206
+          }
+        ]
+      },
+      "tileCold": {
+        "z": 14,
+        "x": 9784,
+        "y": 8145,
+        "ms": 156.81100499999593,
+        "status": 200,
+        "bytes": 3585
+      },
+      "tileRepeat": {
+        "z": 14,
+        "x": 9784,
+        "y": 8145,
+        "ms": 50.578804999997374,
+        "status": 200,
+        "bytes": 3585
+      }
+    }
+  ]
+}

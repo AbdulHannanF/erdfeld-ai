@@ -1,0 +1,22 @@
+{
+ "methods": {
+  "timesfm": {
+   "reference": "eval/RESULTS.md#timesfm-forecasting-backtest",
+   "coverage_p10_p90_pct": 84.4,
+   "coverage_p10_p90_pct_lead1": 84.4,
+   "mae_lead3": 0.0523,
+   "mae_lead1": 0.0486,
+   "n": 212,
+   "aois": 6
+  },
+  "climatology": {
+   "reference": "eval/RESULTS.md#timesfm-forecasting-backtest",
+   "coverage_p10_p90_pct": 83.0,
+   "coverage_p10_p90_pct_lead1": 83.0,
+   "mae_lead3": 0.0508,
+   "mae_lead1": 0.0508,
+   "n": 212,
+   "aois": 6
+  }
+ }
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2"><Document><name>t</name>
+<Folder><Placemark><name>Farm &amp; Co</name><description><![CDATA[<b>hi</b>]]></description>
+<ExtendedData><Data name="crop"><value>rice</value></Data><Data name="ha"><value>1.5</value></Data>
+<SchemaData><SimpleData name="x">7</SimpleData></SchemaData></ExtendedData>
+<Polygon><outerBoundaryIs><LinearRing><coordinates>72.5,12.5,0 72.51,12.5,0 72.51,12.51,0 72.5,12.5,0</coordinates></LinearRing></outerBoundaryIs>
+<innerBoundaryIs><LinearRing><coordinates>72.502,12.502 72.504,12.502 72.504,12.504 72.502,12.502</coordinates></LinearRing></innerBoundaryIs></Polygon></Placemark>
+<Placemark><name>pt</name><Point><coordinates>73.1,12.2</coordinates></Point></Placemark>
+<Placemark><name>multi</name><MultiGeometry><Point><coordinates>1,2</coordinates></Point><Point><coordinates>3,4</coordinates></Point></MultiGeometry></Placemark>
+<Placemark><name>mixed</name><MultiGeometry><Point><coordinates>1,2</coordinates></Point><LineString><coordinates>0,0 1,1</coordinates></LineString></MultiGeometry></Placemark>
+<Placemark><name>nogeom</name></Placemark>
+<Placemark><name>bad</name><Point><coordinates>999,2</coordinates></Point></Placemark>
+</Folder><NetworkLink><Link><href>http://x</href></Link></NetworkLink></Document></kml>

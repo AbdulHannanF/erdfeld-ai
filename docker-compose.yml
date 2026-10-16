@@ -1,0 +1,204 @@
+services:
+
+  # ── Nginx reverse proxy ─────────────────────────────────────────────────────
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # TLS: mount your certificates here and enable the 443 server block in deploy/nginx.conf
+      # - certbot_www:/var/www/certbot:ro
+      # - certbot_certs:/etc/letsencrypt:ro
+    depends_on:
+      - app
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options: { max-size: "10m", max-file: "3" }
+
+  # ── Next.js app (SSE agentic loop) ─────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env.production
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      # The one database (Q-21). With RUN_MIGRATIONS=1 (below) the image entrypoint runs `prisma migrate deploy` against it
+      # before starting the server, and the job-queue worker (Q-24) runs inside this process.
+      # A password with URL-reserved characters must be percent-encoded here.
+      - DATABASE_URL=postgresql://geoagent:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}@postgres:5432/geoagent
+      # Route raster tiles through the self-hosted TiTiler below (overrides any
+      # TITILER_ENDPOINT in .env.production). Comment out to use public titiler.xyz.
+      - TITILER_ENDPOINT=http://titiler:8000
+      # Python geo service (cloud-masked composites, time series, zonal stats). See services/geo/README.md.
+      - GEO_SERVICE_URL=http://geo:8100
+      # The app sits behind the nginx service below, so rate limits key anonymous callers on the
+      # X-Forwarded-For address nginx sets (src/lib/rate-limit.ts). Only valid behind that proxy.
+      - GEOAGENT_TRUST_PROXY=1
+      # Apply pending Prisma migrations before the server starts (Cloud Run runs them as a Job instead).
+      - RUN_MIGRATIONS=1
+      # Route OSM + routing through self-hosted services so the ENTIRE free data
+      # path runs on owned infra (no shared-server flakiness). UNCOMMENT these two
+      # lines ONLY after uncommenting + provisioning the `overpass` and `valhalla`
+      # services below (they need a one-time regional OSM import). Until then the
+      # app uses the public community instances (the working default).
+      # - OVERPASS_ENDPOINT=http://overpass:80/api/interpreter
+      # - VALHALLA_ENDPOINT=http://valhalla:8002
+    depends_on:
+      postgres:
+        condition: service_healthy
+      titiler:
+        condition: service_started
+      geo:
+        condition: service_started
+    # Docker sends SIGKILL 10 s after the stop signal by default. The job worker drains for up to
+    # JOB_DRAIN_MS (25 s) on SIGTERM, so give it room.
+    stop_grace_period: 40s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options: { max-size: "50m", max-file: "5" }
+
+  # ── PostgreSQL (projects, evidence ledger, job queue) ───────────────────────
+  # postgis/postgis is a postgres:16 image with the PostGIS extension available. Nothing uses
+  # PostGIS yet (see the note in prisma/schema.prisma); the image is chosen now so spatial columns
+  # can be added by a migration later without swapping the database image. Set POSTGRES_PASSWORD
+  # in the `.env` next to this file (compose reads it for interpolation).
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      - POSTGRES_USER=geoagent
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      - POSTGRES_DB=geoagent
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U geoagent -d geoagent"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options: { max-size: "10m", max-file: "3" }
+
+  # NOTE: the former `mini-service` (Socket.IO backend) was deleted in P0.2 — the
+  # agent runs inside the Next.js `/api/agent` SSE route. Its compose block was
+  # removed in P7.1 (it built from the deleted ./mini-services/geoagent-service).
+
+  # ── TiTiler (self-hosted COG/STAC raster tiles) ─────────────────────────────
+  # Reliable, fast, version-pinned replacement for the shared public titiler.xyz —
+  # the cure for NDVI/spectral/DEM/thermal/water tiles intermittently failing to
+  # render (titiler.xyz is rate-limited with no SLA). The app reaches it at
+  # http://titiler:8000 (TITILER_ENDPOINT above). Renders tiles from remote COGs
+  # (AWS Element84, Planetary Computer signed URLs). Docs: https://developmentseed.org/titiler/
+  titiler:
+    image: ghcr.io/developmentseed/titiler:latest   # pin a digest/tag for production
+    environment:
+      - PORT=8000
+      # GDAL tuning for fast remote-COG reads
+      - GDAL_DISABLE_READDIR_ON_OPEN=EMPTY_DIR
+      - GDAL_HTTP_MERGE_CONSECUTIVE_RANGES=YES
+      - GDAL_HTTP_MULTIPLEX=YES
+      - GDAL_HTTP_VERSION=2
+      - VSI_CACHE=TRUE
+      - VSI_CACHE_SIZE=536870912
+      - CPL_VSIL_CURL_ALLOWED_EXTENSIONS=.tif,.tiff,.TIF,.TIFF,.cog,.COG
+      - CPL_VSIL_CURL_CACHE_SIZE=536870912
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options: { max-size: "10m", max-file: "3" }
+
+  # ── Geo service (FastAPI: composites / time series / zonal stats) ────────────
+  # Internal only (no published port); the app reaches it at GEO_SERVICE_URL above.
+  # Composites are cached as COGs in the geo_cache volume (content-addressed, safe to delete).
+  geo:
+    build:
+      context: ./services/geo
+    environment:
+      - GEO_CACHE_DIR=/data/composites
+      # GDAL tuning for fast remote-COG reads (sentinel-cogs bucket, AWS us-west-2)
+      - GDAL_DISABLE_READDIR_ON_OPEN=EMPTY_DIR
+      - GDAL_HTTP_MULTIPLEX=YES
+      - GDAL_HTTP_MERGE_CONSECUTIVE_RANGES=YES
+      - VSI_CACHE=TRUE
+      - CPL_VSIL_CURL_ALLOWED_EXTENSIONS=.tif,.tiff,.TIF,.TIFF,.cog,.COG
+    expose:
+      - "8100"
+    volumes:
+      - geo_cache:/data/composites
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options: { max-size: "10m", max-file: "3" }
+
+  # ── Overpass API (self-hosted OSM query backend) ────────────────────────────
+  # Completes what the TiTiler service did for rasters: the public overpass-api.de
+  # is rate-limited with no SLA. Self-hosting removes that flakiness from query_osm /
+  # query_3d_tiles / digitize_features. The app reaches it at the OVERPASS_ENDPOINT
+  # above. NOTE: requires a one-time region PBF import on first boot — set
+  # OVERPASS_PLANET_URL to a Geofabrik regional extract (NOT the full planet unless
+  # you have the disk/RAM). Docs: https://github.com/wiktorn/Overpass-API
+  # This service is commented out by default because the import is heavy + region-
+  # specific; uncomment + set OVERPASS_PLANET_URL to activate, then set the app's
+  # OVERPASS_ENDPOINT (above) to http://overpass:80/api/interpreter.
+  # overpass:
+  #   image: wiktorn/overpass-api:latest
+  #   environment:
+  #     - OVERPASS_META=yes
+  #     - OVERPASS_MODE=init
+  #     - OVERPASS_PLANET_URL=https://download.geofabrik.de/<region>-latest.osm.bz2
+  #     - OVERPASS_RULES_LOAD=10
+  #   volumes:
+  #     - overpass_db:/db
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options: { max-size: "10m", max-file: "3" }
+
+  # ── Valhalla (self-hosted routing + isochrones) ─────────────────────────────
+  # Replaces the public valhalla.openstreetmap.de (SUSP-014: no SLA) for
+  # fetch_isochrone / query_route. The app reaches it at the VALHALLA_ENDPOINT
+  # above. NOTE: on first boot it builds a routing graph from a regional OSM PBF —
+  # set the tile_urls to a Geofabrik extract for your area. Commented out by
+  # default because the graph build is heavy + region-specific; uncomment + set
+  # the PBF URL to activate. Docs: https://github.com/gis-ops/docker-valhalla
+  # valhalla:
+  #   image: ghcr.io/gis-ops/docker-valhalla/valhalla:latest
+  #   ports:
+  #     - "8002:8002"
+  #   environment:
+  #     - tile_urls=https://download.geofabrik.de/<region>-latest.osm.pbf
+  #     - server_threads=2
+  #     - use_tiles_ignore_pbf=True
+  #     - build_elevation=False
+  #     - build_admins=True
+  #     - build_time_zones=True
+  #   volumes:
+  #     - valhalla_data:/custom_files
+  #   restart: unless-stopped
+  #   logging:
+  #     driver: "json-file"
+  #     options: { max-size: "10m", max-file: "3" }
+
+volumes:
+  pg_data:
+    driver: local
+  geo_cache:
+    driver: local
+  # Uncomment alongside the self-hosted OSM/routing services above:
+  # overpass_db:
+  #   driver: local
+  # valhalla_data:
+  #   driver: local
+  # Uncomment for SSL:
+  # certbot_www:
+  # certbot_certs:

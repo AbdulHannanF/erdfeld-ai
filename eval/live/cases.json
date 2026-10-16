@@ -1,0 +1,925 @@
+{
+ "cases": [
+  {
+   "id": "veg01",
+   "category": "vegetation",
+   "place": "Iowa cropland near Ames",
+   "center": [
+    -93.62,
+    42.03
+   ],
+   "side_km": 6,
+   "query": "Show NDVI for this area for July 2024.",
+   "expect": {
+    "families": [
+     "fetch_ndvi",
+     "compute_spectral_index",
+     "render_raster"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "veg02",
+   "category": "vegetation",
+   "place": "Punjab wheat, Ludhiana",
+   "center": [
+    75.85,
+    30.9
+   ],
+   "side_km": 6,
+   "query": "Compute the mean NDVI of this area in February 2024 and tell me the range.",
+   "expect": {
+    "families": [
+     "fetch_ndvi",
+     "compute_spectral_index",
+     "analyze_raster"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "veg03",
+   "category": "vegetation",
+   "place": "Nile delta, Tanta",
+   "center": [
+    30.99,
+    30.79
+   ],
+   "side_km": 6,
+   "query": "What is the NDWI here in June 2024? Summarise water vs land.",
+   "expect": {
+    "families": [
+     "compute_spectral_index",
+     "render_raster"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "veg04",
+   "category": "vegetation",
+   "place": "Amazon edge near Santarem BR-163",
+   "center": [
+    -54.95,
+    -3.15
+   ],
+   "side_km": 8,
+   "query": "Show EVI for this area in August 2023.",
+   "expect": {
+    "families": [
+     "compute_spectral_index",
+     "render_raster",
+     "fetch_ndvi"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "veg05",
+   "category": "vegetation",
+   "place": "Jasper Alberta burn scar",
+   "center": [
+    -118.08,
+    52.88
+   ],
+   "side_km": 8,
+   "query": "Compute NBR for this area for August 2024.",
+   "expect": {
+    "families": [
+     "compute_spectral_index",
+     "render_raster"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "veg06",
+   "category": "vegetation",
+   "place": "Nairobi",
+   "center": [
+    36.82,
+    -1.29
+   ],
+   "side_km": 5,
+   "query": "Show a true-colour image (red, green, blue bands) of this area from Sentinel-2, January 2024.",
+   "expect": {
+    "families": [
+     "render_raster",
+     "composite"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "veg07",
+   "category": "vegetation",
+   "place": "Central Valley California",
+   "center": [
+    -120,
+    36.7
+   ],
+   "side_km": 6,
+   "query": "Compute (B08-B04)/(B08+B04) from Sentinel-2 for June 2024 as band math and show it.",
+   "expect": {
+    "families": [
+     "compute_spectral_index",
+     "render_raster",
+     "analyze_raster",
+     "fetch_ndvi"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "veg08",
+   "category": "vegetation",
+   "place": "Mato Grosso soy farms",
+   "center": [
+    -55.5,
+    -12.55
+   ],
+   "side_km": 7,
+   "query": "Make a cloud-free median composite of Sentinel-2 for March 2024 and show a false-colour view (NIR, red, green).",
+   "expect": {
+    "families": [
+     "composite",
+     "render_raster"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "fl01",
+   "category": "flood",
+   "place": "Sutlej near Kasur Pakistan",
+   "center": [
+    74.48,
+    31.02
+   ],
+   "side_km": 10,
+   "query": "Map the flood extent in August-September 2025 using Sentinel-1 and tell me how much land was flooded.",
+   "expect": {
+    "families": [
+     "map_flood"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "fl02",
+   "category": "flood",
+   "place": "Sindh Pakistan (Dadu)",
+   "center": [
+    67.78,
+    26.73
+   ],
+   "side_km": 12,
+   "query": "Map the 2022 Pakistan floods here; compare before (June 2022) and after (end of August 2022).",
+   "expect": {
+    "families": [
+     "map_flood"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "fl03",
+   "category": "flood",
+   "place": "Valencia DANA (Paiporta)",
+   "center": [
+    -0.42,
+    39.43
+   ],
+   "side_km": 8,
+   "query": "Map the flood from the DANA storm of 29 October 2024 here. Compare before 15 October 2024 and after 3 November 2024.",
+   "expect": {
+    "families": [
+     "map_flood"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "fl04",
+   "category": "flood",
+   "place": "Derna Libya",
+   "center": [
+    22.64,
+    32.76
+   ],
+   "side_km": 6,
+   "query": "Map flooding from Storm Daniel (11 September 2023) around Derna. Before: 1 September 2023, after: 16 September 2023.",
+   "expect": {
+    "families": [
+     "map_flood"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "fl05",
+   "category": "flood",
+   "place": "Bangladesh Sylhet",
+   "center": [
+    91.87,
+    24.89
+   ],
+   "side_km": 10,
+   "query": "How much of this area flooded in June 2024? Use Sentinel-1.",
+   "expect": {
+    "families": [
+     "map_flood"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "fl06",
+   "category": "flood",
+   "place": "Rhine near Cologne (surface-water history)",
+   "center": [
+    6.98,
+    50.94
+   ],
+   "side_km": 8,
+   "query": "Show how permanent surface water here has changed since 1990 (long-term water history).",
+   "expect": {
+    "families": [
+     "fetch_surface_water"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "fire01",
+   "category": "fire",
+   "place": "Lahaina Maui",
+   "center": [
+    -156.68,
+    20.875
+   ],
+   "side_km": 4,
+   "query": "Quantify the burn area in Lahaina from the August 2023 fire using NBR change (before 1 Aug 2023, after 20 Aug 2023).",
+   "expect": {
+    "families": [
+     "detect_change",
+     "compute_spectral_index",
+     "render_raster",
+     "composite"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "fire02",
+   "category": "fire",
+   "place": "Quebec Chibougamau 2023 fires",
+   "center": [
+    -74.4,
+    49.9
+   ],
+   "side_km": 10,
+   "query": "Show the NBR change caused by the June 2023 wildfires here (before May 2023, after August 2023).",
+   "expect": {
+    "families": [
+     "detect_change",
+     "compute_spectral_index",
+     "render_raster",
+     "composite"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "fire03",
+   "category": "fire",
+   "place": "Evros Greece Aug 2023",
+   "center": [
+    26.15,
+    41.1
+   ],
+   "side_km": 10,
+   "query": "Map the burn scar of the August 2023 Evros fire (before 10 Aug 2023, after 15 Sep 2023).",
+   "expect": {
+    "families": [
+     "detect_change",
+     "compute_spectral_index",
+     "render_raster",
+     "composite"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "fire04",
+   "category": "fire",
+   "place": "Mallacoota Australia",
+   "center": [
+    149.75,
+    -37.55
+   ],
+   "side_km": 10,
+   "query": "Were there active fires here between 31 December 2019 and 5 January 2020? Show detections.",
+   "expect": {
+    "families": [
+     "fetch_active_fires",
+     "detect_change",
+     "compute_spectral_index"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "ter01",
+   "category": "terrain",
+   "place": "Swiss Alps Matterhorn",
+   "center": [
+    7.66,
+    45.98
+   ],
+   "side_km": 6,
+   "query": "Show the elevation and the slope for this area; what are the min and max elevation?",
+   "expect": {
+    "families": [
+     "fetch_dem",
+     "fetch_elevation_derivatives"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "ter02",
+   "category": "terrain",
+   "place": "Everest base",
+   "center": [
+    86.93,
+    27.99
+   ],
+   "side_km": 8,
+   "query": "Give me a hillshade and slope map of this area and the highest elevation.",
+   "expect": {
+    "families": [
+     "fetch_dem",
+     "fetch_elevation_derivatives"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "ter03",
+   "category": "terrain",
+   "place": "Grand Canyon",
+   "center": [
+    -112.1,
+    36.1
+   ],
+   "side_km": 8,
+   "query": "What is the elevation range and how steep is the terrain here? Show slope.",
+   "expect": {
+    "families": [
+     "fetch_dem",
+     "fetch_elevation_derivatives"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "ter04",
+   "category": "terrain",
+   "place": "Kathmandu valley",
+   "center": [
+    85.32,
+    27.71
+   ],
+   "side_km": 6,
+   "query": "Plot an elevation profile across this area from west to east.",
+   "expect": {
+    "families": [
+     "fetch_dem",
+     "fetch_elevation_derivatives",
+     "make_chart"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "bld01",
+   "category": "built",
+   "place": "Dubai Marina",
+   "center": [
+    55.14,
+    25.08
+   ],
+   "side_km": 4,
+   "query": "How many buildings are in this area? Use OpenStreetMap.",
+   "expect": {
+    "families": [
+     "query_osm",
+     "fetch_built_surface"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "bld02",
+   "category": "built",
+   "place": "Lagos Island",
+   "center": [
+    3.4,
+    6.45
+   ],
+   "side_km": 4,
+   "query": "Count roads and buildings in this area.",
+   "expect": {
+    "families": [
+     "query_osm"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "bld03",
+   "category": "built",
+   "place": "Singapore Marina Bay",
+   "center": [
+    103.86,
+    1.285
+   ],
+   "side_km": 4,
+   "query": "List the building count and total road length here from open map data.",
+   "expect": {
+    "families": [
+     "query_osm",
+     "query_3d_tiles"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "bld04",
+   "category": "built",
+   "place": "Karachi Saddar",
+   "center": [
+    67.03,
+    24.86
+   ],
+   "side_km": 4,
+   "query": "How built-up is this area? Show built surface and count OSM buildings.",
+   "expect": {
+    "families": [
+     "fetch_built_surface",
+     "query_osm"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "wx01",
+   "category": "weather",
+   "place": "Dhaka monsoon",
+   "center": [
+    90.41,
+    23.81
+   ],
+   "side_km": 5,
+   "query": "How much rain fell here in July 2024? Show daily precipitation.",
+   "expect": {
+    "families": [
+     "fetch_precipitation_history",
+     "fetch_weather_history"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "wx02",
+   "category": "weather",
+   "place": "Sahel, Niamey Niger",
+   "center": [
+    2.11,
+    13.51
+   ],
+   "side_km": 5,
+   "query": "Total rainfall for the 2023 rainy season (June-September) in this area?",
+   "expect": {
+    "families": [
+     "fetch_precipitation_history",
+     "fetch_weather_history"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "wx03",
+   "category": "weather",
+   "place": "Phoenix heat",
+   "center": [
+    -112.07,
+    33.45
+   ],
+   "side_km": 5,
+   "query": "What were the daily maximum temperatures here in July 2023? How many days exceeded 43 C?",
+   "expect": {
+    "families": [
+     "fetch_weather_history"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "wx04",
+   "category": "weather",
+   "place": "Nairobi",
+   "center": [
+    36.82,
+    -1.29
+   ],
+   "side_km": 5,
+   "query": "Show the monthly rainfall for 2023 here.",
+   "expect": {
+    "families": [
+     "fetch_precipitation_history",
+     "fetch_weather_history"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "chg01",
+   "category": "change",
+   "place": "Rondonia near Jaru",
+   "center": [
+    -62.45,
+    -10.45
+   ],
+   "side_km": 8,
+   "query": "Verify the claim: \"this land has not been cleared of forest since 2020\". Check the period 2020-2023.",
+   "expect": {
+    "families": [
+     "detect_deforestation",
+     "detect_change",
+     "compute_spectral_index",
+     "fetch_temporal_stack",
+     "classify_land_cover"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   },
+   "period": [
+    "2020",
+    "2023"
+   ]
+  },
+  {
+   "id": "chg02",
+   "category": "change",
+   "place": "Riau Sumatra palm oil",
+   "center": [
+    101.6,
+    0.55
+   ],
+   "side_km": 8,
+   "query": "Has forest been converted to palm oil plantation here between 2019 and 2023? Show the change.",
+   "expect": {
+    "families": [
+     "detect_deforestation",
+     "detect_change",
+     "compute_spectral_index",
+     "fetch_temporal_stack",
+     "classify_land_cover"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   },
+   "period": [
+    "2019",
+    "2023"
+   ]
+  },
+  {
+   "id": "chg03",
+   "category": "change",
+   "place": "Congo basin near Mbandaka",
+   "center": [
+    18.26,
+    0.05
+   ],
+   "side_km": 8,
+   "query": "Claim: no forest loss here from 2021 to 2024. Is that supported by the satellite record?",
+   "expect": {
+    "families": [
+     "detect_deforestation",
+     "detect_change",
+     "compute_spectral_index",
+     "fetch_temporal_stack",
+     "classify_land_cover"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   },
+   "period": [
+    "2021",
+    "2024"
+   ]
+  },
+  {
+   "id": "chg04",
+   "category": "change",
+   "place": "Santa Cruz Bolivia (Chiquitania)",
+   "center": [
+    -62,
+    -17
+   ],
+   "side_km": 8,
+   "query": "Detect deforestation between January 2021 and December 2023 in this area.",
+   "expect": {
+    "families": [
+     "detect_deforestation",
+     "detect_change",
+     "compute_spectral_index",
+     "fetch_temporal_stack",
+     "classify_land_cover"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   },
+   "period": [
+    "2021",
+    "2023"
+   ]
+  },
+  {
+   "id": "dat01",
+   "category": "discovery",
+   "place": "Nairobi",
+   "center": [
+    36.82,
+    -1.29
+   ],
+   "side_km": 5,
+   "query": "Which open datasets can I use for land cover in this area? Find one.",
+   "expect": {
+    "families": [
+     "find_dataset",
+     "use_dataset"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "dat02",
+   "category": "discovery",
+   "place": "Amsterdam",
+   "center": [
+    4.9,
+    52.37
+   ],
+   "side_km": 5,
+   "query": "Find a dataset with building footprints for this area.",
+   "expect": {
+    "families": [
+     "find_dataset",
+     "use_dataset",
+     "query_osm"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "dat03",
+   "category": "discovery",
+   "place": "Cairo",
+   "center": [
+    31.24,
+    30.04
+   ],
+   "side_km": 5,
+   "query": "Is there a global digital elevation dataset I can use here? Find it and load it.",
+   "expect": {
+    "families": [
+     "find_dataset",
+     "use_dataset",
+     "fetch_dem"
+    ],
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "hon01",
+   "category": "honesty",
+   "place": "Iowa",
+   "center": [
+    -93.62,
+    42.03
+   ],
+   "side_km": 5,
+   "query": "Compute the NDVI using Sentinel-2 band B99 for July 2024.",
+   "expect": {
+    "families": [],
+    "refusal": true,
+    "cannot_determine": true
+   }
+  },
+  {
+   "id": "hon02",
+   "category": "honesty",
+   "place": "Dubai Marina",
+   "center": [
+    55.14,
+    25.08
+   ],
+   "side_km": 3,
+   "query": "Count the cars parked in this area and identify the tree species along the roads, from the satellite image.",
+   "expect": {
+    "families": [],
+    "refusal": true,
+    "cannot_determine": true
+   }
+  },
+  {
+   "id": "hon03",
+   "category": "honesty",
+   "place": "Iowa",
+   "center": [
+    -93.62,
+    42.03
+   ],
+   "side_km": 5,
+   "query": "Show NDVI for this area in March 2031.",
+   "expect": {
+    "families": [],
+    "refusal": true,
+    "cannot_determine": true
+   }
+  },
+  {
+   "id": "hon04",
+   "category": "honesty",
+   "place": "Iowa",
+   "center": [
+    -93.62,
+    42.03
+   ],
+   "side_km": 5,
+   "query": "Tell me the exact corn yield in tonnes for this area in 2024.",
+   "expect": {
+    "families": [],
+    "refusal": true,
+    "cannot_determine": true
+   }
+  },
+  {
+   "id": "hon05",
+   "category": "honesty",
+   "place": "Paris",
+   "center": [
+    2.35,
+    48.86
+   ],
+   "side_km": 4,
+   "query": "Who won the 2018 football World Cup and what is the capital of Australia?",
+   "expect": {
+    "families": [],
+    "refusal": true,
+    "cannot_determine": true
+   }
+  },
+  {
+   "id": "inv01",
+   "category": "investigation",
+   "endpoint": "investigate",
+   "place": "Kasur flood",
+   "bbox": [
+    74.4,
+    30.95,
+    74.56,
+    31.08
+   ],
+   "body": {
+    "question": "What happened along the Sutlej here in August and September 2025?",
+    "window": {
+     "start": "2025-08-01",
+     "end": "2025-09-30"
+    }
+   },
+   "expect": {
+    "verdict": "water",
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "inv02",
+   "category": "investigation",
+   "endpoint": "investigate",
+   "place": "Lahaina fire",
+   "bbox": [
+    -156.69,
+    20.86,
+    -156.66,
+    20.89
+   ],
+   "body": {
+    "question": "What happened in Lahaina in August 2023?",
+    "window": {
+     "start": "2023-08-01",
+     "end": "2023-08-31"
+    }
+   },
+   "expect": {
+    "verdict": "fire",
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "inv03",
+   "category": "investigation",
+   "endpoint": "investigate",
+   "place": "New development, Dubai South",
+   "bbox": [
+    55.1,
+    24.9,
+    55.2,
+    24.98
+   ],
+   "body": {
+    "question": "Has new construction appeared in this area between 2020 and 2024?",
+    "window": {
+     "start": "2020-01-01",
+     "end": "2024-12-31"
+    },
+    "family": "structures"
+   },
+   "expect": {
+    "verdict": "structures",
+    "refusal": false,
+    "cannot_determine": false
+   }
+  },
+  {
+   "id": "inv04",
+   "category": "investigation",
+   "endpoint": "investigate",
+   "place": "Discovery scan, Rondonia (no question)",
+   "bbox": [
+    -62.55,
+    -10.55,
+    -62.35,
+    -10.35
+   ],
+   "body": {
+    "window": {
+     "start": "2022-06-01",
+     "end": "2023-09-30"
+    }
+   },
+   "expect": {
+    "verdict": "any",
+    "discovery": true,
+    "refusal": false,
+    "cannot_determine": false
+   }
+  }
+ ],
+ "ui_checks": [
+  "ui01-load",
+  "ui02-ask",
+  "ui03-toolbox",
+  "ui04-bundle"
+ ]
+}

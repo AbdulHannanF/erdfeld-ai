@@ -1,0 +1,10 @@
+* text=auto eol=lf
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
+*.mp4 binary
+*.onnx binary
+*.pt binary

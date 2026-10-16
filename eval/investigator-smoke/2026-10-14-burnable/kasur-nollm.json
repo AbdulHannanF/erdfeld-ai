@@ -1,0 +1,1168 @@
+{
+ "case": {
+  "id": "kasur",
+  "title": "Sutlej near Kasur, Pakistan (Aug-Sep 2025)",
+  "window": {
+   "start": "2025-08-01",
+   "end": "2025-09-30"
+  },
+  "question": "What happened along the Sutlej here in August and September 2025?",
+  "expected": "flood",
+  "family": "water",
+  "source": "Punjab (Pakistan) river floods of Aug-Sep 2025 on the Sutlej, Ravi and Chenab, widely reported by Pakistan's NDMA and the press.",
+  "bbox": [
+   [
+    74.4,
+    30.95
+   ],
+   [
+    74.56,
+    30.95
+   ],
+   [
+    74.56,
+    31.08
+   ],
+   [
+    74.4,
+    31.08
+   ],
+   [
+    74.4,
+    30.95
+   ]
+  ]
+ },
+ "budget_ms": 300000,
+ "row": {
+  "case": "kasur",
+  "expected": "flood",
+  "family": "water",
+  "verdict": "Flood event",
+  "verdict_id": "water_flood_event",
+  "posterior": 0.7009,
+  "stop_reason": "no_informative_evidence",
+  "ops": 4,
+  "steps": 6,
+  "total_s": 106.7,
+  "corroboration": "failed",
+  "model": "none (--no-llm)"
+ },
+ "events": [
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     74.4,
+     30.95,
+     74.56,
+     31.08
+    ]
+   },
+   "t": 2
+  },
+  {
+   "event": "hypotheses",
+   "data": {
+    "type": "hypotheses",
+    "family": "water",
+    "family_title": "Water: flood, inundation or something else",
+    "window": {
+     "start": "2025-08-01",
+     "end": "2025-09-30"
+    },
+    "window_source": "request",
+    "items": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "family": "Water: flood, inundation or something else",
+      "prior": 0.4
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "family": "Water: flood, inundation or something else",
+      "prior": 0.25
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "family": "Water: flood, inundation or something else",
+      "prior": 0.15
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "family": "Water: flood, inundation or something else",
+      "prior": 0.2
+     }
+    ],
+    "rejected_ids": [],
+    "clamped_ids": [],
+    "used_default_priors": true,
+    "note": "The model could not triage the question (model disabled (--no-llm)); catalogue defaults are used.",
+    "calibration_note": "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+   },
+   "t": 60
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 1,
+    "item_id": "jrc_history",
+    "title": "Long-term water occurrence (JRC, 1984-2021)",
+    "op": "fetch_surface_water",
+    "args": {},
+    "why": "Long-term water occurrence (JRC, 1984-2021) is next: it is expected to remove 0.23 bits of uncertainty and would settle whether water here is usual (permanent or seasonal) or unusual.",
+    "why_source": "rule",
+    "voi": 0.2342,
+    "cost_s": 8,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "jrc_history",
+      "voi": 0.2342,
+      "cost_s": 8
+     },
+     {
+      "item_id": "optical_ndwi_change",
+      "voi": 0.2381,
+      "cost_s": 15
+     },
+     {
+      "item_id": "water_vision",
+      "voi": 0.1396,
+      "cost_s": 20
+     },
+     {
+      "item_id": "sar_new_water",
+      "voi": 0.4079,
+      "cost_s": 150
+     }
+    ],
+    "skipped": []
+   },
+   "t": 62
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "fetch_surface_water",
+    "status": "running"
+   },
+   "t": 62
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "fetch_surface_water",
+    "status": "completed",
+    "result_id": "r_cec679efe929dc36",
+    "result_status": "ok"
+   },
+   "t": 5484
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "surface-water-occurrence",
+    "name": "JRC Surface Water Occurrence (1984–2021)",
+    "result_id": "r_cec679efe929dc36"
+   },
+   "t": 5485
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     74.4,
+     30.95,
+     74.56,
+     31.08
+    ]
+   },
+   "t": 5485
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 1,
+    "item_id": "jrc_history",
+    "op": "fetch_surface_water",
+    "resultId": "r_cec679efe929dc36",
+    "status": "ok",
+    "summary": "Surface Water History — JRC Global Surface Water v1.4 · 220.4 km² (drawn polygon) Dataset: JRC Global Surface Water Mapping Layers v1.4 · 1984–2021 (37 years of Landsat) Resolution: 30 m · Metric: water occurrence = % of",
+    "measured": true,
+    "features": {
+     "water_occurrence_pct": 0.9
+    },
+    "feature": {
+     "name": "water_occurrence_pct",
+     "value": 0.9,
+     "unit": "% of years",
+     "field": "occurrence_mean_pct",
+     "derivation": "as reported",
+     "bin": "< 5 % of years"
+    },
+    "likelihood_ratios": {
+     "water_flood_event": 1.748,
+     "water_seasonal_inundation": 0.527,
+     "water_permanent": 0.077,
+     "water_radar_artefact": 1.706
+    },
+    "capped": false,
+    "caveat": "Ends in 2021; it is a baseline, not an observation of the window."
+   },
+   "t": 5485
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 1,
+    "updated": true,
+    "posteriors": {
+     "water_flood_event": 0.5381165919282511,
+     "water_seasonal_inundation": 0.14947683109118085,
+     "water_permanent": 0.013452914798206277,
+     "water_radar_artefact": 0.29895366218236175
+    },
+    "posterior": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "p": 0.5381165919282511,
+      "delta": 0.1381165919282511
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "p": 0.29895366218236175,
+      "delta": 0.09895366218236173
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "p": 0.14947683109118085,
+      "delta": -0.10052316890881915
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "p": 0.013452914798206277,
+      "delta": -0.1365470852017937
+     }
+    ],
+    "leading": "water_flood_event",
+    "entropy_bits": 1.4953
+   },
+   "t": 5485
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 2,
+    "item_id": "optical_ndwi_change",
+    "title": "Optical water-index change (Sentinel-2 NDWI)",
+    "op": "analyze_raster",
+    "args": {
+     "operation": "change",
+     "index": "NDWI",
+     "date": "2025-08-01",
+     "date2": "2025-09-30",
+     "bracket": true
+    },
+    "why": "Optical water-index change (Sentinel-2 NDWI) is next: it is expected to remove 0.19 bits of uncertainty and would settle an independent, optical sign of new water (needs a clear sky on both dates).",
+    "why_source": "rule",
+    "voi": 0.1937,
+    "cost_s": 15,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "optical_ndwi_change",
+      "voi": 0.1937,
+      "cost_s": 15
+     },
+     {
+      "item_id": "water_vision",
+      "voi": 0.1221,
+      "cost_s": 20
+     },
+     {
+      "item_id": "sar_new_water",
+      "voi": 0.2931,
+      "cost_s": 150
+     },
+     {
+      "item_id": "sar_orbit_geometry",
+      "voi": 0.1572,
+      "cost_s": 150
+     }
+    ],
+    "skipped": []
+   },
+   "t": 5486
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "analyze_raster",
+    "status": "running"
+   },
+   "t": 5486
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "analyze_raster",
+    "status": "completed",
+    "result_id": "r_b060a48245e979f7",
+    "result_status": "ok"
+   },
+   "t": 21777
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "change-khnw09az",
+    "name": "ΔNDWI 2025-07-20 → 2025-10-20",
+    "result_id": "r_b060a48245e979f7"
+   },
+   "t": 21777
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     74.4,
+     30.95,
+     74.56,
+     31.08
+    ]
+   },
+   "t": 21777
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 2,
+    "item_id": "optical_ndwi_change",
+    "op": "analyze_raster",
+    "resultId": "r_b060a48245e979f7",
+    "status": "ok",
+    "summary": "NDWI increased between 2025-07-20 and 2025-10-20 — mean change +0.093 NDWI units. 23% of clear pixels fell by more than 0.05, 55% rose, 23% held steady (σ 0.237, range -1.042 to 1.309). Computed on the 44,532 pixels that",
+    "measured": true,
+    "features": {
+     "ndwi_rise": 0.0932
+    },
+    "feature": {
+     "name": "ndwi_rise",
+     "value": 0.0932,
+     "unit": "NDWI",
+     "field": "mean_delta",
+     "derivation": "mean_delta (after minus before)",
+     "bin": "0.06 to 0.15 NDWI"
+    },
+    "likelihood_ratios": {
+     "water_flood_event": 1.781,
+     "water_seasonal_inundation": 1.089,
+     "water_permanent": 0.284,
+     "water_radar_artefact": 0.449
+    },
+    "capped": false,
+    "caveat": "Cloud and shadow on either date remove pixels; wet soil also raises NDWI."
+   },
+   "t": 21778
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 2,
+    "updated": true,
+    "posteriors": {
+     "water_flood_event": 0.6748071979434448,
+     "water_seasonal_inundation": 0.1606683804627249,
+     "water_permanent": 0.003856041131105399,
+     "water_radar_artefact": 0.16066838046272497
+    },
+    "posterior": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "p": 0.6748071979434448,
+      "delta": 0.13669060601519367
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "p": 0.16066838046272497,
+      "delta": -0.13828528171963678
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "p": 0.1606683804627249,
+      "delta": 0.011191549371544068
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "p": 0.003856041131105399,
+      "delta": -0.009596873667100879
+     }
+    ],
+    "leading": "water_flood_event",
+    "entropy_bits": 1.2615
+   },
+   "t": 21778
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 3,
+    "item_id": "water_vision",
+    "title": "A vision model looks at the true-colour scene",
+    "op": "inspect_imagery",
+    "args": {
+     "date": "2025-09-30",
+     "question": "Is there standing water over fields, roads or buildings, only water inside a channel or lake, or irrigated fields? Is cloud covering the ground?"
+    },
+    "why": "A vision model looks at the true-colour scene is next: it is expected to remove 0.12 bits of uncertainty and would settle what the scene shows to the eye.",
+    "why_source": "rule",
+    "voi": 0.1183,
+    "cost_s": 20,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "water_vision",
+      "voi": 0.1183,
+      "cost_s": 20
+     },
+     {
+      "item_id": "sar_new_water",
+      "voi": 0.2098,
+      "cost_s": 150
+     },
+     {
+      "item_id": "sar_orbit_geometry",
+      "voi": 0.1055,
+      "cost_s": 150
+     },
+     {
+      "item_id": "sar_prior_water",
+      "voi": 0.0367,
+      "cost_s": 150
+     }
+    ],
+    "skipped": []
+   },
+   "t": 21778
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "inspect_imagery",
+    "status": "running"
+   },
+   "t": 21778
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "inspect_imagery",
+    "status": "completed",
+    "result_id": "r_2b9473e81e226bd1",
+    "result_status": "ok"
+   },
+   "t": 30152
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "inspect-gsp6vd8p",
+    "name": "True colour — 2025-10-28",
+    "result_id": "r_2b9473e81e226bd1"
+   },
+   "t": 30152
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     74.4,
+     30.95,
+     74.56,
+     31.08
+    ]
+   },
+   "t": 30152
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 3,
+    "item_id": "water_vision",
+    "op": "inspect_imagery",
+    "resultId": "r_2b9473e81e226bd1",
+    "status": "ok",
+    "summary": "The imagery was rendered but the vision model could not describe it. vision model (gemini-3.8-flash via openai) returned HTTP 402: [{ \"error\": { \"code\": 402, \"message\": \"Your prepayment credits are depleted. Please go to",
+    "measured": false,
+    "features": {},
+    "reason": "the picture could not be classified (model disabled (--no-llm))",
+    "caveat": "A vision reading is an interpretation of a picture; its weight is capped."
+   },
+   "t": 30152
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 3,
+    "updated": false,
+    "posteriors": {
+     "water_flood_event": 0.6748071979434448,
+     "water_seasonal_inundation": 0.1606683804627249,
+     "water_permanent": 0.003856041131105399,
+     "water_radar_artefact": 0.16066838046272497
+    },
+    "posterior": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "p": 0.6748071979434448,
+      "delta": 0
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "p": 0.16066838046272497,
+      "delta": 0
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "p": 0.1606683804627249,
+      "delta": 0
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "p": 0.003856041131105399,
+      "delta": 0
+     }
+    ],
+    "leading": "water_flood_event",
+    "entropy_bits": 1.2615
+   },
+   "t": 30152
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 4,
+    "item_id": "sar_new_water",
+    "title": "New water between a dry and a wet Sentinel-1 pass",
+    "op": "map_flood",
+    "args": {
+     "start": "2025-08-01",
+     "end": "2025-09-30",
+     "include_roads": false
+    },
+    "why": "New water between a dry and a wet Sentinel-1 pass is next: it is expected to remove 0.21 bits of uncertainty and would settle whether water appeared that was not there on a dry reference pass.",
+    "why_source": "rule",
+    "voi": 0.2098,
+    "cost_s": 150,
+    "reused": false,
+    "considered": [
+     {
+      "item_id": "sar_new_water",
+      "voi": 0.2098,
+      "cost_s": 150
+     },
+     {
+      "item_id": "sar_orbit_geometry",
+      "voi": 0.1055,
+      "cost_s": 150
+     },
+     {
+      "item_id": "sar_prior_water",
+      "voi": 0.0367,
+      "cost_s": 150
+     }
+    ],
+    "skipped": []
+   },
+   "t": 30152
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "map_flood",
+    "status": "running"
+   },
+   "t": 30152
+  },
+  {
+   "event": "tool_call",
+   "data": {
+    "tool_name": "map_flood",
+    "status": "completed",
+    "result_id": "r_ca53ccd8d3ab5e71",
+    "result_status": "ok"
+   },
+   "t": 106718
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "flood-sar-after-bczkyzyn",
+    "name": "Sentinel-1 VV after (2025-09-04)",
+    "result_id": "r_ca53ccd8d3ab5e71"
+   },
+   "t": 106718
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "flood-sar-before-83fm7xyi",
+    "name": "Sentinel-1 VV before (2025-08-23)",
+    "result_id": "r_ca53ccd8d3ab5e71"
+   },
+   "t": 106718
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "flood-polygons-22xlm2lr",
+    "name": "Flood extent: 23.5 km² new, 14.16 km² permanent",
+    "result_id": "r_ca53ccd8d3ab5e71"
+   },
+   "t": 106718
+  },
+  {
+   "event": "layer",
+   "data": {
+    "layer_id": "flood-buildings-srr3zidc",
+    "name": "Flooded buildings (193)",
+    "result_id": "r_ca53ccd8d3ab5e71"
+   },
+   "t": 106718
+  },
+  {
+   "event": "zoom_to",
+   "data": {
+    "type": "zoom_to",
+    "bbox": [
+     74.4,
+     30.95,
+     74.56,
+     31.08
+    ]
+   },
+   "t": 106718
+  },
+  {
+   "event": "chart",
+   "data": {
+    "result_id": "r_ca53ccd8d3ab5e71"
+   },
+   "t": 106718
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 4,
+    "item_id": "sar_new_water",
+    "op": "map_flood",
+    "resultId": "r_ca53ccd8d3ab5e71",
+    "status": "ok",
+    "summary": "23.5 km² newly flooded in 389 polygons (10.7% of the 219.4 km² observed), against 14.16 km² of permanent water; 0.28 km² of water present before had gone by the after-date. - After: 2025-09-04 (descending, relative orbit",
+    "measured": true,
+    "features": {
+     "newly_flooded_fraction": 0.1071
+    },
+    "feature": {
+     "name": "newly_flooded_fraction",
+     "value": 0.1071,
+     "unit": "of the observed area",
+     "field": "flood_pct_of_observed",
+     "derivation": "flood_pct_of_observed / 100",
+     "bin": "0.1 to 0.3 of the observed area"
+    },
+    "likelihood_ratios": {
+     "water_flood_event": 1.213,
+     "water_seasonal_inundation": 1.296,
+     "water_permanent": 0.07,
+     "water_radar_artefact": 0.487
+    },
+    "capped": false
+   },
+   "t": 106719
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 4,
+    "updated": true,
+    "posteriors": {
+     "water_flood_event": 0.7157138962101245,
+     "water_seasonal_inundation": 0.1988094156139234,
+     "water_permanent": 0.000272652912841952,
+     "water_radar_artefact": 0.08520403526311005
+    },
+    "posterior": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "p": 0.7157138962101245,
+      "delta": 0.0409066982666797
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "p": 0.1988094156139234,
+      "delta": 0.03814103515119849
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "p": 0.08520403526311005,
+      "delta": -0.07546434519961492
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "p": 0.000272652912841952,
+      "delta": -0.0035833882182634467
+     }
+    ],
+    "leading": "water_flood_event",
+    "entropy_bits": 1.1147
+   },
+   "t": 106719
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 5,
+    "item_id": "sar_orbit_geometry",
+    "title": "Radar geometry of the two passes",
+    "op": "map_flood",
+    "args": {
+     "start": "2025-08-01",
+     "end": "2025-09-30",
+     "include_roads": false
+    },
+    "why": "Radar geometry of the two passes is next: it is expected to remove 0.06 bits of uncertainty and would settle whether the radar pair can be trusted to show a surface change.",
+    "why_source": "rule",
+    "voi": 0.0629,
+    "cost_s": 0,
+    "reused": true,
+    "considered": [
+     {
+      "item_id": "sar_orbit_geometry",
+      "voi": 0.0629,
+      "cost_s": 0
+     },
+     {
+      "item_id": "sar_prior_water",
+      "voi": 0.0263,
+      "cost_s": 0
+     }
+    ],
+    "skipped": []
+   },
+   "t": 106719
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 5,
+    "item_id": "sar_orbit_geometry",
+    "op": "map_flood",
+    "resultId": "r_ca53ccd8d3ab5e71",
+    "status": "ok",
+    "summary": "23.5 km² newly flooded in 389 polygons (10.7% of the 219.4 km² observed), against 14.16 km² of permanent water; 0.28 km² of water present before had gone by the after-date. - After: 2025-09-04 (descending, relative orbit",
+    "measured": true,
+    "features": {},
+    "feature": {
+     "name": "sar_orbit_match",
+     "value": "orbit",
+     "unit": "category",
+     "field": "orbit_match",
+     "derivation": "as reported",
+     "bin": "orbit"
+    },
+    "likelihood_ratios": {
+     "water_flood_event": 1.25,
+     "water_seasonal_inundation": 1.076,
+     "water_permanent": 1.06,
+     "water_radar_artefact": 0.333
+    },
+    "capped": false
+   },
+   "t": 106719
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 5,
+    "updated": true,
+    "posteriors": {
+     "water_flood_event": 0.7588167276931973,
+     "water_seasonal_inundation": 0.21078242435922137,
+     "water_permanent": 0.00028907303912121786,
+     "water_radar_artefact": 0.030111774908460214
+    },
+    "posterior": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "p": 0.7588167276931973,
+      "delta": 0.04310283148307281
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "p": 0.21078242435922137,
+      "delta": 0.01197300874529797
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "p": 0.030111774908460214,
+      "delta": -0.05509226035464983
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "p": 0.00028907303912121786,
+      "delta": 0.00001642012627926586
+     }
+    ],
+    "leading": "water_flood_event",
+    "entropy_bits": 0.9312
+   },
+   "t": 106719
+  },
+  {
+   "event": "step",
+   "data": {
+    "type": "step",
+    "n": 6,
+    "item_id": "sar_prior_water",
+    "title": "Water already present on the dry reference pass",
+    "op": "map_flood",
+    "args": {
+     "start": "2025-08-01",
+     "end": "2025-09-30",
+     "include_roads": false
+    },
+    "why": "Water already present on the dry reference pass is next: it is expected to remove 0.02 bits of uncertainty and would settle whether the water is new or was already there.",
+    "why_source": "rule",
+    "voi": 0.0236,
+    "cost_s": 0,
+    "reused": true,
+    "considered": [
+     {
+      "item_id": "sar_prior_water",
+      "voi": 0.0236,
+      "cost_s": 0
+     }
+    ],
+    "skipped": []
+   },
+   "t": 106720
+  },
+  {
+   "event": "evidence",
+   "data": {
+    "type": "evidence",
+    "n": 6,
+    "item_id": "sar_prior_water",
+    "op": "map_flood",
+    "resultId": "r_ca53ccd8d3ab5e71",
+    "status": "ok",
+    "summary": "23.5 km² newly flooded in 389 polygons (10.7% of the 219.4 km² observed), against 14.16 km² of permanent water; 0.28 km² of water present before had gone by the after-date. - After: 2025-09-04 (descending, relative orbit",
+    "measured": true,
+    "features": {
+     "pre_event_water_fraction": 0.0665
+    },
+    "feature": {
+     "name": "pre_event_water_fraction",
+     "value": 0.0665,
+     "unit": "of the observed area",
+     "field": "before_water_pct",
+     "derivation": "before_water_pct / 100",
+     "bin": "0.05 to 0.4 of the observed area"
+    },
+    "likelihood_ratios": {
+     "water_flood_event": 0.745,
+     "water_seasonal_inundation": 1.369,
+     "water_permanent": 0.392,
+     "water_radar_artefact": 1.04
+    },
+    "capped": false
+   },
+   "t": 106720
+  },
+  {
+   "event": "belief",
+   "data": {
+    "type": "belief",
+    "n": 6,
+    "updated": true,
+    "posteriors": {
+     "water_flood_event": 0.7008940292728948,
+     "water_seasonal_inundation": 0.2677025806250639,
+     "water_permanent": 0.00011347808092989729,
+     "water_radar_artefact": 0.03128991202111137
+    },
+    "posterior": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "p": 0.7008940292728948,
+      "delta": -0.05792269842030251
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "p": 0.2677025806250639,
+      "delta": 0.05692015626584254
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "p": 0.03128991202111137,
+      "delta": 0.0011781371126511585
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "p": 0.00011347808092989729,
+      "delta": -0.00017559495819132056
+     }
+    ],
+    "leading": "water_flood_event",
+    "entropy_bits": 1.0262
+   },
+   "t": 106720
+  },
+  {
+   "event": "verdict",
+   "data": {
+    "type": "verdict",
+    "kind": "hypothesis",
+    "id": "water_flood_event",
+    "decidingEvidence": [
+     1,
+     2,
+     4,
+     5,
+     6
+    ],
+    "label": "Flood event",
+    "posterior": 0.7009,
+    "runner_up": {
+     "id": "water_seasonal_inundation",
+     "label": "Seasonal or irrigation inundation",
+     "p": 0.2677
+    },
+    "stop_reason": "no_informative_evidence",
+    "evidence_ops_run": 4,
+    "items_measured": 5,
+    "items_unmeasured": 1,
+    "evidence_that_would_decide": [
+     {
+      "item_id": "water_vision",
+      "title": "A vision model looks at the true-colour scene",
+      "decides": "what the scene shows to the eye",
+      "voi": 0.0915,
+      "why_not": "could not be measured: the picture could not be classified (model disabled (--no-llm))"
+     }
+    ],
+    "calibration_note": "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+   },
+   "t": 106720
+  },
+  {
+   "event": "corroboration",
+   "data": {
+    "type": "corroboration",
+    "role": "context",
+    "query": "Flood event: Water spread over land that was dry, from river overflow or heavy rain. | coordinates only | 2025-08-01 to 2025-09-30",
+    "status": "failed",
+    "sources": [],
+    "note": "The web search could not run (model disabled (--no-llm)). No corroboration was obtained; this says nothing about whether the event was reported."
+   },
+   "t": 106721
+  },
+  {
+   "event": "dossier",
+   "data": {
+    "type": "dossier",
+    "summary": "**Most likely explanation: Flood event.**\n\nLong-term water occurrence (JRC, 1984-2021): water_occurrence_pct was 0.9 % of years (< 5 % of years) [[r_cec679efe929dc36#occurrence_mean_pct]].\n\nOptical water-index change (Sentinel-2 NDWI): ndwi_rise was 0.0932 NDWI (0.06 to 0.15 NDWI) [[r_b060a48245e979f7#mean_delta]].\n\nA vision model looks at the true-colour scene could not be measured: the picture could not be classified (model disabled (--no-llm)).\n\nNew water between a dry and a wet Sentinel-1 pass: newly_flooded_fraction was 0.1071 of the observed area (0.1 to 0.3 of the observed area) [[r_ca53ccd8d3ab5e71#flood_pct_of_observed]].\n\nRadar geometry of the two passes: sar_orbit_match was orbit (orbit) [[r_ca53ccd8d3ab5e71#orbit_match]].\n\nWater already present on the dry reference pass: pre_event_water_fraction was 0.0665 of the observed area (0.05 to 0.4 of the observed area) [[r_ca53ccd8d3ab5e71#before_water_pct]].\n\nLimits: Sentinel-1 radar misses water under vegetation and among dense buildings, so flooded area is a lower bound there. The JRC surface-water history ends in 2021; it says what was usual, not what happened in the window. Optical change compares two single scenes (the dates actually used are reported); cloud on either date removes pixels.",
+    "summary_source": "recorded-results",
+    "sentences_dropped": 0,
+    "family": "water",
+    "window": {
+     "start": "2025-08-01",
+     "end": "2025-09-30"
+    },
+    "bbox": [
+     74.4,
+     30.95,
+     74.56,
+     31.08
+    ],
+    "final_posterior": [
+     {
+      "id": "water_flood_event",
+      "label": "Flood event",
+      "p": 0.7008940292728948,
+      "delta": 0
+     },
+     {
+      "id": "water_seasonal_inundation",
+      "label": "Seasonal or irrigation inundation",
+      "p": 0.2677025806250639,
+      "delta": 0
+     },
+     {
+      "id": "water_radar_artefact",
+      "label": "Radar artefact",
+      "p": 0.03128991202111137,
+      "delta": 0
+     },
+     {
+      "id": "water_permanent",
+      "label": "Permanent water",
+      "p": 0.00011347808092989729,
+      "delta": 0
+     }
+    ],
+    "evidence": [
+     {
+      "item_id": "jrc_history",
+      "title": "Long-term water occurrence (JRC, 1984-2021)",
+      "op": "fetch_surface_water",
+      "result_id": "r_cec679efe929dc36",
+      "measured": true,
+      "value": 0.9,
+      "field": "occurrence_mean_pct",
+      "unit": "% of years",
+      "bin": "< 5 % of years",
+      "reason": null
+     },
+     {
+      "item_id": "optical_ndwi_change",
+      "title": "Optical water-index change (Sentinel-2 NDWI)",
+      "op": "analyze_raster",
+      "result_id": "r_b060a48245e979f7",
+      "measured": true,
+      "value": 0.0932,
+      "field": "mean_delta",
+      "unit": "NDWI",
+      "bin": "0.06 to 0.15 NDWI",
+      "reason": null
+     },
+     {
+      "item_id": "water_vision",
+      "title": "A vision model looks at the true-colour scene",
+      "op": "inspect_imagery",
+      "result_id": "r_2b9473e81e226bd1",
+      "measured": false,
+      "value": null,
+      "field": null,
+      "unit": "category",
+      "bin": null,
+      "reason": "the picture could not be classified (model disabled (--no-llm))"
+     },
+     {
+      "item_id": "sar_new_water",
+      "title": "New water between a dry and a wet Sentinel-1 pass",
+      "op": "map_flood",
+      "result_id": "r_ca53ccd8d3ab5e71",
+      "measured": true,
+      "value": 0.1071,
+      "field": "flood_pct_of_observed",
+      "unit": "of the observed area",
+      "bin": "0.1 to 0.3 of the observed area",
+      "reason": null
+     },
+     {
+      "item_id": "sar_orbit_geometry",
+      "title": "Radar geometry of the two passes",
+      "op": "map_flood",
+      "result_id": "r_ca53ccd8d3ab5e71",
+      "measured": true,
+      "value": "orbit",
+      "field": "orbit_match",
+      "unit": "category",
+      "bin": "orbit",
+      "reason": null
+     },
+     {
+      "item_id": "sar_prior_water",
+      "title": "Water already present on the dry reference pass",
+      "op": "map_flood",
+      "result_id": "r_ca53ccd8d3ab5e71",
+      "measured": true,
+      "value": 0.0665,
+      "field": "before_water_pct",
+      "unit": "of the observed area",
+      "bin": "0.05 to 0.4 of the observed area",
+      "reason": null
+     }
+    ],
+    "skipped": [],
+    "limits": [
+     "Sentinel-1 radar misses water under vegetation and among dense buildings, so flooded area is a lower bound there.",
+     "The JRC surface-water history ends in 2021; it says what was usual, not what happened in the window.",
+     "Optical change compares two single scenes (the dates actually used are reported); cloud on either date removes pixels.",
+     "The likelihoods behind this verdict are expert judgement from the physics of each measurement, not fitted to labelled data; treat posteriors as a structured ranking, not calibrated probabilities."
+    ],
+    "corroboration": {
+     "role": "context",
+     "status": "failed",
+     "query": "Flood event: Water spread over land that was dry, from river overflow or heavy rain. | coordinates only | 2025-08-01 to 2025-09-30",
+     "sources": [],
+     "note": "The web search could not run (model disabled (--no-llm)). No corroboration was obtained; this says nothing about whether the event was reported."
+    },
+    "timings_ms": {
+     "total": 106720,
+     "investigation": 106660,
+     "corroboration": 1
+    },
+    "runId": ""
+   },
+   "t": 106721
+  },
+  {
+   "event": "done",
+   "data": {
+    "type": "done"
+   },
+   "t": 106721
+  }
+ ]
+}

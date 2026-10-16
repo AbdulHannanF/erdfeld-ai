@@ -1,0 +1,173 @@
+[
+ {
+  "id": "thermal",
+  "label": "Thermal (Landsat LST)",
+  "place": "33.45, -112.07",
+  "status": "pass",
+  "notes": [
+   "layer rows 1, map pixels changed 80.0%, layer tile responses ok 52 failed 0"
+  ],
+  "shot": "C:\\Users\\Abdul\\erdfeld-shots\\ops\\thermal.png",
+  "aoi": "Rectangle area 33.4510° N · 112.0715° W 1.60 KM²",
+  "layer_rows": 1,
+  "layer_names": [
+   "LST landsat-9 2026-10-04 (42.2°C) Landsat C2 L2 ST_B10 (Planetary Computer) + titiler · 30 m 30 m 75% Style and legend"
+  ],
+  "map_changed_frac": 0.8005,
+  "legend": {
+   "vector_legend": false,
+   "gradient_elements": 0,
+   "legend_text": true
+  },
+  "tiles": {
+   "ok": 52,
+   "failed": [],
+   "failed_count": 0
+  },
+  "http_errors": [],
+  "ms": 41948
+ },
+ {
+  "id": "sar",
+  "label": "SAR (Sentinel-1)",
+  "place": "30.99, 74.57",
+  "status": "pass",
+  "notes": [
+   "layer rows 1, map pixels changed 62.9%, layer tile responses ok 38 failed 0"
+  ],
+  "shot": "C:\\Users\\Abdul\\erdfeld-shots\\ops\\sar.png",
+  "aoi": "Rectangle area 30.9910° N · 74.5685° E 1.69 KM²",
+  "layer_rows": 1,
+  "layer_names": [
+   "SAR VV -8.6 dB — Vegetation / mixed (2026-10-12) Sentinel-1 RTC gamma0 (Microsoft Planetary Computer) · 2026-10-12 · 10 "
+  ],
+  "map_changed_frac": 0.6287,
+  "legend": {
+   "vector_legend": false,
+   "gradient_elements": 0,
+   "legend_text": true
+  },
+  "tiles": {
+   "ok": 38,
+   "failed": [],
+   "failed_count": 0
+  },
+  "http_errors": [],
+  "ms": 35033
+ },
+ {
+  "id": "ndvi",
+  "label": "NDVI (quick layer)",
+  "place": "31.12, 74.45",
+  "status": "pass",
+  "notes": [
+   "layer rows 1, map pixels changed 55.5%, layer tile responses ok 40 failed 0"
+  ],
+  "shot": "C:\\Users\\Abdul\\erdfeld-shots\\ops\\ndvi.png",
+  "aoi": "Rectangle area 31.1210° N · 74.4485° E 1.68 KM²",
+  "layer_rows": 1,
+  "layer_names": [
+   "NDVI 2026-10-15 Sentinel-2 L2A (AWS Element84 Earth Search) — NDVI · 2026-10-15 · 10 m 10 m 75% Style and legend"
+  ],
+  "map_changed_frac": 0.5548,
+  "legend": {
+   "vector_legend": false,
+   "gradient_elements": 0,
+   "legend_text": true
+  },
+  "tiles": {
+   "ok": 40,
+   "failed": [],
+   "failed_count": 0
+  },
+  "http_errors": [],
+  "ms": 26719
+ },
+ {
+  "id": "dem",
+  "label": "DEM (elevation)",
+  "place": "45.98, 7.66",
+  "status": "pass",
+  "notes": [
+   "layer rows 2, map pixels changed 75.9%, layer tile responses ok 55 failed 0"
+  ],
+  "shot": "C:\\Users\\Abdul\\erdfeld-shots\\ops\\dem.png",
+  "aoi": "Rectangle area 45.9808° N · 7.6585° E 1.11 KM²",
+  "layer_rows": 2,
+  "layer_names": [
+   "DEM: High mountain / alpine (3148–4186 m) Map imagery: Copernicus DEM 30m (PC STAC) + titiler · Statistics: Mapzen ~30m ",
+   "Hillshade (shaded relief, 30 m) Copernicus DEM 30m (PC STAC) + titiler hillshade algorithm · 30 m 30 m 75%"
+  ],
+  "map_changed_frac": 0.7587,
+  "legend": {
+   "vector_legend": false,
+   "gradient_elements": 0,
+   "legend_text": true
+  },
+  "tiles": {
+   "ok": 55,
+   "failed": [],
+   "failed_count": 0
+  },
+  "http_errors": [],
+  "ms": 32082
+ },
+ {
+  "id": "flood",
+  "label": "Flood extent (map_flood)",
+  "place": "30.985, 74.58",
+  "status": "pass",
+  "notes": [
+   "layer rows 3, map pixels changed 84.3%, layer tile responses ok 54 failed 0"
+  ],
+  "shot": "C:\\Users\\Abdul\\erdfeld-shots\\ops\\flood.png",
+  "aoi": "Rectangle area 30.9860° N · 74.5785° E 1.69 KM²",
+  "layer_rows": 3,
+  "layer_names": [
+   "Sentinel-1 VV after (2025-09-04) Sentinel-1 RTC (gamma-nought) via Microsoft Planetary Computer · 2025-09-04 · 10 m 10 m",
+   "Sentinel-1 VV before (2025-07-18) Sentinel-1 RTC (gamma-nought) via Microsoft Planetary Computer · 2025-07-18 · 10 m 10 ",
+   "Flood extent: 0.11 km² new, 0.24 km² permanent Sentinel-1 RTC (Microsoft Planetary Computer), change between two scenes "
+  ],
+  "map_changed_frac": 0.8426,
+  "legend": {
+   "vector_legend": false,
+   "gradient_elements": 0,
+   "legend_text": true
+  },
+  "tiles": {
+   "ok": 54,
+   "failed": [],
+   "failed_count": 0
+  },
+  "http_errors": [],
+  "ms": 53320
+ },
+ {
+  "id": "buildings",
+  "label": "Buildings (query_3d_tiles)",
+  "place": "31.5497, 74.3436",
+  "status": "pass",
+  "notes": [
+   "layer rows 1, map pixels changed 66.8%, layer tile responses ok 35 failed 0"
+  ],
+  "shot": "C:\\Users\\Abdul\\erdfeld-shots\\ops\\buildings.png",
+  "aoi": "Rectangle area 31.5507° N · 74.3421° E 1.67 KM²",
+  "layer_rows": 1,
+  "layer_names": [
+   "Buildings with Heights (25) OpenStreetMap (Overpass) 75% Style, legend, export"
+  ],
+  "map_changed_frac": 0.6678,
+  "legend": {
+   "vector_legend": false,
+   "gradient_elements": 0,
+   "legend_text": true
+  },
+  "tiles": {
+   "ok": 35,
+   "failed": [],
+   "failed_count": 0
+  },
+  "http_errors": [],
+  "ms": 68480
+ }
+]

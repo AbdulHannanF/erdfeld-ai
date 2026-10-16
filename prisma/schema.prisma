@@ -1,0 +1,270 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// P6.1 — geospatial persistence: Project / Layer / Message, plus (Q-47) the evidence ledger.
+//
+// PostgreSQL is the one database for every environment (Q-21). Structured values (AOI GeoJSON,
+// layer geojson, palette, provenance, summary_data, GeoResult payloads, plan arguments) are `Json`
+// (jsonb). Serialization lives in `src/lib/projects.ts` + `src/app/api/projects/serialize.ts`.
+//
+// PostGIS is not used yet. Where it will go: `Project.aoi` and `PlanRun.aoi` gain a sibling
+// `geometry(Geometry, 4326)` column with a GiST index once AOI-intersection queries ("every
+// result that touched this field") are needed; the `Unsupported("geometry")` type and the
+// `postgresqlExtensions` preview feature are the Prisma side, plus `CREATE EXTENSION postgis`
+// in a migration. Nothing reads such a column today, so none is declared.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id         String   @id @default(cuid())
+  name       String
+  // Anonymous owner key (localStorage-generated) until P6.3 wires next-auth.
+  ownerToken String?
+  // AOI ({ type, geometry, center?, radiusKm? }) — null if none.
+  aoi        Json?
+  mapStyle   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  layers     Layer[]
+  messages   Message[]
+  shareLinks ShareLink[]
+
+  @@index([ownerToken])
+}
+
+// P6.2 — read-only share links. A short token maps to a project; resolving it
+// returns the frozen project snapshot for any viewer (preview mode). No auth
+// beyond the owner token required to *mint* the link.
+model ShareLink {
+  token     String  @id
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
+  viewCount Int       @default(0)
+
+  @@index([projectId])
+}
+
+model Layer {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // The in-app MapLayer.id (stable across save/load).
+  layerId String
+  name    String
+  type    String
+
+  tileUrl           String?
+  // GeoJSON FeatureCollection.
+  geojson           Json?
+  imageBase64       String?
+  color             String?
+  intensityProperty String?
+  render            String?
+  heightProperty    String?
+  // [w,s,e,n] bounds.
+  bounds            Json?
+  // LayerPalette.
+  palette           Json?
+  // Provenance { source, date?, method, clip }.
+  provenance        Json?
+  confidence        String?
+
+  // P4.x reuse/citation linkage.
+  resultId    String?
+  tool        String?
+  // summary_data (Record<string, CitationValue>).
+  summaryData Json?
+  aoiKey      String?
+
+  opacity   Float   @default(1)
+  visible   Boolean @default(true)
+  sortOrder Int     @default(0)
+
+  @@index([projectId])
+}
+
+model Message {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  role    String
+  content String
+
+  resultId    String?
+  // summary_data for this message (if any).
+  summaryData Json?
+  // Snapshot of the tool results this message's citations resolve against
+  // (ChatMessage.toolResults).
+  toolResults Json?
+
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([projectId])
+}
+
+// Q-47 — content-addressed results = evidence ledger (ADR-0001 §6).
+//
+// `Result` is every executed operation's GeoResult, keyed by its content-addressed `resultId`.
+// Rows are evidence: they are upserted when the same id is recomputed, and are never deleted
+// when a cache entry expires. `cacheKey`/`expiresAt` are the cache view of the same row: a row
+// is served as a cache hit only while `expiresAt` is in the future (null = no expiry) and
+// `cacheKey` is set (failed and refused results have none). `payload` is the GeoResult (jsonb).
+model Result {
+  resultId   String    @id
+  inputsHash String
+  cacheKey   String?
+  opName     String
+  opVersion  String
+  status     String
+  payload    Json
+  computedAt DateTime
+  expiresAt  DateTime?
+
+  @@index([cacheKey])
+  @@index([inputsHash])
+}
+
+// The executed plan graph of one request. `aoi`/`focus` are kept so the run can be
+// re-executed; `ownerToken` scopes access exactly like Project.
+model PlanRun {
+  id         String     @id @default(cuid())
+  ownerToken String?
+  query      String?
+  aoi        Json
+  focus      Json?
+  createdAt  DateTime   @default(now())
+  nodes      PlanNode[]
+
+  @@index([ownerToken])
+}
+
+model PlanNode {
+  id         String  @id @default(cuid())
+  runId      String
+  run        PlanRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  idx        Int
+  op         String
+  version    String
+  // Plan references are written as `${node:<idx>}` (idx of another node in this run).
+  args       Json
+  // number[] of node idx values this node depends on.
+  dependsOn  Json
+  inputsHash String?
+  resultId   String?
+  // ok | flagged | refused | failed | skipped
+  status     String
+  cached     Boolean @default(false)
+  startedAt  DateTime
+  ms         Int
+
+  @@unique([runId, idx])
+  @@index([resultId])
+}
+
+// Q-24 — Postgres-backed job queue for work that exceeds the request budget (batches of
+// polygons, long series). `JobBatch` is what a client submits and follows; each `Job` is one
+// operation on one AOI, executed through the engine executor (so its result lands in `Result`).
+// `src/lib/jobs/queue.ts` owns every transition; the claim is `FOR UPDATE SKIP LOCKED`.
+model JobBatch {
+  id         String   @id @default(cuid())
+  // Same scoping as Project: owner key, null = open.
+  ownerToken String?
+  label      String?
+  createdAt  DateTime @default(now())
+
+  jobs   Job[]
+  events JobEvent[]
+
+  @@index([ownerToken])
+}
+
+model Job {
+  id      String   @id @default(cuid())
+  batchId String
+  batch   JobBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  // Position in the submitted batch.
+  idx     Int
+  op      String
+  args    Json
+  // GeoJSON geometry this job runs on.
+  aoi     Json
+
+  // queued | running | done | failed
+  status      String    @default("queued")
+  attempts    Int       @default(0)
+  maxAttempts Int       @default(3)
+  // Not claimable before this (retry backoff).
+  runAt       DateTime  @default(now())
+  // A running job whose lease is in the past was abandoned (worker crashed) and is claimable again.
+  leaseUntil  DateTime?
+  workerId    String?
+
+  // The stored GeoResult (Result.resultId) and its status (ok | flagged | refused | failed).
+  // For a `verify_claim` job (batch input): the Case id and its verdict.
+  resultId     String?
+  resultStatus String?
+  // Why the job failed or is waiting for a retry.
+  error        String?
+
+  createdAt  DateTime  @default(now())
+  startedAt  DateTime?
+  finishedAt DateTime?
+
+  @@unique([batchId, idx])
+  @@index([status, runAt])
+  @@index([resultId])
+}
+
+// Progress log of a batch, read by the SSE endpoint with a cursor. Rows are appended only while
+// the batch row is locked, so ids become visible in order and a cursor never skips one.
+model JobEvent {
+  id        Int      @id @default(autoincrement())
+  batchId   String
+  batch     JobBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  // batch_queued | job_done | job_retry | job_failed | batch_done
+  type      String
+  data      Json
+  createdAt DateTime @default(now())
+
+  @@index([batchId, id])
+}
+
+// Q-27 — a claim verification case: one claim about one plot, the verdict a recipe version
+// reached, and the ledger run that holds the evidence. Plain columns plus Json, owner-scoped
+// like Project. `decision` is the evaluator's trace (rule, reason, named inputs).
+model Case {
+  id         String   @id @default(cuid())
+  ownerToken String?
+  claimType  String
+  // "<id>@<semver>" of the recipe that decided.
+  recipe     String
+  geometry   Json
+  // The resolved parameters (defaults and derived values included), as the run used them.
+  params     Json
+  // supported | contradicted | cannot_determine
+  verdict    String
+  confidence Float?
+  decision   Json
+  runId      String?
+  // The queue job that created it (batch input, Q-28), so a re-run of that job finds this case
+  // instead of making a second one. Null for a case created by POST /api/cases.
+  jobId      String?  @unique
+  createdAt  DateTime @default(now())
+
+  @@index([ownerToken])
+  @@index([runId])
+}

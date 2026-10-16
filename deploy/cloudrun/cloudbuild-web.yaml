@@ -1,0 +1,20 @@
+# Builds the web image with the build-time settings (CSP origin, commit). Used by deploy.sh:
+#   gcloud builds submit . --config deploy/cloudrun/cloudbuild-web.yaml \
+#     --substitutions _IMAGE=...,_TITILER_ENDPOINT=https://...,_GIT_SHA=...
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - --tag=${_IMAGE}
+      - --build-arg=TITILER_ENDPOINT=${_TITILER_ENDPOINT}
+      - --build-arg=GIT_SHA=${_GIT_SHA}
+      - .
+images:
+  - ${_IMAGE}
+substitutions:
+  _TITILER_ENDPOINT: ""
+  _GIT_SHA: ""
+timeout: 1800s
+options:
+  machineType: E2_HIGHCPU_8
+  logging: CLOUD_LOGGING_ONLY

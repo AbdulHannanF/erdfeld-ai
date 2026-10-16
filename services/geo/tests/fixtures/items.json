@@ -1,0 +1,440 @@
+{
+ "bbox": [
+  74.16085019106893,
+  31.133318189680622,
+  74.1641811698708,
+  31.136227072922747
+ ],
+ "items": [
+  {
+   "type": "Feature",
+   "stac_version": "1.0.0",
+   "id": "FIX_2026-09-02",
+   "collection": "sentinel-2-l2a",
+   "bbox": [
+    74.16085019106893,
+    31.133318189680622,
+    74.1641811698708,
+    31.136227072922747
+   ],
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       74.16085019106893,
+       31.133318189680622
+      ],
+      [
+       74.1641811698708,
+       31.133318189680622
+      ],
+      [
+       74.1641811698708,
+       31.136227072922747
+      ],
+      [
+       74.16085019106893,
+       31.136227072922747
+      ],
+      [
+       74.16085019106893,
+       31.133318189680622
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "datetime": "2026-09-02T05:40:00Z",
+    "eo:cloud_cover": 10.0,
+    "proj:epsg": 32643
+   },
+   "assets": {
+    "red": {
+     "href": "2026-09-02_red.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint16",
+       "nodata": 0
+      }
+     ]
+    },
+    "nir": {
+     "href": "2026-09-02_nir.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint16",
+       "nodata": 0
+      }
+     ]
+    },
+    "scl": {
+     "href": "2026-09-02_scl.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint8",
+       "nodata": 0
+      }
+     ]
+    }
+   },
+   "links": []
+  },
+  {
+   "type": "Feature",
+   "stac_version": "1.0.0",
+   "id": "FIX_2026-09-07",
+   "collection": "sentinel-2-l2a",
+   "bbox": [
+    74.16085019106893,
+    31.133318189680622,
+    74.1641811698708,
+    31.136227072922747
+   ],
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       74.16085019106893,
+       31.133318189680622
+      ],
+      [
+       74.1641811698708,
+       31.133318189680622
+      ],
+      [
+       74.1641811698708,
+       31.136227072922747
+      ],
+      [
+       74.16085019106893,
+       31.136227072922747
+      ],
+      [
+       74.16085019106893,
+       31.133318189680622
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "datetime": "2026-09-07T05:40:00Z",
+    "eo:cloud_cover": 10.0,
+    "proj:epsg": 32643
+   },
+   "assets": {
+    "red": {
+     "href": "2026-09-07_red.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint16",
+       "nodata": 0
+      }
+     ]
+    },
+    "nir": {
+     "href": "2026-09-07_nir.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint16",
+       "nodata": 0
+      }
+     ]
+    },
+    "scl": {
+     "href": "2026-09-07_scl.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint8",
+       "nodata": 0
+      }
+     ]
+    }
+   },
+   "links": []
+  },
+  {
+   "type": "Feature",
+   "stac_version": "1.0.0",
+   "id": "FIX_2026-09-12",
+   "collection": "sentinel-2-l2a",
+   "bbox": [
+    74.16085019106893,
+    31.133318189680622,
+    74.1641811698708,
+    31.136227072922747
+   ],
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       74.16085019106893,
+       31.133318189680622
+      ],
+      [
+       74.1641811698708,
+       31.133318189680622
+      ],
+      [
+       74.1641811698708,
+       31.136227072922747
+      ],
+      [
+       74.16085019106893,
+       31.136227072922747
+      ],
+      [
+       74.16085019106893,
+       31.133318189680622
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "datetime": "2026-09-12T05:40:00Z",
+    "eo:cloud_cover": 10.0,
+    "proj:epsg": 32643
+   },
+   "assets": {
+    "red": {
+     "href": "2026-09-12_red.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint16",
+       "nodata": 0
+      }
+     ]
+    },
+    "nir": {
+     "href": "2026-09-12_nir.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint16",
+       "nodata": 0
+      }
+     ]
+    },
+    "scl": {
+     "href": "2026-09-12_scl.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint8",
+       "nodata": 0
+      }
+     ]
+    }
+   },
+   "links": []
+  },
+  {
+   "type": "Feature",
+   "stac_version": "1.0.0",
+   "id": "FIX_2026-09-17",
+   "collection": "sentinel-2-l2a",
+   "bbox": [
+    74.16085019106893,
+    31.133318189680622,
+    74.1641811698708,
+    31.136227072922747
+   ],
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       74.16085019106893,
+       31.133318189680622
+      ],
+      [
+       74.1641811698708,
+       31.133318189680622
+      ],
+      [
+       74.1641811698708,
+       31.136227072922747
+      ],
+      [
+       74.16085019106893,
+       31.136227072922747
+      ],
+      [
+       74.16085019106893,
+       31.133318189680622
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "datetime": "2026-09-17T05:40:00Z",
+    "eo:cloud_cover": 10.0,
+    "proj:epsg": 32643
+   },
+   "assets": {
+    "red": {
+     "href": "2026-09-17_red.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint16",
+       "nodata": 0
+      }
+     ]
+    },
+    "nir": {
+     "href": "2026-09-17_nir.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint16",
+       "nodata": 0
+      }
+     ]
+    },
+    "scl": {
+     "href": "2026-09-17_scl.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint8",
+       "nodata": 0
+      }
+     ]
+    }
+   },
+   "links": []
+  },
+  {
+   "type": "Feature",
+   "stac_version": "1.0.0",
+   "id": "FIX_2026-09-22",
+   "collection": "sentinel-2-l2a",
+   "bbox": [
+    74.16085019106893,
+    31.133318189680622,
+    74.1641811698708,
+    31.136227072922747
+   ],
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       74.16085019106893,
+       31.133318189680622
+      ],
+      [
+       74.1641811698708,
+       31.133318189680622
+      ],
+      [
+       74.1641811698708,
+       31.136227072922747
+      ],
+      [
+       74.16085019106893,
+       31.136227072922747
+      ],
+      [
+       74.16085019106893,
+       31.133318189680622
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "datetime": "2026-09-22T05:40:00Z",
+    "eo:cloud_cover": 10.0,
+    "proj:epsg": 32643
+   },
+   "assets": {
+    "red": {
+     "href": "2026-09-22_red.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint16",
+       "nodata": 0
+      }
+     ]
+    },
+    "nir": {
+     "href": "2026-09-22_nir.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint16",
+       "nodata": 0
+      }
+     ]
+    },
+    "scl": {
+     "href": "2026-09-22_scl.tif",
+     "type": "image/tiff; application=geotiff",
+     "roles": [
+      "data"
+     ],
+     "raster:bands": [
+      {
+       "data_type": "uint8",
+       "nodata": 0
+      }
+     ]
+    }
+   },
+   "links": []
+  }
+ ]
+}

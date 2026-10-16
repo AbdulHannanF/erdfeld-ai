@@ -365,7 +365,7 @@ function ArchivePanel({ onClose }: { onClose: () => void }) {
 
       <div role="status" aria-live="polite" className="text-caption text-muted-foreground" data-testid="archive-status">
         {!bbox && 'Draw an area first: scenes are listed for the drawn area.'}
-        {bbox && status === 'loading' && <span className="inline-flex items-center gap-1.5"><Loader2 className="size-3.5 animate-spin" aria-hidden />Reading the catalogue{progress && progress.total > 0 ? `: ${progress.loaded} of ${progress.total} scenes` : '...'}</span>}
+        {bbox && status === 'loading' && <span className="inline-flex items-center gap-1.5"><Loader2 className="size-3.5 animate-spin" aria-hidden />Reading the catalogue{progress && progress.total > 0 ? `: ${progress.loaded} of ${progress.total} scenes` : '. The first read of a long archive takes up to a minute; it is kept afterwards.'}</span>}
         {bbox && status === 'error' && (
           <span className="flex items-center justify-between gap-2 text-danger">
             <span>{error}</span>

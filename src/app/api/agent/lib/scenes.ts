@@ -161,8 +161,12 @@ export interface SceneSearchResult {
 export type SceneSearchOutcome = SceneSearchResult | { ok: false; message: string }
 
 /** At most this many STAC items are read for one search (6 pages of 250). */
-const PAGE_SIZE = 250
-const MAX_PAGES = 4
+// Earth Search answers a page that is too large (a busy tile in 2019 at 250) with a 502; 100 is safe
+const PAGE_SIZE = 100
+const MAX_PAGES = 10
+const RETRIES = 3
+/** Searches in flight at once (the years of a long archive). */
+const CONCURRENCY = 5
 export const MAX_ITEMS = PAGE_SIZE * MAX_PAGES
 
 const day = (t: number) => new Date(t).toISOString().slice(0, 10)
@@ -190,11 +194,17 @@ async function collectItems(info: SensorInfo, body: Record<string, unknown>, max
   let truncated = false
   while (next) {
     if (pages >= MAX_PAGES || items.length >= maxItems) { truncated = true; break }
-    const res: Response = await fetchWithRetry(next.url, {
-      method: next.method,
-      headers: { 'Content-Type': 'application/json' },
-      ...(next.method === 'POST' ? { body: JSON.stringify(next.body) } : {}),
-    }, { timeoutMs: 30_000 })
+    // The public catalogues answer a burst of searches with 502/503/504 now and then: try again after a pause.
+    let res: Response
+    for (let attempt = 0; ; attempt++) {
+      res = await fetchWithRetry(next.url, {
+        method: next.method,
+        headers: { 'Content-Type': 'application/json' },
+        ...(next.method === 'POST' ? { body: JSON.stringify(next.body) } : {}),
+      }, { timeoutMs: 45_000 })
+      if (res.ok || ![502, 503, 504].includes(res.status) || attempt >= RETRIES) break
+      await new Promise((r) => setTimeout(r, Number(process.env.SCENES_RETRY_MS ?? 1500) * (attempt + 1)))
+    }
     if (!res.ok) throw new Error(`${info.provider} STAC HTTP ${res.status}`)
     const page: any = await res.json()
     for (const f of page.features ?? []) items.push(compact(f, info.keepAssets))
@@ -230,7 +240,7 @@ async function collectByYear(info: SensorInfo, base: Record<string, unknown>, fr
       parts[i] = await collectItems(info, { ...base, datetime: windows[i] }, 1000)
     }
   }
-  await Promise.all(Array.from({ length: Math.min(4, windows.length) }, worker))
+  await Promise.all(Array.from({ length: Math.min(CONCURRENCY, windows.length) }, worker))
   const seen = new Set<string>()
   const items: any[] = []
   for (const part of parts) for (const it of part.items) if (!seen.has(it.id)) { seen.add(it.id); items.push(it) }

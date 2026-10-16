@@ -30,7 +30,7 @@ import { runWithCacheContext } from '../agent/lib/cache'
 import { searchSceneCatalogue } from '../agent/lib/scenes'
 
 export const dynamic = 'force-dynamic'
-export const maxDuration = 60
+export const maxDuration = 300
 
 export async function GET(req: NextRequest) {
   const limited = await enforceRateLimit(req, 'scenes')

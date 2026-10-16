@@ -24,6 +24,7 @@ const BBOX = 'bbox=74.05,31.12,74.08,31.15'
 beforeEach(() => {
   _resetCache()
   process.env.GEOAGENT_TRUST_PROXY = '1'
+  process.env.SCENES_RETRY_MS = '1'
   delete process.env.RATE_LIMIT_SCENES_MAX
 })
 afterEach(() => vi.unstubAllGlobals())

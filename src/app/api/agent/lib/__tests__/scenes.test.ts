@@ -42,7 +42,7 @@ function fakeFetch(handler: Handler) {
   return calls
 }
 
-beforeEach(() => _resetCache())
+beforeEach(() => { _resetCache(); process.env.SCENES_RETRY_MS = '1' })
 afterEach(() => vi.unstubAllGlobals())
 
 describe('searchSceneCatalogue', () => {
@@ -105,6 +105,20 @@ describe('searchSceneCatalogue', () => {
     const r = await searchSceneCatalogue({ sensor: 'landsat', bbox: BBOX, from: '2024-01-01', to: '2024-06-01' }, NOW)
     expect(r.ok).toBe(false)
     if (!r.ok) expect(r.message).toMatch(/Could not reach the Landsat/)
+  })
+
+  it('tries a 502 again before giving up on a year', async () => {
+    let n = 0
+    fakeFetch(() => (++n === 1 ? { status: 502, body: {} } : { body: { features: [s2('R1', '2019-02-01T05:00:00Z', 5)], links: [] } }))
+    const r = await searchSceneCatalogue({ sensor: 'sentinel-2', bbox: BBOX, from: '2019-01-01', to: '2019-12-31' }, NOW)
+    expect(n).toBe(2)
+    expect(r.ok && r.scenes.map((s) => s.id)).toEqual(['R1'])
+  })
+
+  it('asks for pages small enough for the catalogue to answer', async () => {
+    const calls = fakeFetch(() => ({ body: { features: [], links: [] } }))
+    await searchSceneCatalogue({ sensor: 'sentinel-2', bbox: BBOX, from: '2019-01-01', to: '2019-12-31' }, NOW)
+    expect(calls[0].body.limit).toBeLessThanOrEqual(100)
   })
 
   it('an empty answer is ok with no scenes', async () => {

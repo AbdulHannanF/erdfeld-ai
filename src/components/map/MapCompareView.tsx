@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import * as maplibregl from '@/lib/maplibre'
 import { Columns, X } from 'lucide-react'
-import { useStore } from '@/store/useStore'
+import { useStore, type MapLayer } from '@/store/useStore'
+import { useTimeline } from '@/store/useTimeline'
+import { addMapLayer, removeMapLayer, syncAoiMasks } from '@/components/map/layers'
+import { dayLabel, geometryBbox, SENSOR_LABEL, type SceneRecord } from '@/lib/scenes-client'
 import { STORAGE_KEYS, readStorage, writeStorage } from '@/lib/storage'
 import { MAP_STYLES, getStyleValue } from '@/components/map/basemaps'
 import 'maplibre-gl/dist/maplibre-gl.css'
@@ -249,6 +252,42 @@ export default function MapCompareView({ mainMap, isActive, onToggle }: MapCompa
     }
   }, [isActive])
 
+  // Two scenes chosen on the timeline: each half draws its own, clipped to the drawn area like the main map.
+  const compare = useTimeline((s) => s.compare)
+  const sceneList = useTimeline((s) => s.list)
+  const aoi = useStore((s) => s.aoi)
+  const sceneA = compare ? sceneList?.scenes.find((s) => s.id === compare.a) ?? null : null
+  const sceneB = compare ? sceneList?.scenes.find((s) => s.id === compare.b) ?? null : null
+  useEffect(() => {
+    if (!isActive || !sceneA || !sceneB) return
+    const bounds = geometryBbox(aoi?.geometry) ?? undefined
+    const layerOf = (sc: SceneRecord): MapLayer => ({
+      id: 'scene-compare',
+      name: `${SENSOR_LABEL[sc.sensor]} ${sc.date}`,
+      type: 'raster',
+      tileUrl: sc.tileUrl ?? undefined,
+      visible: true,
+      opacity: 1,
+      bounds,
+      aoiMask: true,
+    })
+    const cleanups: Array<() => void> = []
+    for (const [map, sc] of [[leftMapRef.current, sceneA], [rightMapRef.current, sceneB]] as const) {
+      if (!map || !sc.tileUrl) continue
+      const layer = layerOf(sc)
+      const draw = () => {
+        if (!map.isStyleLoaded()) { map.once('idle', draw); return }
+        removeMapLayer(map, layer.id)
+        addMapLayer(map, layer)
+        syncAoiMasks(map, [layer], aoi)
+      }
+      draw()
+      map.on('style.load', draw)
+      cleanups.push(() => { map.off('style.load', draw); map.off('idle', draw) })
+    }
+    return () => cleanups.forEach((c) => c())
+  }, [isActive, sceneA, sceneB, aoi, leftStyle, rightStyle])
+
   // Resize maps when split ratio changes
   useEffect(() => {
     if (!isActive) return
@@ -276,7 +315,7 @@ export default function MapCompareView({ mainMap, isActive, onToggle }: MapCompa
         {/* "Before" label */}
         <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10">
           <div className="px-3 py-1 rounded-lg bg-popover/90 border border-border text-caption-strong text-foreground shadow-lg">
-            Before
+            {sceneA ? `${dayLabel(sceneA.date)} · ${SENSOR_LABEL[sceneA.sensor]}` : 'Before'}
           </div>
         </div>
 
@@ -320,7 +359,7 @@ export default function MapCompareView({ mainMap, isActive, onToggle }: MapCompa
         {/* "After" label */}
         <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10">
           <div className="px-3 py-1 rounded-lg bg-popover/90 border border-border text-caption-strong text-foreground shadow-lg">
-            After
+            {sceneB ? `${dayLabel(sceneB.date)} · ${SENSOR_LABEL[sceneB.sensor]}` : 'After'}
           </div>
         </div>
 

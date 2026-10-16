@@ -66,18 +66,24 @@ export default function VegaChartView({
   layerId,
   height,
   className,
+  onPointClick,
 }: {
   spec: Record<string, any>
   /** Map layer whose features the rows came from; enables the click link. */
   layerId?: string
   height?: number
   className?: string
+  /** Called with the data row of a clicked mark (the timeline jumps to that scene). */
+  onPointClick?: (datum: Record<string, unknown>) => void
 }) {
   const { resolvedTheme } = useTheme()
   const dark = resolvedTheme !== 'light'
   const scale = useUiScale()
   const hostRef = useRef<HTMLDivElement>(null)
   const resultRef = useRef<Result | null>(null)
+  const clickRef = useRef(onPointClick)
+  useEffect(() => { clickRef.current = onPointClick }, [onPointClick])
+  const clickable = !!onPointClick
   const [error, setError] = useState<string | null>(null)
   const linked = !!layerId && specHasFid(spec)
   const highlight = useStore((s) => s.highlight)
@@ -107,6 +113,13 @@ export default function VegaChartView({
         if (cancelled) { result.finalize(); return }
         resultRef.current = result
         setError(null)
+        if (clickable) {
+          result.view.addEventListener('click', (_e, item) => {
+            const datum = (item as any)?.datum
+            if (datum && typeof datum === 'object') clickRef.current?.(datum as Record<string, unknown>)
+          })
+          host.style.cursor = 'pointer'
+        }
         if (linked) {
           result.view.addEventListener('click', (_e, item) => {
             const id = (item as any)?.datum?.[FID_FIELD]
@@ -130,7 +143,7 @@ export default function VegaChartView({
       resultRef.current?.finalize()
       resultRef.current = null
     }
-  }, [spec, dark, linked, layerId, height, scale])
+  }, [spec, dark, linked, layerId, height, scale, clickable])
 
   // Map -> chart: reflect the selected feature in the (already drawn) view.
   useEffect(() => {

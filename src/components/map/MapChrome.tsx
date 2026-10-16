@@ -8,7 +8,7 @@ import MapActions from '@/components/map/MapActions'
 import MapIdentify from '@/components/map/MapIdentify'
 import MapMeasure from '@/components/map/MapMeasure'
 import MapSideControls from '@/components/map/MapSideControls'
-import MapTimelineSlider from '@/components/map/MapTimelineSlider'
+import SceneTimeline from '@/components/map/SceneTimeline'
 import { GLASS } from '@/components/shell/ui'
 import { aoiAreaKm2, formatAreaKm2 } from '@/lib/aoi'
 import { useMapReadout } from '@/store/useMapReadout'
@@ -58,7 +58,6 @@ export default function MapChrome({ map }: { map: maplibregl.Map | null }) {
   const zoom = useMapReadout((s) => s.zoom)
   const bearing = useMapReadout((s) => s.bearing)
   const hint = toolHint(activeDrawMode, mapTool)
-  const hasFrames = useStore((s) => s.temporalFrames.length > 0)
   // On a phone the open sheet covers the lower map: these step aside (the shell sets data-sheet on <html>).
   const sheetOpen = 'max-md:in-data-[sheet=half]:hidden max-md:in-data-[sheet=full]:hidden'
 
@@ -85,9 +84,7 @@ export default function MapChrome({ map }: { map: maplibregl.Map | null }) {
       <MapIdentify map={map} className="absolute left-[4.25rem] top-[4.75rem] z-20 max-md:left-[3.75rem] max-md:top-[6.5rem]" />
 
       <AoiCard className={cn('absolute bottom-[1.1875rem] left-5 z-10 max-md:bottom-[calc(var(--sheet-h,4.75rem)+0.625rem)] max-md:left-2.5 max-md:max-w-[calc(100%-5rem)]', sheetOpen)} />
-      <div className={cn('absolute bottom-[0.8125rem] left-1/2 z-10 w-[min(20.625rem,100%)] -translate-x-1/2 @max-[56.25rem]:hidden', hasFrames && '@max-[56.25rem]:block @max-[56.25rem]:bottom-[4.875rem] @max-[56.25rem]:left-[4.5rem] @max-[56.25rem]:right-[4.5rem] @max-[56.25rem]:w-auto @max-[56.25rem]:translate-x-0', 'max-md:bottom-[calc(var(--sheet-h,4.75rem)+3.875rem)] max-md:left-3 max-md:right-3 max-md:w-auto', !hasFrames && 'max-md:hidden', sheetOpen)}>
-        <MapTimelineSlider />
-      </div>
+      <SceneTimeline map={map} />
       {zoom != null && (
         <div className="pointer-events-none absolute bottom-[4.875rem] right-5 z-10 rounded-sm border border-border bg-[color-mix(in_srgb,var(--background)_75%,transparent)] px-1.5 py-1 text-data text-muted-foreground max-md:hidden" aria-hidden>
           {zoom.toFixed(1)}× · N {Math.abs(bearing) < 1 ? '↑' : `${Math.round(((bearing % 360) + 360) % 360)}°`}

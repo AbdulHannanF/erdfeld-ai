@@ -9,6 +9,7 @@ import { useRunOperation } from '@/hooks/useRunOperation'
 import { aoiAreaKm2, formatAreaKm2 } from '@/lib/aoi'
 import { humanName, loadOperations, type OperationInfo, type SchemaProp } from '@/lib/operations-client'
 import { chartDataNames, pickableResults } from '@/lib/pickable-results'
+import { planPins } from '@/lib/scene-pins'
 import { useStore } from '@/store/useStore'
 import { useUi } from '@/store/useUi'
 
@@ -64,6 +65,7 @@ export default function ToolDialog() {
   const dialog = useUi((s) => s.dialog)
   const toolName = useUi((s) => s.dialogTool)
   const closeDialog = useUi((s) => s.closeDialog)
+  const dialogScenes = useUi((s) => s.dialogScenes)
   const setInspectorTab = useUi((s) => s.setInspectorTab)
   const setDockTab = useUi((s) => s.setDockTab)
   const aoi = useStore((s) => s.aoi)
@@ -101,13 +103,23 @@ export default function ToolDialog() {
   const tooBig = !!op && km2 != null && km2 > op.limits.maxAreaKm2
   const tooSmall = !!op && km2 != null && op.limits.minAreaKm2 != null && km2 < op.limits.minAreaKm2
 
+  // Pinned to timeline scenes: the scenes decide the date and scene arguments, one run per scene (or one per pair).
+  const plan = useMemo(() => (op && dialogScenes ? planPins(op, dialogScenes, humanName(op.name)) : null), [op, dialogScenes])
+
   const submit = async () => {
     if (!op) return
-    const built = buildArgs(op, draft)
+    if (plan && plan.problems.length) return setError(plan.problems[0])
+    const pinnedDraft = plan ? { ...draft, ...Object.fromEntries(Object.entries(plan.runs[0].args).map(([k, v]) => [k, String(v)])) } : draft
+    const built = buildArgs(op, pinnedDraft)
     if (built.error) return setError(built.error)
     setError(null)
-    const id = await run(op.name, built.args, humanName(op.name))
-    if (id) {
+    const runs = plan ? plan.runs : [{ args: {}, label: humanName(op.name) }]
+    let queued = 0
+    for (const r of runs) {
+      const id = await run(op.name, { ...built.args, ...r.args }, r.label)
+      if (id) queued++
+    }
+    if (queued) {
       setDockTab('jobs')
       closeDialog()
     }
@@ -123,7 +135,7 @@ export default function ToolDialog() {
     sendQuery(`Run ${op.name} over this area${given ? ` with ${given}` : ''}.`)
   }
 
-  const props = op ? Object.entries(op.params.properties) : []
+  const props = op ? Object.entries(op.params.properties).filter(([name]) => !plan?.pinned.includes(name)) : []
 
   return (
     <WbDialog
@@ -136,11 +148,11 @@ export default function ToolDialog() {
       foot={
         <>
           <button type="button" className={BTN} onClick={closeDialog}>Cancel</button>
-          <button type="button" className={BTN} onClick={ask} disabled={!op || !aoi} title={aoi ? 'Have Erdfeld run it and explain the result' : 'Draw an area first'}>
+          <button type="button" className={BTN} onClick={ask} disabled={!op || !aoi || !!plan} title={aoi ? 'Have Erdfeld run it and explain the result' : 'Draw an area first'}>
             <Sparkles aria-hidden />Ask Erdfeld to run it
           </button>
-          <button type="button" className={BTN_PRIMARY} onClick={submit} disabled={!op || !aoi || submitting || tooBig || tooSmall || noInput} data-testid="tool-run">
-            {submitting ? <Loader2 className="size-3.5 animate-spin" aria-hidden /> : <Play className="size-3.5" aria-hidden />}Run on area
+          <button type="button" className={BTN_PRIMARY} onClick={submit} disabled={!op || !aoi || submitting || tooBig || tooSmall || noInput || !!plan?.problems.length} data-testid="tool-run">
+            {submitting ? <Loader2 className="size-3.5 animate-spin" aria-hidden /> : <Play className="size-3.5" aria-hidden />}{plan && plan.runs.length > 1 ? `Run on ${plan.runs.length} scenes` : 'Run on area'}
           </button>
         </>
       }
@@ -150,6 +162,19 @@ export default function ToolDialog() {
       {op && (
         <>
           <p className="text-body leading-relaxed text-muted-foreground">{op.description}</p>
+
+          {plan && (
+            <div className="grid gap-1.5" data-testid="tool-pinned">
+              <span className={OVERLINE}>Pinned to {dialogScenes!.length} scene{dialogScenes!.length === 1 ? '' : 's'}</span>
+              {plan.problems.length > 0 ? (
+                <Callout tone="warn" icon={<TriangleAlert />}>{plan.problems.join(' ')}</Callout>
+              ) : (
+                <ul className="grid gap-0.5 rounded-md border border-input bg-secondary px-2 py-1.5 text-data text-foreground">
+                  {plan.runs.map((r) => <li key={r.label}>{r.label}{r.args.scene_id ? ' · ' + String(r.args.scene_id) : ''}</li>)}
+                </ul>
+              )}
+            </div>
+          )}
 
           <div className="grid gap-1.5">
             <span className={OVERLINE}>Input</span>

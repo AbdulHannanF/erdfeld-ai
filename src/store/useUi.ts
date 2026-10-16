@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { STORAGE_KEYS, readStorage, writeStorage } from '@/lib/storage'
 import { BASEMAP_CHOICES, type BasemapChoice } from '@/components/map/basemaps'
+import type { PinScene } from '@/lib/scene-pins'
 
 /**
  * Interface state that has no meaning outside the workbench: which inspector tab and dock tab are
@@ -62,6 +63,10 @@ interface UiState {
   dialogTool: string | null
   openDialog: (dialog: DialogId, tool?: string) => void
   closeDialog: () => void
+  /** The timeline scenes the tool dialog is pinned to; null when it runs on the latest imagery. */
+  dialogScenes: PinScene[] | null
+  /** Open the tool dialog on `tool`, pinned to scenes chosen on the timeline. */
+  openToolForScenes: (tool: string, scenes: PinScene[]) => void
 
   mapView: MapView
   setMapView: (view: MapView) => void
@@ -150,8 +155,10 @@ export const useUi = create<UiState>((set) => ({
 
   dialog: null,
   dialogTool: null,
-  openDialog: (dialog, tool) => set({ dialog, dialogTool: tool ?? null }),
-  closeDialog: () => set({ dialog: null }),
+  openDialog: (dialog, tool) => set({ dialog, dialogTool: tool ?? null, dialogScenes: null }),
+  closeDialog: () => set({ dialog: null, dialogScenes: null }),
+  dialogScenes: null,
+  openToolForScenes: (tool, scenes) => set({ dialog: 'tool', dialogTool: tool, dialogScenes: scenes }),
 
   mapView: 'map',
   setMapView: (mapView) => set({ mapView }),

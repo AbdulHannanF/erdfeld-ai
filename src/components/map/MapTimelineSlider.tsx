@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { Play, Pause, ChevronLeft, ChevronRight, Clock } from 'lucide-react'
+import { Play, Pause, ChevronLeft, ChevronRight, Clock, CalendarRange } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { Slider } from '@/components/ui/slider'
 import {
@@ -20,7 +20,7 @@ import {
 // MapLibre's native `setTiles` so frame changes never flicker.
 const TEMPORAL_LAYER_ID = 'ndvi-temporal'
 
-export default function MapTimelineSlider() {
+export default function MapTimelineSlider({ onBrowse }: { onBrowse?: () => void } = {}) {
   const temporalFrames = useStore((s) => s.temporalFrames)
   const currentIndex = useStore((s) => s.activeFrameIndex)
   const setCurrentIndex = useStore((s) => s.setActiveFrameIndex)
@@ -116,14 +116,13 @@ export default function MapTimelineSlider() {
   // No dated scenes: the design's resting bar, disabled, saying why.
   if (totalFrames === 0) {
     return (
-      <div className="flex w-full items-center gap-2.5 rounded-md border border-[color-mix(in_srgb,var(--foreground)_15%,transparent)] bg-[color-mix(in_srgb,var(--card)_91%,transparent)] px-2.5 py-1.5 backdrop-blur-[0.8125rem] max-md:hidden" data-testid="time-nav" aria-label="Time navigation">
+      <div className="glass flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 max-md:hidden" data-testid="time-nav" aria-label="Time navigation">
         <span className="grid size-7 place-items-center rounded-md border border-border text-brand-text"><Clock className="size-3.5" aria-hidden /></span>
         <span className="min-w-0 flex-1">
           <strong className="block text-body-strong text-foreground">Time navigation</strong>
           <small className="mt-0.5 block text-data text-muted-foreground">No temporal layer active</small>
         </span>
-        <input type="range" disabled min={0} max={100} value={100} readOnly aria-label="Temporal frame" className="w-[4rem] shrink-0 accent-[var(--teal)] opacity-60" />
-        <span className="text-data text-muted-foreground" aria-hidden>—</span>
+        {onBrowse && <button type="button" className="btn btn-secondary btn-sm" onClick={onBrowse} data-testid="open-archive"><CalendarRange aria-hidden />Browse scenes</button>}
       </div>
     )
   }
@@ -139,7 +138,7 @@ export default function MapTimelineSlider() {
   ].filter(Boolean).join(' · ')
 
   return (
-    <div className="flex w-[min(35rem,100%)] items-center gap-2 rounded-md border border-[color-mix(in_srgb,var(--foreground)_15%,transparent)] bg-[color-mix(in_srgb,var(--card)_91%,transparent)] px-2.5 py-1.5 backdrop-blur-[0.8125rem]" data-testid="time-nav" aria-label="Time navigation">
+    <div className="glass flex w-[min(35rem,100%)] items-center gap-2 rounded-lg px-2.5 py-1.5" data-testid="time-nav" aria-label="Time navigation">
       <span className="grid size-7 shrink-0 place-items-center rounded-md border border-border text-brand-text max-sm:hidden"><Clock className="size-3.5" aria-hidden /></span>
       <span className="min-w-0 max-w-[11.875rem] shrink-0">
         <strong className="block text-body-strong text-foreground">Time navigation</strong>
@@ -160,6 +159,7 @@ export default function MapTimelineSlider() {
         className="min-w-[3.75rem] flex-1 [&_[data-slot=slider-track]]:h-1 [&_[data-slot=slider-range]]:bg-teal [&_[data-slot=slider-thumb]]:size-3.5 [&_[data-slot=slider-thumb]]:border-teal"
       />
       <span className="shrink-0 text-data text-muted-foreground">{currentIndex + 1}/{totalFrames}</span>
+      {onBrowse && <button type="button" className="btn btn-ghost btn-icon-sm shrink-0" onClick={onBrowse} aria-label="Browse the whole imagery archive" title="Browse the whole archive"><CalendarRange aria-hidden /></button>}
       <Select value={String(speed)} onValueChange={(v) => setSpeed(parseFloat(v))}>
         <SelectTrigger size="sm" aria-label="Playback speed" className="h-7 w-[4.25rem] shrink-0 border-border bg-secondary text-caption text-muted-foreground max-sm:hidden">
           <SelectValue />

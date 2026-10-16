@@ -4552,25 +4552,62 @@
     "subject": "truecolor",
     "date": "2026-10-05"
    },
-   "ms": 3031,
-   "verdict": "partial",
+   "ms": 20364,
+   "verdict": "pass",
    "notes": [],
-   "failures": [
+   "failures": [],
+   "layers": [
     {
-     "level": "partial",
-     "what": "result_status failed: no vision model configured on this deployment (honest refusal; nothing was described)",
-     "evidence": {
-      "summary": "**No vision model is available, so the imagery was not inspected.**\n\nNo vision model is configured. Set VLM_ENDPOINT + VLM_MODEL (a local Ollama/vLLM sidecar), or choose a vision-capable provider in Settings → AI Model (OpenAI, Claude or Gemini). Not"
-     }
+     "id": "inspect-ipyhv7e9",
+     "name": "True colour — 2026-10-15",
+     "type": "raster",
+     "verdict": "pass",
+     "checks": [
+      {
+       "name": "bounds_intersect_aoi",
+       "ok": true,
+       "note": "bounds 74.4185,31.0929,74.4815,31.1471"
+      },
+      {
+       "name": "image_decodes",
+       "ok": true,
+       "note": "643x554"
+      },
+      {
+       "name": "image_not_blank",
+       "ok": true,
+       "note": "opaque 1, colours 3328, sd 49.52"
+      },
+      {
+       "name": "bounds_tight",
+       "ok": true,
+       "note": "layer bounds are 1.0x the AOI"
+      },
+      {
+       "name": "legend_present",
+       "ok": true,
+       "note": "no raster descriptor / palette"
+      }
+     ],
+     "evidence": [],
+     "image": {
+      "w": 643,
+      "h": 554,
+      "opaque_frac": 1,
+      "colours": 3328,
+      "max_sd": 49.52,
+      "transparent": false,
+      "uniform": false
+     },
+     "bounds_ratio": 1
     }
    ],
-   "layers": [],
    "charts": [],
    "job": {
-    "status": "failed",
+    "status": "done",
     "attempts": 1,
-    "resultStatus": "failed",
-    "error": "**No vision model is available, so the imagery was not inspected.** No vision model is configured. Set VLM_ENDPOINT + VLM_MODEL (a local Ollama/vLLM sidecar), or choose a vision-capable provider in Settings → AI Model (OpenAI, Claude or Gemini). Nothing is described from the numbers alone — that would be the agent inventing a picture. Every other tool still works — this only affects looking at the picture. The cloud numbers themselves come from Sentinel-2's SCL band and need no vision model: `an",
+    "resultStatus": "ok",
+    "error": null,
     "resultId": "r_91426fb7b24e195c"
    },
    "request": {
@@ -4589,7 +4626,7 @@
     }
    },
    "result_id": "r_91426fb7b24e195c",
-   "result_status": "failed",
+   "result_status": "ok",
    "validation": [
     {
      "id": "aoi_area",
@@ -4600,26 +4637,83 @@
      "id": "dates",
      "status": "pass",
      "message": "Dates 2026-10-05 are valid, not in the future, and not before 2015-06-23."
+    },
+    {
+     "id": "stats_finite",
+     "status": "pass",
+     "message": "All statistics are finite numbers."
+    },
+    {
+     "id": "valid_pixels",
+     "status": "pass",
+     "message": "100% of the AOI's pixels are clear."
+    },
+    {
+     "id": "cloud_cover",
+     "status": "pass",
+     "message": "Scene-wide cloud cover is 52.1%."
+    },
+    {
+     "id": "provenance_sources",
+     "status": "pass",
+     "message": "Data sources: Sentinel-2 L2A (AWS Earth Search) via titiler /stac/feature.png."
     }
    ],
    "validation_summary": {
-    "pass": 2
+    "pass": 6
    },
-   "summary": "**No vision model is available, so the imagery was not inspected.**\n\nNo vision model is configured. Set VLM_ENDPOINT + VLM_MODEL (a local Ollama/vLLM sidecar), or choose a vision-capable provider in Settings → AI Model (OpenAI, Claude or Gemini). Nothing is described from the numbers alone — that would be the agent inventing a picture.\n\nEvery other tool still works — this only affects looking at the picture. The cloud numbers themselves come from Sentinel-2's SCL band and need no vision model: `analyze_raster` reports the clear fraction over your polygon on every call.",
-   "stats_keys": [],
+   "summary": "**gemini-3.8-flash looking at Sentinel-2 L2A true-colour (red/green/blue) composite, 2026-10-15, clipped to the drawn AOI polygon:**\n\n1. **Atmospheric conditions and artefacts:** The image is completely clear with no clouds, cloud shadows, snow, or noticeable sensor artefacts (0% coverage).\n2. **Dominant land surfaces:** A dense, extensive built-up urban area dominates the central portion of the frame. Surrounding the city is an agricultural landscape consisting of a mosaic of active green vegetation (cropland) and tan-to-brown bare or fallow soil patches, traversed by major road corridors.\n3. **Misleading numerical averages:** The sharp contrast between the expansive, highly impervious urban core and the fragmented surrounding agricultural fields (alternating between green crops and bare soil) creates a pronounced bimodal distribution, making whole-image spatial averages unrepresentative of either environment.\n\n**Cross-check:** SCL over the AOI polygon: 100% of the AOI was clear (not vegetated 90%, vegetation 10%). If the description above reports cloud the numbers do not, or vice versa, trust neither figure until the disagreement is resolved.\n\nRead by gemini-3.8-flash via VLM_ENDPOINT. A vision model's reading is an observation, not a measurement — it is here to catch what the numbers cannot say (cloud, snow, artefact, scene context), not to replace them.",
+   "stats": {
+    "subject": "truecolor",
+    "scene_id": "S2A_43RDQ_20261015_1_L2A",
+    "cloud_pct": 52.1,
+    "scene_date": "2026-10-15",
+    "vision_model": "gemini-3.8-flash",
+    "aoi_cloud_pct": 0,
+    "scl_breakdown": [
+     {
+      "label": "not vegetated",
+      "value": 90.2
+     },
+     {
+      "label": "vegetation",
+      "value": 9.8
+     }
+    ],
+    "vision_backend": "openai",
+    "scene_selection": "clearest",
+    "valid_pixel_pct": 100,
+    "aoi_coverage_pct": 99.5
+   },
+   "stats_keys": [
+    "subject",
+    "scene_id",
+    "cloud_pct",
+    "scene_date",
+    "vision_model",
+    "aoi_cloud_pct",
+    "scl_breakdown",
+    "vision_backend",
+    "scene_selection",
+    "valid_pixel_pct",
+    "aoi_coverage_pct"
+   ],
    "provenance": {
-    "sources": [],
+    "sources": [
+     "Sentinel-2 L2A (AWS Earth Search) via titiler /stac/feature.png"
+    ],
     "items": [],
-    "method": "inspect_imagery@1.0.0",
+    "method": "Sentinel-2 L2A true-colour (red/green/blue) composite, 2026-10-15, clipped to the drawn AOI polygon; scene chosen as the clearest in the ±30 days around 2026-10-05; not cloud-masked, so cloud is visib",
+    "date": "2026-10-15",
     "has_hash": true
    },
    "cached": false,
-   "provenance_present": false,
+   "provenance_present": true,
    "plausibility": {
     "issues": [],
-    "checked": 0
+    "checked": 4
    },
-   "has_layers": 0
+   "has_layers": 1
   },
   {
    "id": "composite",
@@ -11378,5 +11472,5 @@
    "rel_diff": 0.006
   }
  },
- "finished": "2026-10-16T09:08:10.191Z"
+ "finished": "2026-10-16T15:46:17.224Z"
 }

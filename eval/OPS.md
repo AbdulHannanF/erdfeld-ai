@@ -1,10 +1,10 @@
 # Operations and map-layer end-to-end evaluation
 
 Target: https://erdfeld-web-707586221016.us-central1.run.app  
-Run: 2026-10-16T08:41:11.115Z to 2026-10-16T09:08:10.191Z  
+Run: 2026-10-16T08:41:11.115Z to 2026-10-16T15:46:17.224Z  
 Harness: `node eval/ops/run.mjs [--base URL] [--only id1,op2]` (Node 22, no new dependencies; `eval/ops/`).
 
-**Totals (46 cases: 43 operation runs over 31 registered operations, 3 quick layers): 43 pass, 3 partial, 0 fail.**
+**Totals (46 cases: 43 operation runs over 31 registered operations, 3 quick layers): 44 pass, 2 partial, 0 fail.**
 
 ## Method
 
@@ -38,7 +38,7 @@ Harness: `node eval/ops/run.mjs [--base URL] [--only id1,op2]` (Node 22, no new 
 | analyze_raster:texture | Kasur (36 km2) | done/ok | raster OK | ok (6 ranges checked) | 6.1 s |  | **PASS** |
 | analyze_raster:cluster | Kasur (36 km2) | done/ok | raster OK | ok (1 ranges checked) | 6.5 s |  | **PASS** |
 | analyze_raster:change | Kasur (36 km2) | done/ok | raster OK | ok (4 ranges checked) | 16.9 s |  | **PASS** |
-| inspect_imagery | Kasur (needs a VLM; may be unconfigured) (36 km2) | failed/failed | - | ok (0 ranges checked) | 3.0 s | result_status failed: no vision model configured on this deployment (honest refusal; nothing was described) | **PARTIAL** |
+| inspect_imagery | Kasur (needs a VLM; may be unconfigured) (36 km2) | done/ok | raster OK | ok (4 ranges checked) | 20.4 s |  | **PASS** |
 | composite | Kasur (64 km2) | done/ok | tiles 200/200/200 OK | ok (8 ranges checked) | 11.7 s |  | **PASS** |
 | detect_anomaly | Kasur (36 km2) | done/ok | chart 39 rows OK | ok (3 ranges checked) | 116.7 s |  | **PASS** |
 | fetch_dem | Alps (Matterhorn) (144 km2) | done/ok | tiles 200/200/200 OK; tiles 200/200/200 OK; tiles 200/200/200 OK; tiles 200/200/200 OK | ok (17 ranges checked) | 17.0 s |  | **PASS** |
@@ -104,17 +104,6 @@ Request: `/api/jobs` op `fetch_active_fires` args `{"days":10}` AOI bbox `75.238
   ```
 
   Summary excerpt: **No wildfire incidents reported in this area in the last 10 days.**  No incidents were found in the surrounding bounding box either.  _EONET lists curated fire *incidents* reported by agencies, not satellite thermal hotspots. Coverage is uneven outside regions with active report
-
-### inspect_imagery - PARTIAL
-
-Request: `/api/jobs` op `inspect_imagery` args `{"subject":"truecolor","date":"2026-10-05"}` AOI bbox `74.4185,31.0929,74.4815,31.1471` (36 km2). Job `{"status":"failed","attempts":1,"resultStatus":"failed","error":"**No vision model is available, so the imagery was not inspected.** No vision model is configured. Set VLM_ENDPOINT + VLM_MODEL (a local Ollama/vLLM sidecar), or choose a vision-capable provider in Settings → AI Model (OpenAI, Claude or Gemini). Nothing is described from the numbers alone — that would be the agent inventing a picture. Every other tool still works — this only affects looking at the picture. The cloud numbers themselves come from Sentinel-2's SCL band and need no vision model: `an","resultId":"r_91426fb7b24e195c"}`.
-
-- **partial**: result_status failed: no vision model configured on this deployment (honest refusal; nothing was described)
-  ```json
-  {"summary":"**No vision model is available, so the imagery was not inspected.**\n\nNo vision model is configured. Set VLM_ENDPOINT + VLM_MODEL (a local Ollama/vLLM sidecar), or choose a vision-capable provider in Settings → AI Model (OpenAI, Claude or Gemini). Not"}
-  ```
-
-  Summary excerpt: **No vision model is available, so the imagery was not inspected.**  No vision model is configured. Set VLM_ENDPOINT + VLM_MODEL (a local Ollama/vLLM sidecar), or choose a vision-capable provider in Settings → AI Model (OpenAI, Claude or Gemini). Nothing is described from the num
 
 ### use_dataset - PARTIAL
 

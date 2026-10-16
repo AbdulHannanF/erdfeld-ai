@@ -117,6 +117,19 @@ test.describe('imagery archive timeline', () => {
     await expect(page.getByTestId('scene-play')).toHaveAttribute('aria-pressed', 'false')
   })
 
+  test('closing and reopening the panel keeps the list, the scene on show and the chosen scenes', async ({ page }) => {
+    await setup(page)
+    await openArchive(page)
+    await page.getByTestId('scene-row').nth(3).getByRole('checkbox').check()
+    await page.getByTestId('scene-row').nth(4).locator('button').click()
+    await expect(page.getByTestId('scene-position')).toHaveText('5/6')
+    await page.getByRole('button', { name: 'Close the archive panel' }).click()
+    await page.getByTestId('open-archive').click()
+    await page.waitForTimeout(1200) // longer than the panel's reload delay
+    await expect(page.getByTestId('scene-position')).toHaveText('5/6')
+    await expect(page.getByTestId('scene-selected')).toHaveText('1 chosen')
+  })
+
   test('chosen scenes are analysed on the job queue pinned to their exact id and date', async ({ page }) => {
     const jobs = await setup(page)
     await openArchive(page)

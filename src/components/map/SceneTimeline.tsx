@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils'
 import { useJobs } from '@/store/useJobs'
 import { useStore } from '@/store/useStore'
 import { useUi } from '@/store/useUi'
-import { currentScene, SPEEDS, TIMELINE_LAYER_ID, useTimeline, type SeriesRow } from '@/store/useTimeline'
+import { currentScene, loadKey, SPEEDS, TIMELINE_LAYER_ID, useTimeline, type SeriesRow } from '@/store/useTimeline'
 import VegaChart from '@/components/answer/VegaChart'
 
 /** Frames play at this pace at 1x; a frame needs its tiles, so slower than a video. */
@@ -319,9 +319,10 @@ function ArchivePanel({ onClose }: { onClose: () => void }) {
 
   const reload = useCallback(() => { if (bbox) void useTimeline.getState().load(bbox) }, [bbox])
   // The list follows the choices and the drawn area; a short wait lets a typed date settle.
-  const key = `${bbox?.join(',') ?? ''}|${choice.sensor}|${choice.render}|${choice.from}|${choice.to}|${choice.maxCloud}`
+  const key = loadKey(bbox, choice)
   useEffect(() => {
     if (!bbox) return
+    if (useTimeline.getState().loadedKey === key) return // reopened: the list is already for these choices
     const id = window.setTimeout(reload, 350)
     return () => window.clearTimeout(id)
   }, [key])
@@ -331,6 +332,7 @@ function ArchivePanel({ onClose }: { onClose: () => void }) {
     const [a, b] = [...chosen].sort((x, y) => x.datetime.localeCompare(y.datetime))
     setCompare({ a: a.id, b: b.id })
     setMapView('compare')
+    onClose() // the swipe view needs the whole map
   }
   const isRadar = choice.sensor === 'sentinel-1'
 
@@ -499,7 +501,7 @@ export default function SceneTimeline({ map }: { map: maplibregl.Map | null }) {
       )}
       <div className="absolute bottom-[1.75rem] left-[18.5rem] right-5 z-10 grid justify-items-start gap-2 max-md:hidden">
         <div className="pointer-events-none"><SceneBadge /></div>
-        <div className="w-full">
+        <div className="w-full max-w-[44rem]">
           {showBar ? <ArchiveBar onOpenPanel={() => setPanelOpen(!panelOpen)} /> : <MapTimelineSlider onBrowse={() => setPanelOpen(true)} />}
         </div>
       </div>

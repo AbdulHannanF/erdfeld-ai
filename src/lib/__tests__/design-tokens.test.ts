@@ -2,6 +2,8 @@ import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
+import { cn } from '../utils'
+
 /**
  * The design system's guard (globals.css: type roles in the theme block, controls in section 5b).
  * Components take sizes, weights, radii and colours from the tokens; a one-off value fails here.
@@ -71,6 +73,14 @@ describe('colour roles', () => {
 describe('shape', () => {
   it('radius is sm 4 / md 6 / lg 10 (or full for dots)', () => {
     expect(offenders(/(?<![\w-])rounded(?:-(?:xs|xl|2xl|3xl|\[(?!inherit)[^\]]+\]))?(?![\w-])(?!-)/)).toEqual([])
+  })
+})
+
+describe('cn knows the type roles', () => {
+  it('keeps a role beside a text colour, and lets a later role replace an earlier one', () => {
+    expect(cn('text-title', 'text-foreground')).toBe('text-title text-foreground')
+    expect(cn('text-label', 'text-muted-foreground')).toBe('text-label text-muted-foreground')
+    expect(cn('text-body text-foreground', 'text-caption')).toBe('text-foreground text-caption')
   })
 })
 

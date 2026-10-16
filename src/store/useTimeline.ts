@@ -21,6 +21,11 @@ export interface SeriesData {
   resultId: string
 }
 
+/** What a list was read for: the area and every choice that shapes the query. Reopening the panel with the same key keeps the list, the position and the chosen scenes. */
+export function loadKey(bbox: [number, number, number, number] | null, c: { sensor: string; render: string; from: string; to: string; maxCloud: number }): string {
+  return `${bbox?.join(',') ?? ''}|${c.sensor}|${c.render}|${c.from}|${c.to}|${c.maxCloud}`
+}
+
 export type TimelineStatus = 'idle' | 'loading' | 'ready' | 'error'
 export const SPEEDS = [0.5, 1, 2, 4] as const
 
@@ -44,6 +49,8 @@ interface TimelineState {
   list: SceneList | null
   /** The area the list was read for, as its bounding box joined into a string. */
   listKey: string | null
+  /** `loadKey` of the query behind `list`. */
+  loadedKey: string | null
   status: TimelineStatus
   error: string | null
   progress: { loaded: number; total: number } | null
@@ -82,6 +89,7 @@ export const useTimeline = create<TimelineState>((set, get) => ({
 
   list: null,
   listKey: null,
+  loadedKey: null,
   status: 'idle',
   error: null,
   progress: null,
@@ -97,7 +105,7 @@ export const useTimeline = create<TimelineState>((set, get) => ({
       if (ctl.signal.aborted) return
       // keep the chosen scenes that are still in the list
       const ids = new Set(list.scenes.map((s) => s.id))
-      set((s) => ({ list, listKey: bbox.join(','), status: 'ready', progress: null, index: 0, selected: s.selected.filter((id) => ids.has(id)), compare: null }))
+      set((s) => ({ list, listKey: bbox.join(','), loadedKey: loadKey(bbox, choice), status: 'ready', progress: null, index: 0, selected: s.selected.filter((id) => ids.has(id)), compare: null }))
     } catch (err) {
       if (ctl.signal.aborted) return
       set({ status: 'error', error: err instanceof Error ? err.message : 'The scene list could not be read.', progress: null })
@@ -125,7 +133,7 @@ export const useTimeline = create<TimelineState>((set, get) => ({
   setSeries: (series) => set({ series }),
   reset: () => {
     inflight?.abort()
-    set({ list: null, listKey: null, status: 'idle', error: null, progress: null, index: 0, playing: false, selected: [], compare: null, series: null })
+    set({ list: null, listKey: null, loadedKey: null, status: 'idle', error: null, progress: null, index: 0, playing: false, selected: [], compare: null, series: null })
   },
 }))
 

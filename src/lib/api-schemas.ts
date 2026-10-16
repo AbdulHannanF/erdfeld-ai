@@ -341,6 +341,43 @@ export const ListQuerySchema = z.object({
   cursor: Slug.optional(),
 })
 
+// ── GET /api/scenes ─────────────────────────────────────────────────────────────────────────
+
+const IsoDay = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/, 'must be a YYYY-MM-DD date')
+  .refine((s) => !Number.isNaN(Date.parse(`${s}T00:00:00Z`)) && new Date(`${s}T00:00:00Z`).toISOString().slice(0, 10) === s, 'must be a real calendar date')
+
+/** `bbox=west,south,east,north` in degrees, no wider than an analysis area may be. */
+const BboxParam = z
+  .string()
+  .regex(/^-?\d+(\.\d+)?(,-?\d+(\.\d+)?){3}$/, 'must be west,south,east,north in decimal degrees')
+  .transform((s) => s.split(',').map(Number) as [number, number, number, number])
+  .pipe(
+    z
+      .tuple([Lon, Lat, Lon, Lat])
+      .refine(([w, s, e, n]) => w < e && s < n, 'west must be less than east and south less than north')
+      .refine(([w, s, e, n]) => (e - w) * Math.cos((((s + n) / 2) * Math.PI) / 180) * 111.32 * (n - s) * 110.57 <= 5000, 'the area is larger than 5,000 km2; draw a smaller one'),
+  )
+
+/** The scene catalogue over an area: one sensor, an optional window and cloud ceiling, the scenes
+ *  oldest first (or newest), `limit` per page, `cursor` = how many came before (the previous `next`). */
+export const ScenesQuerySchema = z
+  .object({
+    bbox: BboxParam,
+    sensor: z.enum(['sentinel-2', 'landsat', 'sentinel-1']).default('sentinel-2'),
+    from: IsoDay.optional(),
+    to: IsoDay.optional(),
+    maxCloud: z.string().regex(/^\d{1,3}(\.\d+)?$/, 'must be a number from 0 to 100').transform(Number).pipe(z.number().min(0).max(100)).default(100),
+    order: z.enum(['asc', 'desc']).default('asc'),
+    group: z.enum(['day', 'scene']).default('day'),
+    render: z.enum(['true_colour', 'ndvi']).default('true_colour'),
+    limit: z.string().regex(/^\d{1,3}$/, 'must be an integer').transform(Number).pipe(z.number().min(1).max(250)).default(60),
+    cursor: z.string().regex(/^\d{1,6}$/, 'must be the next value of the previous page').transform(Number).default(0),
+  })
+  .refine((q) => !q.from || !q.to || q.from <= q.to, { message: '`from` is after `to`', path: ['from'] })
+export type ScenesQuery = z.output<typeof ScenesQuerySchema>
+
 /** POST /api/cases (Q-27): a claim type (`id` or `id@semver`), its parameters, and the plot. The
  *  parameters are checked against the recipe's own schema when the case runs. */
 const ClaimTypeSchema = z.string().regex(/^[a-z][a-z0-9_]*(@\d+\.\d+\.\d+)?$/, 'a claim type such as not_cleared_since or flooded_on@1.0.0')

@@ -47,7 +47,7 @@ Most "ask the map" agents let a language model narrate pixels. Erdfeld AI never 
 
 ## What it can do
 
-- **Ask the map anything.** About 36 registered operations cover any Sentinel-2/Landsat band or band-math index, cloud-masked composites, radar, terrain derivatives, land cover, surface water, built-up areas, active fires, change and deforestation detection, weather history, OSM queries, field delineation, vectorising, charts and styling.
+- **Ask the map anything.** 31 registered operations in 8 domains cover any Sentinel-2/Landsat band or band-math index, cloud-masked composites, radar, terrain derivatives, land cover, surface water, built-up areas, active fires, change and deforestation detection, weather history, OSM queries, field delineation, vectorising, charts and styling. A few more (object detection, segmentation, forecasting) stay off unless their keys or flags are set.
 - **Flood mapping from radar.** Sentinel-1 before and after the event, a water threshold with a sensitivity range, and the flooded buildings and roads from Overture. It sees through cloud, which is exactly when floods happen.
 - **Claim verification.** Versioned recipes (`not_cleared_since`, `flooded_on`) return **Supported / Contradicted / Cannot determine** with a confidence, an evidence timeline and an explanation built only from recorded results.
 - **Batch verification at portfolio scale.** Upload hundreds of plots (GeoJSON, Shapefile, KML, CSV). They run on a crash-safe Postgres job queue, and you export the verdicts as CSV, GeoJSON, KML or Shapefile, or as a zip of signed bundles.
@@ -59,17 +59,18 @@ Most "ask the map" agents let a language model narrate pixels. Erdfeld AI never 
 
 ## Measured, not claimed
 
-Every figure here has a method and raw data in [`eval/RESULTS.md`](eval/RESULTS.md) and [`eval/PERF.md`](eval/PERF.md).
+Every figure here has a method and raw data in [`eval/RESULTS.md`](eval/RESULTS.md), [`eval/PERF.md`](eval/PERF.md) and [`eval/OPS.md`](eval/OPS.md), or comes from the test gate.
 
 | | Result |
 |---|---|
 | Deforestation claims (`not_cleared_since`), 250 Hansen-labelled plots across 5 biomes | **81% accuracy on answered plots** (95% CI 74–86%), 73% coverage, calibration error (ECE) **0.094**. It abstains rather than guesses on the rest |
-| 2025 Sutlej flood, Sentinel-1 radar | **18.0 km² newly flooded** over 180.9 km² observed, with a sensitivity range across radar thresholds, reproduced through the engine |
+| 2025 Sutlej flood, Sentinel-1 radar | **18.1–34.5 km² newly flooded** across the −18 to −15 dB thresholds (219.4 km² observed, scenes 30 Jul and 4 Sep 2025), with 238 buildings and 19.0 km of road hit at −15 dB. One live run, result `r_36e6ecc2acef03c8` (16 Oct 2026). Radar misses flooding under vegetation, so these are lower bounds |
 | Dataset search | **hit@5 0.961** on held-out questions over 15,653 datasets |
 | Anomaly detection | Expected-range coverage **83%** (p10–p90) on a 6-site, 9-year backtest. Google's TimesFM was benchmarked head-to-head and is off by default because it didn't beat the baseline here. We publish the losses too |
-| Cache hit | **~9 ms**; every result is content-addressed |
-| Job queue | 50-job batch killed with `kill -9` mid-run: **50/50 completed exactly once** |
-| Test suite | **2,475 unit, integration and database tests**, 24 Playwright end-to-end tests, typecheck and lint, all green |
+| Live operations check | **43 pass, 3 partial, 0 fail** over 46 cases on the live app (16 Oct 2026): every one of the 31 registered operations plus 3 quick layers, with map tiles fetched and decoded. The partials are honest: no FIRMS key, no vision model configured, one coverage hole |
+| Repeat run | An identical repeat returns from the app cache in **0.03–0.07 s** with no upstream requests; every result is content-addressed |
+| Job queue | Postgres leases with fencing: concurrent claimers never share a job, a lost worker's job is retried and completes, and a batch settles exactly once (database tests in `src/lib/jobs/__tests__`) |
+| Test suite | **2,681 unit, integration and database tests** and **42 Playwright end-to-end tests**, plus typecheck, lint and build, all green on `889ea56` (16 Oct 2026) |
 
 ## How it works
 
@@ -97,10 +98,11 @@ flowchart LR
 
 | | |
 |---|---|
-| **Gemini** (`@google/genai`) | The planner: native function calling over the operation registry, multi-turn with thought signatures, retries and a model fallback chain |
+| **Gemini** (`@google/genai`) | Five jobs, none of them arithmetic. **Plans** the analysis by native function calling over the operation registry (multi-turn, thought signatures, per-phase thinking level, retries, a model fallback chain). In the investigator it **proposes** competing explanations and their priors, **reads** rendered Sentinel-2 chips (a capped vote), and **searches** with Google Search grounding for dated reports, which are shown as context and never move a belief. It **writes** the cited answer: each figure must cite the recorded result it came from |
 | **Gemma 4** | Open-weights planner option on the same adapter, for on-premise and sovereign deployments |
-| **Google Cloud Run** | Web app, Python geo service (internal ingress, IAM-authenticated) and our own TiTiler raster server |
-| **Cloud SQL · Secret Manager · Artifact Registry** | Postgres for the ledger and job queue, server-held keys, container images. Deploy scripts are in [`deploy/cloudrun/`](deploy/cloudrun/) |
+| **Google Cloud Run** | Web app, Python geo service (IAM-authenticated: only the web service's identity may invoke it) and our own TiTiler raster server |
+| **Compute Engine · Cloud SQL** | Postgres 16 for the evidence ledger and job queue. The live demo runs it on an always-free e2-micro VM reached over Direct VPC egress; the production profile (`PROFILE=paid` in [`deploy/cloudrun/common.sh`](deploy/cloudrun/common.sh)) uses Cloud SQL |
+| **Secret Manager · Artifact Registry · Cloud Build** | Server-held keys, container images and their builds. Deploy scripts are in [`deploy/cloudrun/`](deploy/cloudrun/) |
 | **Earth Engine** (optional) | An alternative raster backend behind a flag |
 
 ## Stack
@@ -121,7 +123,7 @@ npx prisma migrate deploy
 npm run dev                       # http://localhost:3000
 ```
 
-Pick a sample case on the welcome screen, or draw an area and ask. For composites and anomaly
+Open the **Erdfeld** tab in the right-hand panel and pick a sample case, or draw an area and ask. For composites and anomaly
 detection, also run the geo service: `cd services/geo && uv sync && uv run uvicorn app.main:app --port 8100`
 and set `GEO_SERVICE_URL=http://127.0.0.1:8100`.
 

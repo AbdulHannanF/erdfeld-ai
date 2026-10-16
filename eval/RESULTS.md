@@ -398,6 +398,25 @@ confidence 0.70** (the recipe's cap: radar can miss flooding under vegetation or
 are two cases chosen with knowledge of the answer; they show the recipe runs end to end, not how often it
 is right. There is no labelled flood set yet.
 
+### Same AOI, live `map_flood` run (2026-10-16): the figure to quote
+
+Result `r_36e6ecc2acef03c8`, one `map_flood` job through the live deployment's job API (`POST /api/jobs`, no
+LLM), AOI 74.40-74.56 E, 30.95-31.08 N (220.4 km2), `before` 2025-08-05, `after` 2025-09-04. Pair chosen:
+Sentinel-1A 2025-07-30 and 2025-09-04, both relative orbit 34 descending, VV, read at 16.5 m; 219.4 km2
+observed (99.5% valid pixels).
+
+| threshold | newly flooded |
+|---|---:|
+| −15.0 dB (used: Otsu −11.75 dB, clamped) | 34.5 km2 (15.7% of observed) |
+| −16.5 dB | 28.8 km2 |
+| −18.0 dB | 18.1 km2 |
+
+At −15.0 dB: 238 Overture buildings (release 2026-09-23.1, 32,655 scanned) and 19.0 km of road in 60 segments
+are in the flood polygons; 3.6 km2 was water on both dates. Radar misses flooding under vegetation and among
+buildings, so each figure is a lower bound for its threshold. **Quote the range, 18.1-34.5 km2.** The 13 Oct
+figure above (18.0 km2) observed only 180.9 km2 of the same AOI and does not record its threshold or scene
+pair, so the two are not directly comparable.
+
 ## Live agent run: time budget, thinking level, grounding (2026-10-14)
 
 `scripts/gemini-smoke.mts`, real Gemini API and real satellite reads, no mocks, one sample per cell

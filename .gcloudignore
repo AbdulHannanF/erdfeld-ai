@@ -1,6 +1,5 @@
 # What `gcloud builds submit` uploads (deploy/cloudrun/deploy.sh): the repository as .gitignore sees it,
-# without local agent worktrees, which .gitignore cannot name (they hold full checkouts and build caches).
+# without top-level dot-directories (git, CI, local tool folders and caches), none of which the image needs.
 .gcloudignore
-.git
-.claude/
+/.*/
 #!include:.gitignore

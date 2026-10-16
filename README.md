@@ -2,7 +2,7 @@
   <img src="public/brand/horizontal.svg" alt="Erdfeld AI" width="320">
 </p>
 
-<h3 align="center">An AI field scientist for the whole planet, one that shows its work and knows when it can't know.</h3>
+<h3 align="center">Ask any place on Earth. Get the map, the numbers and the proof.</h3>
 
 <p align="center">
   Gemini-planned · deterministic engine · free open satellite data · every number signed and reproducible
@@ -34,16 +34,16 @@ and none of them makes numbers up.
 
 ## Why it is different
 
-Most "ask the map" agents let a language model narrate pixels. Erdfeld AI never lets the model compute anything.
+Most "ask the map" agents let a language model narrate pixels. In Erdfeld AI, Gemini plans the analysis and a deterministic engine computes every number.
 
 | | Typical AI map chat | Erdfeld AI |
 |---|---|---|
-| Who produces the numbers | The LLM, from vibes and captions | Registered, versioned operations on real rasters and vectors |
-| Bad request ("band B99", a 10 m species map) | A confident hallucination | Refused in milliseconds, with the reason and the valid alternatives |
-| Cloudy imagery, failed download | "No data found", or a made-up value | `failed` is never reported as "no data"; cloudy scenes are rejected per pixel and the scenes checked are listed |
-| Uncertainty | Single number | Ranges, sensitivity sweeps, confidence and validation status on every result |
-| Can I trust it later? | Screenshot | Content-hash result IDs, an evidence ledger, a node-by-node re-run, and an **Ed25519-signed evidence bundle** with an offline verifier |
-| When the data can't answer | It answers anyway | **"Cannot determine"**, a first-class verdict |
+| Who produces the numbers | The LLM, from captions | 31 registered, versioned operations on real rasters and vectors |
+| Floods under monsoon cloud | Whatever optical image it is shown | Sentinel-1 radar flood mapping through cloud, with the flooded buildings and roads from Overture |
+| Time | One image | Every Sentinel-2 date over a place since 2017, to scrub, play and compare (1,383 days over one Kasur plot) |
+| Scale | One question at a time | Batch verification of whole plot portfolios on a crash-safe job queue |
+| Uncertainty | A single number | Ranges, sensitivity sweeps and confidence on every result |
+| Can I trust it later? | A screenshot | Content-hash result IDs, an evidence ledger, a node-by-node re-run, and an **Ed25519-signed evidence bundle** with an offline verifier |
 
 ## What it can do
 
@@ -53,6 +53,7 @@ Most "ask the map" agents let a language model narrate pixels. Erdfeld AI never 
 - **Batch verification at portfolio scale.** Upload hundreds of plots (GeoJSON, Shapefile, KML, CSV). They run on a crash-safe Postgres job queue, and you export the verdicts as CSV, GeoJSON, KML or Shapefile, or as a zip of signed bundles.
 - **"Is this unusual?"** The observed index is compared with the expected range from the site's own history.
 - **Cloud-free composites.** A per-pixel median of every clear observation in a time window.
+- **Imagery archive.** Every Sentinel-2 date over a place, oldest to newest: scrub and play, analyse chosen dates, compare two in a swipe view, and chart the archive.
 - **Bring your own data.** Import GeoJSON, Shapefile, KML, KMZ, GPX or CSV, reprojected and validated, use it as the study area, and export it back.
 - **15,653 datasets, searchable offline.** The agent finds and reads the right open dataset for the question.
 - **One-click layers.** True colour, NDVI and elevation, with no model round-trip.
@@ -63,11 +64,11 @@ Every figure here has a method and raw data in [`eval/RESULTS.md`](eval/RESULTS.
 
 | | Result |
 |---|---|
-| Deforestation claims (`not_cleared_since`), 250 Hansen-labelled plots across 5 biomes | **81% accuracy on answered plots** (95% CI 74–86%), 73% coverage, calibration error (ECE) **0.094**. It abstains rather than guesses on the rest |
+| Deforestation claims (`not_cleared_since`), 250 Hansen-labelled plots across 5 biomes | **81% accuracy on answered plots** (95% CI 74–86%), 73% coverage, calibration error (ECE) **0.094** |
 | 2025 Sutlej flood, Sentinel-1 radar | **18.0 km² newly flooded** (range 8.6–18.0 km² across radar thresholds), 124 buildings and 15.3 km of road, from the sample case in the live app (result `r_feaf4dd55c03b80a`, scenes 5 Aug and 4 Sep 2025). A different before-scene (30 Jul, more of the box observed) gives 18.1–34.5 km²: the pairing changes the answer, which is why we report ranges |
 | Dataset search | **hit@5 0.961** on held-out questions over 15,653 datasets |
-| Anomaly detection | Expected-range coverage **83%** (p10–p90) on a 6-site, 9-year backtest. Google's TimesFM was benchmarked head-to-head and is off by default because it didn't beat the baseline here. We publish the losses too |
-| Live operations check | **44 pass, 2 partial, 0 fail** over 46 cases on the live app (16 Oct 2026): every one of the 31 registered operations plus 3 quick layers, with map tiles fetched and decoded and imagery read by Gemini vision. The partials are honest: no FIRMS key for active fires, and one DEM coverage hole |
+| Anomaly detection | Expected-range coverage **83%** (p10–p90) on a 6-site, 9-year backtest. Google's TimesFM was benchmarked head-to-head and is off by default because it didn't beat the baseline here |
+| Live operations check | **44 pass, 2 partial, 0 fail** over 46 cases on the live app (16 Oct 2026): every one of the 31 registered operations plus 3 quick layers, with map tiles fetched and decoded and imagery read by Gemini vision. The 2 partials: no FIRMS key for active fires, and one DEM coverage hole |
 | Repeat run | An identical repeat returns from the app cache in **0.03–0.07 s** with no upstream requests; every result is content-addressed |
 | Job queue | Postgres leases with fencing: concurrent claimers never share a job, a lost worker's job is retried and completes, and a batch settles exactly once (database tests in `src/lib/jobs/__tests__`) |
 | Test suite | **2,682 unit, integration and database tests** and **42 Playwright end-to-end tests**, plus typecheck, lint and build, all green on `ce45150` (16 Oct 2026) |
@@ -152,7 +153,7 @@ cd services/geo && uv sync && uv run pytest                              # Pytho
 npx tsx scripts/verify-bundle.mts <bundle.json>                         # verify a signed evidence bundle offline
 ```
 
-## Honest limits (by design)
+## Scope and resolution
 
 Free imagery is about 10 m per pixel. Erdfeld AI won't identify tree species, count cars or trace
 sub-metre parcels, and it will tell you so instead of pretending. Radar flood thresholds depend on

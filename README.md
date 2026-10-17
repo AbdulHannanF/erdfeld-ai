@@ -38,7 +38,7 @@ Most "ask the map" agents let a language model narrate pixels. In Erdfeld AI, Ge
 
 | | Typical AI map chat | Erdfeld AI |
 |---|---|---|
-| Who produces the numbers | The LLM, from captions | 31 registered, versioned operations on real rasters and vectors |
+| Who produces the numbers | The LLM, from captions | 32 registered, versioned operations on real rasters and vectors |
 | Floods under monsoon cloud | Whatever optical image it is shown | Sentinel-1 radar flood mapping through cloud, with the flooded buildings and roads from Overture |
 | Time | One image | Every Sentinel-2 date over a place since 2017, to scrub, play and compare (1,383 days over one Kasur plot) |
 | Scale | One question at a time | Batch verification of whole plot portfolios on a crash-safe job queue |
@@ -47,7 +47,7 @@ Most "ask the map" agents let a language model narrate pixels. In Erdfeld AI, Ge
 
 ## What it can do
 
-- **Ask the map anything.** 31 registered operations in 8 domains cover any Sentinel-2/Landsat band or band-math index, cloud-masked composites, radar, terrain derivatives, land cover, surface water, built-up areas, active fires, change and deforestation detection, weather history, OSM queries, field delineation, vectorising, charts and styling. A few more (object detection, segmentation, forecasting) stay off unless their keys or flags are set.
+- **Ask the map anything.** 32 registered operations in 8 domains cover any Sentinel-2/Landsat band or band-math index, cloud-masked composites, radar, terrain derivatives, land cover, surface water, built-up areas, active fires, change and deforestation detection, weather history, OSM queries, field delineation, vectorising, charts and styling. A few more (object detection, segmentation, forecasting) stay off unless their keys or flags are set.
 - **Flood mapping from radar.** Sentinel-1 before and after the event, a water threshold with a sensitivity range, and the flooded buildings and roads from Overture. It sees through cloud, which is exactly when floods happen.
 - **Claim verification.** Versioned recipes (`not_cleared_since`, `flooded_on`) return **Supported / Contradicted / Cannot determine** with a confidence, an evidence timeline and an explanation built only from recorded results.
 - **Batch verification at portfolio scale.** Upload hundreds of plots (GeoJSON, Shapefile, KML, CSV). They run on a crash-safe Postgres job queue, and you export the verdicts as CSV, GeoJSON, KML or Shapefile, or as a zip of signed bundles.
@@ -68,7 +68,7 @@ Every figure here has a method and raw data in [`eval/RESULTS.md`](eval/RESULTS.
 | 2025 Sutlej flood, Sentinel-1 radar | **18.0 km² newly flooded** (range 8.6–18.0 km² across radar thresholds), 124 buildings and 15.3 km of road, from the sample case in the live app (result `r_feaf4dd55c03b80a`, scenes 5 Aug and 4 Sep 2025). A different before-scene (30 Jul, more of the box observed) gives 18.1–34.5 km²: the pairing changes the answer, which is why we report ranges |
 | Dataset search | **hit@5 0.961** on held-out questions over 15,653 datasets |
 | Anomaly detection | Expected-range coverage **83%** (p10–p90) on a 6-site, 9-year backtest. Google's TimesFM was benchmarked head-to-head and is off by default because it didn't beat the baseline here |
-| Live operations check | **44 pass, 2 partial, 0 fail** over 46 cases on the live app (16 Oct 2026): every one of the 31 registered operations plus 3 quick layers, with map tiles fetched and decoded and imagery read by Gemini vision. The 2 partials: no FIRMS key for active fires, and one DEM coverage hole |
+| Live operations check | **44 pass, 2 partial, 0 fail** over 46 cases on the live app (16 Oct 2026): every one of the 31 operations registered that day (before `scene_series` was added) plus 3 quick layers, with map tiles fetched and decoded and imagery read by Gemini vision. The 2 partials: no FIRMS key for active fires, and one DEM coverage hole |
 | Repeat run | An identical repeat returns from the app cache in **0.03–0.07 s** with no upstream requests; every result is content-addressed |
 | Job queue | Postgres leases with fencing: concurrent claimers never share a job, a lost worker's job is retried and completes, and a batch settles exactly once (database tests in `src/lib/jobs/__tests__`) |
 | Test suite | **2,682 unit, integration and database tests** and **42 Playwright end-to-end tests**, plus typecheck, lint and build, all green on `ce45150` (16 Oct 2026) |

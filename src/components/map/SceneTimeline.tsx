@@ -500,9 +500,9 @@ export default function SceneTimeline({ map }: { map: maplibregl.Map | null }) {
         </div>
       )}
       {/* between the area card at the bottom left and the scale bar and attribution at the bottom right */}
-      <div className="absolute bottom-[2.25rem] left-[18.5rem] right-[9rem] z-10 grid justify-items-start gap-2 max-md:hidden">
+      <div className="absolute bottom-[2.25rem] left-[18.5rem] right-[9rem] pointer-events-none z-10 grid justify-items-start gap-2 max-md:hidden">
         <div className="pointer-events-none"><SceneBadge /></div>
-        <div className="w-full max-w-[44rem]">
+        <div className="pointer-events-auto w-full max-w-[44rem]">
           {showBar ? <ArchiveBar onOpenPanel={() => setPanelOpen(!panelOpen)} /> : <MapTimelineSlider onBrowse={() => setPanelOpen(true)} />}
         </div>
       </div>

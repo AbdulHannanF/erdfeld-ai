@@ -198,7 +198,7 @@ export default function Inspector({ sheet = false }: { sheet?: boolean }) {
             </div>
           )}
           {tab === 'assistant' && (
-            <div className="grid content-start gap-4">
+            <div className="grid grid-cols-[minmax(0,1fr)] content-start gap-4">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <span className="grid size-7 place-items-center rounded-md border border-border bg-accent text-accent-foreground"><Sparkles className="size-3.5" aria-hidden /></span>

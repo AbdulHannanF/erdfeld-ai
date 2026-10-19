@@ -112,7 +112,7 @@ export default function AnswerView({ onRetry }: { onRetry: () => void }) {
   }
 
   return (
-    <div className="thread-in grid gap-6" data-testid="answer-view">
+    <div className="thread-in grid min-w-0 grid-cols-[minmax(0,1fr)] gap-6 [overflow-wrap:anywhere]" data-testid="answer-view">
       {/* spoken status for assistive technology; the visible steps below carry the same news */}
       <p className="sr-only" role="status" aria-live="polite">{status}</p>
 

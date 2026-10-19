@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { SAMPLE_CASES, sampleCaseToAOI } from '../sample-cases'
+import { SAMPLE_CASES, sampleCaseToAOI, serverCanAnswer } from '../sample-cases'
 
 describe('sample cases', () => {
   it('has exactly three cases with unique ids and a question each', () => {
@@ -26,5 +26,19 @@ describe('sample cases', () => {
     expect(ring[0]).toEqual(ring[4])
     expect(aoi.center?.lng).toBeCloseTo(74.48, 6)
     expect(aoi.center?.lat).toBeCloseTo(31.015, 6)
+  })
+})
+
+describe('serverCanAnswer', () => {
+  const reply = (body: unknown, ok = true) => (async () => ({ ok, json: async () => body })) as unknown as typeof fetch
+  it('is true when the default provider holds a server key', async () => {
+    expect(await serverCanAnswer(reply({ default_provider: 'gemini', providers: [{ id: 'openai', server_key: false }, { id: 'gemini', server_key: true }] }))).toBe(true)
+  })
+  it('is false when the default provider has no server key', async () => {
+    expect(await serverCanAnswer(reply({ default_provider: 'gemini', providers: [{ id: 'gemini', server_key: false }] }))).toBe(false)
+  })
+  it('is false on an HTTP error or a network failure', async () => {
+    expect(await serverCanAnswer(reply({}, false))).toBe(false)
+    expect(await serverCanAnswer((async () => { throw new Error('offline') }) as unknown as typeof fetch)).toBe(false)
   })
 })

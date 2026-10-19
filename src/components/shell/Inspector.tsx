@@ -15,7 +15,7 @@ import { ICON_BTN } from '@/components/shell/ui'
 import { useAgentWS } from '@/hooks/useAgentWS'
 import { useStore } from '@/store/useStore'
 import { useUi, type InspectorTab, type PanelMode } from '@/store/useUi'
-import { sampleCaseToAOI, type SampleCase } from '@/lib/sample-cases'
+import { sampleCaseToAOI, serverCanAnswer, type SampleCase } from '@/lib/sample-cases'
 import { cn } from '@/lib/utils'
 
 const TABS: Array<{ id: InspectorTab; label: string; icon: typeof Layers; mobileOnly?: boolean }> = [
@@ -82,13 +82,14 @@ export default function Inspector({ sheet = false }: { sheet?: boolean }) {
     sendQuery(q)
   }, [lastQuery, aoi, sendQuery, setAgentError])
 
-  // A sample case sets its area, fits the map to it and asks its question. With no AI provider
-  // configured nothing can answer, so the question is pre-filled and Settings opens instead.
+  // A sample case sets its area, fits the map to it and asks its question. "Default (built-in)"
+  // runs on the server's own key when it has one; only with no provider at all is the question
+  // pre-filled and Settings opened instead.
   const pickSample = useCallback(
-    (c: SampleCase) => {
+    async (c: SampleCase) => {
       setAoi(sampleCaseToAOI(c))
       setFitBoundsTarget(c.bbox)
-      if (settings.aiProvider !== 'default') {
+      if (settings.aiProvider !== 'default' || (await serverCanAnswer())) {
         window.setTimeout(() => send(c.question), 900)
       } else {
         setInput(c.question)

@@ -74,3 +74,17 @@ export function sampleCaseToAOI(c: SampleCase): AOI {
     center: { lng: (west + east) / 2, lat: (south + north) / 2 },
   }
 }
+
+/** Whether the server can answer with its own key when the provider is "Default (built-in)":
+ *  `GET /api/providers` names the default provider and whether it holds a server key. Any
+ *  failure reads as "no", so the caller falls back to asking for a provider. */
+export async function serverCanAnswer(fetchFn: typeof fetch = fetch): Promise<boolean> {
+  try {
+    const res = await fetchFn('/api/providers')
+    if (!res.ok) return false
+    const j = (await res.json()) as { default_provider?: string; providers?: { id: string; server_key: boolean }[] }
+    return !!j.providers?.find((p) => p.id === j.default_provider)?.server_key
+  } catch {
+    return false
+  }
+}

@@ -32,6 +32,25 @@ at the measurement behind it.
 It's like having a QGIS power user, a remote-sensing scientist and a fact-checker in the browser,
 and none of them makes numbers up.
 
+**Try it with no setup.** The live demo runs on its own Gemini key. Open it, click a sample case on the
+Erdfeld tab (for example *2025 Sutlej flood*), or draw an area and type a question.
+
+## Screenshots
+
+<p align="center">
+  <img src=".github/screenshots/flood-answer.jpg" alt="Sutlej flood answer: Sentinel-1 flood polygons on the map, the cited answer and the attribute table" width="100%">
+  <br><sub>A real run of the 2025 Sutlej flood sample case: radar flood extent on the map, the cited answer, and the flood polygons behind it.</sub>
+</p>
+
+| | |
+|---|---|
+| ![Workbench: imagery basemap, tool rail, sample cases](.github/screenshots/workbench.jpg) | ![Imagery archive: every Sentinel-2 pass over the drawn area, scrub and compare](.github/screenshots/imagery-archive.jpg) |
+| **Workbench.** Imagery basemap, drawing tools, workspace dock and the Erdfeld assistant with sample cases | **Imagery archive.** Every Sentinel-2, Landsat or Sentinel-1 pass over the area, with a cloud filter, scrubbing and a swipe compare |
+| ![Toolbox: 32 registered operations in 8 domains](.github/screenshots/toolbox.jpg) | ![Data catalog: 15,653 open datasets, searchable offline](.github/screenshots/catalog.jpg) |
+| **Toolbox.** 32 registered operations in 8 domains, plus one-click layers that need no model call | **Data catalog.** 15,653 open datasets, searchable offline |
+
+<p align="center"><img src=".github/screenshots/mobile.jpg" alt="Phone layout" width="260"><br><sub>The same workbench on a phone.</sub></p>
+
 ## Why it is different
 
 Most "ask the map" agents let a language model narrate pixels. In Erdfeld AI, Gemini plans the analysis and a deterministic engine computes every number.
